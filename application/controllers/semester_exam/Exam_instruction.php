@@ -60,9 +60,10 @@
             $data['exam_options']          =   $this->exam_options;
             $data['getExamType']           =   $this->getExamType;  
             
-            
-            $data['program_types']              = $this->Semester_enrollment_model->get_program_types();
-                $data['programs']                   = $this->Semester_enrollment_model->get_programs();
+             $data['programs']           =   $this->Semester_enrollment_model->get_program_list(); 
+
+            // $data['program_types']              = $this->Semester_enrollment_model->get_program_types();
+            //     $data['programs']                   = $this->Semester_enrollment_model->get_programs();
 
                 // // Semesters, batches, and terms
                 $data['semesters_batches']          = $this->Semester_enrollment_model->get_all_semesters_batches();
@@ -102,11 +103,11 @@
             $this->db->where('sem_exam_option', $exam_option); 
             $this->db->where('sem_exam_optiontype', $exam_type); 
 
-            $query            = $this->db->get('sem_exam_instruction');
+            $query                               = $this->db->get('sem_exam_instruction');
 
             if ($query->num_rows() > 0) 
             {
-            $data = array(
+            $data                                = array(
             'sem_exam_title'                     => $this->input->post('exam_title'),          
             // 'sem_exam_option'                    => $this->input->post('exam_option'),
             // 'sem_exam_optiontype'                => $this->input->post('exam_type'),
@@ -164,14 +165,7 @@
             }
             redirect($_SERVER['HTTP_REFERER']); 
             }        
-            } 
-
-
-
-            
-
-
-
+            }
 
 
 

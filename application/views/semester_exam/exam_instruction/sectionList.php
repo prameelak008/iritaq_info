@@ -437,9 +437,9 @@
             </div>
 
 
-            <input type="hidden" name="sem_group_id" id="sem_group_id" class="form-control" value="<?php echo set_value('sem_group_id'); ?>" />
+            <!-- <input type="hidden" name="sem_group_id" id="sem_group_id" class="form-control" value="<?php echo set_value('sem_group_id'); ?>" /> -->
 
-
+<!--
             <div class="form-group">
             <label for="exampleInputEmail1"><?php echo $this->lang->line('programee_type'); ?></label>
             <select name="program_type" id="program_type" class="form-control" >
@@ -520,6 +520,32 @@
             ?>
             </select> 
             </div>
+            -->
+
+
+            <div class="row">
+                <div class="col-md-6">
+                <div class="form-group">           
+                <?= dropdownlist_program(
+                $programs,              // Array of programs from DB
+                set_value('prog_id'), 
+                ); ?>
+                <span class="text-danger"><?= form_error('prog_id'); ?></span>
+                </div>  
+                </div> 
+
+
+                <div class="col-md-6">
+                <div class="form-group">
+                <label><?php echo $this->lang->line('batch'); ?> <small class="req">*</small></label>
+                <select id="sem_type" name="sem_type" class="form-control">
+                <option value="">-- Select Batch & Semester --</option>
+                </select>
+                <span class="text-danger"><?= form_error('sem_type'); ?></span>
+                </div>
+                </div>
+
+
 
 
             <div class="form-group">
@@ -869,9 +895,7 @@
             success: function (data) {
 
 
-            if (data) {               
-
-
+            if (data) { 
 
             // const effectivedate = data.sem_fees_charge_effectivedate?.split('-').reverse().join('-') || '';
             // $('#fine_effective_date').val(effectivedate);
@@ -969,86 +993,84 @@
 
 
 
-            $(document).ready(function()
-            { 
-            $('#programe, #batch_group, #semester_semtype,#semester_term').change(function() 
-            {
-            var prog      = $('#programe').val();
-            var bat       = $('#batch_group').val();
-            var sem       = $('#semester_semtype').val(); 
-            var sem_term  = $('#semester_term').val();                   
+            // $(document).ready(function()
+            // { 
+            // $('#programe, #batch_group, #semester_semtype,#semester_term').change(function() 
+            // {
+            // var prog      = $('#programe').val();
+            // var bat       = $('#batch_group').val();
+            // var sem       = $('#semester_semtype').val(); 
+            // var sem_term  = $('#semester_term').val();                   
 
-            if( prog && bat && sem && sem_term) 
-            {
-            $.ajax({
-            url: '<?php echo site_url('semester_activities/teacher_subject_assignments/get_sem_group_id'); ?>',
-            type: 'POST',
-            data: { 
-            prog   : prog,
-            bat    : bat,
-            sem    : sem,
-            sem_term:sem_term,
-            },
-            success: function(response) 
-            {
-            var res = JSON.parse(response);  // Convert string to object 
-            console.log(res.sem_group_id);  
-            $('#sem_group_id').val(res.sem_group_id); 
-            //     $('#sem_group_id').trigger('change');
-            }
-            });
-            }
-            else
-            {
-            // Clear sem_group_id when any required field is empty
-            $('#sem_group_id').val('');
-            $('#sem_group_id').trigger('change');  // Optional: To handle downstream logic if needed
-            console.log('sem_group_id cleared because prog, bat, or sem is empty');
-            }
-            });
+            // if( prog && bat && sem && sem_term) 
+            // {
+            // $.ajax({
+            // url: '<?php echo site_url('semester_activities/teacher_subject_assignments/get_sem_group_id'); ?>',
+            // type: 'POST',
+            // data: { 
+            // prog   : prog,
+            // bat    : bat,
+            // sem    : sem,
+            // sem_term:sem_term,
+            // },
+            // success: function(response) 
+            // {
+            // var res = JSON.parse(response);  // Convert string to object 
+            // console.log(res.sem_group_id);  
+            // $('#sem_group_id').val(res.sem_group_id); 
+            // //     $('#sem_group_id').trigger('change');
+            // }
+            // });
+            // }
+            // else
+            // {
+            // // Clear sem_group_id when any required field is empty
+            // $('#sem_group_id').val('');
+            // $('#sem_group_id').trigger('change');  // Optional: To handle downstream logic if needed
+            // console.log('sem_group_id cleared because prog, bat, or sem is empty');
+            // }
+            // });
 
 
-            var old_program_type  = "<?php echo set_value('program_type'); ?>";
-            var old_programe      = "<?php echo set_value('programe'); ?>";
+            // var old_program_type  = "<?php echo set_value('program_type'); ?>";
+            // var old_programe      = "<?php echo set_value('programe'); ?>";
 
-            $(document).ready(function()
-            {
-            function loadProgrames(prog_type_id, selected_programe = '') {
-            if(prog_type_id != '') {
-            $.ajax({
-            url: "<?php echo base_url('semester/Assignsubjects/getpgm_by_pgmtype'); ?>",
-            method: "POST",
-            data: { prog_type_id: prog_type_id },
-            dataType: "json",
-            success: function(data) { 
-            $('#programe').empty();
-            $('#programe').append('<option value=""><?php echo $this->lang->line("select"); ?></option>');
-            $.each(data, function(key, value) { 
-            var selected = (value.id == selected_programe) ? 'selected' : '';
-            $('#programe').append('<option value="'+ value.id +'" '+selected+'>'+ value.p_name +'</option>');
-            });
-            }
-            });
-            } else {
-            $('#programe').html('<option value=""><?php echo $this->lang->line("select"); ?></option>');
-            }
-            }
+            // $(document).ready(function()
+            // {
+            // function loadProgrames(prog_type_id, selected_programe = '') {
+            // if(prog_type_id != '') {
+            // $.ajax({
+            // url: "<?php echo base_url('semester/Assignsubjects/getpgm_by_pgmtype'); ?>",
+            // method: "POST",
+            // data: { prog_type_id: prog_type_id },
+            // dataType: "json",
+            // success: function(data) { 
+            // $('#programe').empty();
+            // $('#programe').append('<option value=""><?php echo $this->lang->line("select"); ?></option>');
+            // $.each(data, function(key, value) { 
+            // var selected = (value.id == selected_programe) ? 'selected' : '';
+            // $('#programe').append('<option value="'+ value.id +'" '+selected+'>'+ value.p_name +'</option>');
+            // });
+            // }
+            // });
+            // } else {
+            // $('#programe').html('<option value=""><?php echo $this->lang->line("select"); ?></option>');
+            // }
+            // }
 
-            // On page load: populate programe if old_program_type exists
-            if(old_program_type != '') {
-            $('#program_type').val(old_program_type);
-            loadProgrames(old_program_type, old_programe);
-            }
-            // On change: load programe dynamically
-            $('#program_type').change(function() {
-            var prog_type_id = $(this).val();
-            loadProgrames(prog_type_id);
-            });
-            });  
-            
-            
-            
-            });
+            // // On page load: populate programe if old_program_type exists
+            // if(old_program_type != '') {
+            // $('#program_type').val(old_program_type);
+            // loadProgrames(old_program_type, old_programe);
+            // }
+            // // On change: load programe dynamically
+            // $('#program_type').change(function() {
+            // var prog_type_id = $(this).val();
+            // loadProgrames(prog_type_id);
+            // });
+            // }); 
+            // });
+
 
 
             $(document).ready(function () {
