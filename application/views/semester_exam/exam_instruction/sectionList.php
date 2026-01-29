@@ -523,7 +523,9 @@
             -->
 
 
-            <div class="row">
+
+
+                <div class="row">
                 <div class="col-md-6">
                 <div class="form-group">           
                 <?= dropdownlist_program(
@@ -544,9 +546,6 @@
                 <span class="text-danger"><?= form_error('sem_type'); ?></span>
                 </div>
                 </div>
-
-
-
 
             <div class="form-group">
             <label for="exampleInputEmail1">&nbsp;</label>
@@ -849,9 +848,6 @@
     + Add
 </button>
 
-
-
-
                      
             </div>
             <div class="form-section">
@@ -877,9 +873,8 @@
 
 
             <script type="text/javascript">
-            $(document).ready(function () { 
-
-
+            $(document).ready(function ()
+             {
             $('#fee_ex_type').on('change', function () {         
             const fee_exam_type = $(this).val();
 
@@ -893,8 +888,6 @@
             dataType: 'json',
 
             success: function (data) {
-
-
             if (data) { 
 
             // const effectivedate = data.sem_fees_charge_effectivedate?.split('-').reverse().join('-') || '';
@@ -979,17 +972,16 @@
             });
             }
             });
-
-
             });
 
 
-            $(document).on('input', '#get_fees_charge', function() {                      
+
+            $(document).on('input', '#get_fees_charge', function() 
+            {                      
             var amount = $(this).val(); // get entered amount
             // $('input[name="fees_charge"]').val(amount); // set it to all row inputs
             $('.fees_charge').val(amount); // set it to all row inputs
             });
-
 
 
 
@@ -1191,10 +1183,7 @@
             }
             });
             }
-            }
-
-
-          
+            }          
 
             // Tab switching
             function switchTab(index) {

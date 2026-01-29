@@ -1,0 +1,8 @@
+@"
+/application/logs/
+/application/cache/
+/application/config/database.php
+/application/third_party/omnipay/vendor/
+/vendor/
+/.env
+"@ | Set-Content .gitignore

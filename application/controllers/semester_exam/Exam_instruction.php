@@ -27,6 +27,7 @@
             
             public function index()
             {
+
             $this->current_session = $this->setting_model->getCurrentSession();
             $this->session->set_userdata('top_menu', 'semester_exam');
 
@@ -91,7 +92,6 @@
             {
             $is_status = 0;
             } 
-
 
             $exam_group_id    = $this->input->post('exam_group_id');
             $exam_id          = $this->input->post('exam_id');
@@ -299,7 +299,6 @@
             } else {
             echo json_encode([]);
             }
-
             }
 
 
