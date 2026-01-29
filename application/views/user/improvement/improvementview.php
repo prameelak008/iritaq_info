@@ -1,0 +1,631 @@
+           
+            <style type="text/css">
+                    .tableone td{border:1px solid #000; padding:3px 0}
+                    .denifittable th{}
+                    .denifittable th,
+                    .denifittable td {border: 1px solid #000;
+                    border-collapse: collapse;border-left: 1px solid #999;}
+                    .denifittable tr th {padding: 8px 0px;  font-size: 12px}
+                    .denifittable tr td {padding: 8px 0px; font-weight: normal; font-size: 12px}
+                    .tcmybg {
+                    background:top center;
+                    background-size: 100% 100%;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    bottom: 0;
+                    z-index: 1;
+                    width: 100%;height: 100%;
+                    }
+                    
+                    .tablemain1
+                    {
+                    position: relative;
+                    z-index: 1;
+                    /*border:1px solid #000; */
+                    padding: 3px;
+                    min-height: 940px;
+                    
+                    }
+                    
+                    
+                    .trstyle
+                    {
+                    height:3mm;
+                    } 
+                    
+                    
+                    
+                    .tdstylelabel
+                    {
+                    width:45%;
+                    padding-left: 12px;
+                    font-size:14px;
+                    
+                    }
+                    
+                    
+                    .tdstyledot
+                    {
+                    width:5%;
+                    text-transform: uppercase;
+                    }
+                    
+                    .tdstyle
+                    {
+                    width:50%; 
+                    font-size:14px;
+                    }
+                    
+                    
+                    .headerclass
+                    {
+                    text-align: center;
+                    font-weight:bold ;
+                    }
+                    
+                    </style>
+           
+           
+           
+                    
+                    <div class="content-wrapper" style="min-height: 946px;">
+                    <section class="content-header">
+                    <h1>
+                    <i class="fa fa-map-o"></i> <?php echo $this->lang->line('examinations'); ?> <small><?php echo $this->lang->line('student_fee1'); ?></small>  </h1>
+                    </section>
+                    <!-- Main content -->
+                    <section class="content">
+                    <div class="row">
+                    <div class="col-md-12">
+                    <div class="box box-primary">
+                    <div class="box-header with-border">
+                    <h6 class="box-title"><i class="fa fa-book"></i> Application For Improvement</h6>
+                    </div>
+                    
+                    
+                    
+                    
+                            <div class="box-body">
+                            <div style="width:100%">
+                            <span>
+                            <h5 style="text-align:center"><b>APPLICATION FOR IMPROVEMENT</b></h5>
+                            </div>
+                            
+                            
+                            
+                            
+                            
+            <form name="" method="POST" action="<?php   echo site_url('user/improvement/proceedtopayment');?>">
+            
+            <input type="hidden" id="exam_idd" name="exam_group_exam_results_exam_idd" value="<?php  echo $exam_group_exam_results_exam_idd;  ?>"  >
+            
+            <input type="hidden" id="exam_groupidd" name="exam_group_exam_results_exam_groupidd" value="<?php  echo $exam_group_exam_results_exam_groupidd;  ?>"> 
+            
+            <input type="hidden" id="exam_session_id" name="exam_session_id" value="<?php  echo $exam_session_id;  ?>"> 
+            <input type="hidden" id="exam_class_id" name="exam_class_id" value="<?php  echo $exam_class_id;  ?>"> 
+            <input type="hidden" id="exam_section_id" name="exam_section_id" value="<?php  echo $exam_section_id;  ?>">
+            
+            
+            <table cellpadding="0" cellspacing="0" width="100%" class="denifittable" style="text-align: center;">
+            <thead>                                         
+            
+            <tr>
+            <th class="headerclass">Sl.No</th>
+            <th colspan="2" class="headerclass"><b>Subjects</b></th>
+            <th  class="headerclass"><b>Marks Obtained</b></th>
+            <th rowspan="2" class="headerclass"><b>Total</b></th>
+            <th  class="headerclass" ><b>Grade</b>   </th>
+            </tr>
+            </thead>
+            
+            <tr>
+            <td></td>
+            <td><b>Code</b></td>
+            <td><b>Name</b></td>
+            <!--<td><b>CE</b></td>-->
+            <td><b>TE</b></td>
+            <td></td>
+            <td></td>
+            
+            </tr>
+            
+            <?php
+            $obtainedtotal=0;
+            $maxtotal=0;
+            $singlepercentage=0;
+            
+            $count=1;
+            
+            $feetotal=0;
+            $feegrandtotal=0;
+           
+            
+            foreach($improvement_marks as $improve)
+            {
+            ?>
+            <tr>
+            
+            <td><?php echo $count; ?></td>
+            <td><?php echo $improve['code'];  ?></td>
+            <td><?php echo $improve['name'];  ?></td>
+            
+            
+            <!--<td><?php echo $improve['get_cmarks'];  ?></td>-->
+            <td><?php echo $improve['get_marks'];  ?></td>
+            <td><?php  //$obtainedtotal= $improve['gtcmark']+$improve['gtmark'];
+            
+            //$obtainedtotal= $improve['get_cmarks'];
+            
+            $obtainedtotal= $improve['get_marks'];
+            
+           
+            
+            
+            
+            
+            //$maxtotal= $improve['max_cmarks']+$improve['max_marks'];
+            $maxtotal= $improve['max_marks'];
+            
+            
+            echo number_format((float)$obtainedtotal, 2, '.', '');
+            
+            
+            
+            $singlepercentage=$obtainedtotal/$maxtotal*100;
+            
+            
+            
+            ?>
+            
+            </td>
+            
+            <td>
+            
+            
+            <?php
+            
+            if($singlepercentage<=100 && $singlepercentage>=90)
+            {
+            $fgde="A+" ;
+            }
+            elseif($singlepercentage<=89 && $singlepercentage>=80)
+            {
+            $fgde="A";
+            }
+            
+            
+            elseif($singlepercentage<=79 && $singlepercentage>=70)
+            {
+            $fgde="B+";
+            }
+            elseif($singlepercentage<=69 && $singlepercentage>=60)
+            {
+            $fgde="B";
+            }
+            
+            elseif($singlepercentage<=59 && $singlepercentage>=50)
+            {
+            $fgde="C+";
+            }
+            elseif($singlepercentage<=49 && $singlepercentage>=40)
+            {
+            $fgde="C";
+            }
+            
+            
+            elseif($singlepercentage<=39 && $singlepercentage>=30)
+            {
+            $fgde="D+";
+            }
+            
+            
+            
+            elseif($singlepercentage<=29 && $singlepercentage>=20)
+            {
+            $fgde="D";
+            }
+            
+            elseif($singlepercentage<=19 && $singlepercentage>=10)
+            {
+            $fgde="E+";
+            }
+            
+            
+            
+            elseif($singlepercentage<=9)
+            {
+            $fgde="E";
+            }
+            
+            echo $fgde;
+            
+            
+            $count++;
+            
+            
+            
+            
+            ?>
+            
+            </td>
+            </tr>
+            
+            <?php } 
+            
+            $gcount= $count-1;
+            
+            
+            
+            
+            ?>
+            </table>
+            <br>
+            <br>
+            
+            <table cellpadding="0" cellspacing="0" width="100%"  style="text-align: center;">
+            <thead>                                         
+            
+            <tr>
+            <td style="text-align:right;"> 
+            
+            <input type="submit" name="proceedpayment" value="PROCEED TO PAYMENT" class="btn btn-success" >
+            </td>
+            
+            </tr>
+            
+            
+            </thead>
+            </table>
+            </form>
+            
+            
+
+            </div>
+                    
+                    
+                    
+                  
+                    
+                    <?php
+                    
+                    function findGrade($exam_grades, $percentage) {
+                    
+                    if (!empty($exam_grades)) {
+                    foreach ($exam_grades as $exam_grade_key => $exam_grade_value) {
+                    
+                    if ($exam_grade_value->mark_from >= $percentage && $exam_grade_value->mark_upto <= $percentage) {
+                    return $exam_grade_value->name;
+                    }
+                    }
+                    }
+                    
+                    return "-";
+                    }
+                    
+                    function findGradePoints($exam_grades, $percentage) {
+                    
+                    if (!empty($exam_grades)) {
+                    foreach ($exam_grades as $exam_grade_key => $exam_grade_value) {
+                    
+                    if ($exam_grade_value->mark_from >= $percentage && $exam_grade_value->mark_upto <= $percentage) {
+                    return $exam_grade_value->point;
+                    }
+                    }
+                    }
+                    
+                    return 0;
+                    }
+                    
+                    function examTotalResult($array) {
+                    $return_array = array('max_marks' => 0, 'min_marks' => 0, 'credit_hours' => 0, 'get_marks' => 0, 'exam_result' => true);
+                    if (!empty($array)) {
+                    $max_marks = 0;
+                    $min_marks = 0;
+                    $credit_hours = 0;
+                    $get_marks = 0;
+                    $exam_result = true;
+                    foreach ($array as $array_key => $array_value) {
+                    if ($array_value->attendence == "absent") {
+                    $exam_result = false;
+                    }
+                    $max_marks = $max_marks + $array_value->max_marks;
+                    $min_marks = $min_marks + $array_value->min_marks;
+                    $credit_hours = $credit_hours + $array_value->credit_hours;
+                    $get_marks = $get_marks + $array_value->get_marks;
+                    }
+                    $return_array = array('max_marks' => $max_marks, 'min_marks' => $min_marks, 'credit_hours' => $credit_hours, 'get_marks' => $get_marks, 'exam_result' => $exam_result);
+                    }
+                    return json_encode($return_array);
+                    }
+                    
+                    function getWeightageExam($exam_connection_list, $examid, $get_marks) {
+                    
+                    foreach ($exam_connection_list as $exam_connection_key => $exam_connection_value) {
+                    if ($exam_connection_value->exam_group_class_batch_exams_id == $examid) {
+                    return ($get_marks * $exam_connection_value->exam_weightage) / 100;
+                    }
+                    }
+                    return "";
+                    }
+                    ?>
+                    
+                    
+                    
+                    
+                    </div>
+                    
+                    </div>
+                    
+                    </section>
+                    </div>
+                    
+                    
+                    
+                    <script type="text/javascript">
+                    
+                    
+                    
+                    
+                    function doconfirm()
+                    {
+                    job=confirm("Once You applied cannot be modified");
+                    if(job!=true)
+                    {
+                    return false;
+                    }
+                    
+                    }
+                    
+                    
+                    function toggle(source) {
+                    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                    for (var i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i] != source)
+                    checkboxes[i].checked = source.checked;
+                    }
+                    }
+                    
+                    
+                    function getexam_id()
+                    {
+                    
+                    
+                    var exam_id           = $('#exam_id').val();
+                    //var exam_groupid       = $('#exam_groupid').val(); 
+                    
+                    
+                    // $('#exam_idd').val(exam_id);
+                    //$('#exam_groupidd').val(exam_group_id);
+                    
+                    
+                    
+                    $('#exam_group_class_batch_exam_student_id').val(""); 
+                    
+                    
+                    
+                    
+                    
+                    $.ajax({
+                    type: "POST",   
+                    data: {exam_id: exam_id},  
+                    dataType:"JSON",
+                    url: "<?php echo site_url('user/sayexam/getstudentbatch_id');?>",
+                    success:function(result)
+                    {
+                    
+                    
+                    
+                    $('#exam_group_class_batch_exam_student_id').val(result['id']);
+                    
+                    // $('#exam_group_class_batch_exam_print_studentid').val(result['id']); 
+                    
+                    
+                    
+                    }
+                    }); 
+                    
+                    
+                    
+                    
+                    }
+                    
+                    
+                    var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'mm', 'Y' => 'yyyy']) ?>';
+                    var class_id = '<?php echo set_value('class_id') ?>';
+                    var section_id = '<?php echo set_value('section_id') ?>';
+                    var session_id = '<?php echo set_value('session_id') ?>';
+                    var exam_group_id = '<?php echo set_value('exam_group_id') ?>';
+                    var exam_id = '<?php echo set_value('exam_id') ?>';
+                    getSectionByClass(class_id, section_id);
+                    getExamByExamgroup(exam_group_id, exam_id);
+                    
+                    $(document).on('change', '#exam_group_id', function (e)
+                    {
+                    
+                    
+                    
+                    $('#exam_id').html("");
+                    var exam_group_id = $(this).val();
+                    getExamByExamgroup(exam_group_id, 0);
+                    });
+                    
+                    $(document).on('change', '#class_id', function (e) {
+                    $('#section_id').html("");
+                    var class_id = $(this).val();
+                    getSectionByClass(class_id, 0);
+                    });
+                    
+                    
+                    
+                    function getSectionByClass(class_id, section_id)
+                    {
+                    
+                    if (class_id != "") {
+                    $('#section_id').html("");
+                    var base_url = '<?php echo base_url() ?>';
+                    //var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
+                    
+                    $.ajax({
+                    type: "GET",
+                    url: base_url + "user/user/getByClass",
+                    data: {'class_id': class_id},
+                    dataType: "json",
+                    beforeSend: function () {
+                    $('#section_id').addClass('dropdownloading');
+                    },
+                    success: function (data) {
+                    $.each(data, function (i, obj)
+                    {
+                    var sel = "";
+                    if (section_id == obj.section_id) {
+                    sel = "selected";
+                    }
+                    div_data += "<option value=" + obj.section_id + " " + sel + ">" + obj.section + "</option>";
+                    });
+                    $('#section_id').append(div_data);
+                    },
+                    complete: function () {
+                    $('#section_id').removeClass('dropdownloading');
+                    }
+                    });
+                    }
+                    } 
+                    
+                    
+                    
+                    
+                    
+                    function getExamByExamgroup(exam_group_id, exam_id) 
+                    {
+                    
+                    
+                    
+                    if (exam_group_id != "")
+                    {
+                    $('#exam_id').html("");
+                    var base_url = '<?php echo base_url() ?>';
+                    var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
+                    
+                    $.ajax({
+                    type: "POST",
+                    url: base_url + "user/user/getExamByExamGroup_publish_result",
+                    data: {'exam_group_id': exam_group_id},
+                    dataType: "json",
+                    beforeSend: function () {
+                    $('#exam_id').addClass('dropdownloading');
+                    },
+                    success: function (data) {
+                    $.each(data, function (i, obj)
+                    {
+                    var sel = "";
+                    if (exam_id == obj.id) {
+                    sel = "selected";
+                    }
+                    div_data += "<option value=" + obj.id + " " + sel + ">" + obj.exam + "</option>";
+                    });
+                    $('#exam_id').append(div_data);
+                    },
+                    complete: function () {
+                    $('#exam_id').removeClass('dropdownloading');
+                    }
+                    });
+                    }
+                    }
+                    
+                    </script>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <script>
+                    
+                    $(document).on('submit', 'form#printMarksheet', function (e) {
+                    
+                    e.preventDefault();
+                    var form = $(this);
+                    var subsubmit_button = $(this).find(':submit');
+                    var formdata = form.serializeArray();
+                    
+                    var list_selected =  $('form#printMarksheet input[name="exam_group_class_batch_exam_student_id[]"]:checked').length;
+                    
+                    
+                    if(list_selected > 0)
+                    {
+                    $.ajax({
+                    type: "POST",
+                    url: form.attr('action'),
+                    data: formdata, // serializes the form's elements.
+                    dataType: "JSON", // serializes the form's elements.
+                    beforeSend: function () {
+                    subsubmit_button.button('loading');
+                    },
+                    success: function (response)
+                    {
+                    
+                    // alert(response);
+                    
+                    
+                    
+                    Popup(response.page);
+                    },
+                    error: function (xhr) { // if error occured
+                    
+                    alert("Error occured.please try again");
+                    subsubmit_button.button('reset');
+                    },
+                    complete: function () {
+                    subsubmit_button.button('reset');
+                    }
+                    });
+                    }
+                    else
+                    {
+                    confirm("<?php echo $this->lang->line('please_select_student'); ?>");
+                    }
+                    });
+                    
+                    
+                    $(document).on('click', '#select_all', function () {
+                    $(this).closest('table').find('td input:checkbox').prop('checked', this.checked);
+                    });
+                    
+                    </script>
+                    
+                    
+                    <script type="text/javascript">
+                    
+                    var base_url = '<?php echo base_url() ?>';
+                    function Popup(data)
+                    {
+                    
+                    var frame1 = $('<iframe />');
+                    frame1[0].name = "frame1";
+                    $("body").append(frame1);
+                    var frameDoc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
+                    frameDoc.document.open();
+                    //Create a new HTML document.
+                    frameDoc.document.write('<html>');
+                    frameDoc.document.write('<head>');
+                    frameDoc.document.write('<title></title>');
+                    frameDoc.document.write('</head>');
+                    frameDoc.document.write('<body>');
+                    frameDoc.document.write(data);
+                    frameDoc.document.write('</body>');
+                    frameDoc.document.write('</html>');
+                    frameDoc.document.close();
+                    setTimeout(function () {
+                    window.frames["frame1"].focus();
+                    window.frames["frame1"].print();
+                    frame1.remove();
+                    }, 500);
+                    return true;
+                    }
+                    </script>

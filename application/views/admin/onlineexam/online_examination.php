@@ -1,0 +1,540 @@
+
+<div class="content-wrapper" style="min-height: 946px;">
+    <section class="content-header">
+        <h1>
+            <i class="fa fa-map-o"></i> <?php echo $this->lang->line('examinations'); ?> <small><?php echo $this->lang->line('student_fee1'); ?></small>  </h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border"  style="text-align:center;">
+                        <h3 class="box-title"><i class="fa fa-search"></i><b> <?php echo $this->lang->line('onlineExamination'); ?></b></h3>
+                    </div>
+                    
+                    
+                    <div class="box-body">
+                        
+                        
+ <h3 class="" style="text-align:center;">
+<span ><b>
+<?php  echo $class_by_teacher['classname'] ;    ?>&nbsp;&nbsp;&nbsp;&nbsp; <?php  echo $class_by_teacher['section'] ;    ?>&nbsp;&nbsp;&nbsp;&nbsp; <?php  echo $class_by_teacher['session'] ;    ?>
+</b></span>
+</h3>          
+
+                    </div>
+                            
+                            <div  class="" >
+                                <div class="box-header ptbnull"></div> 
+                                <div class="box-header ptbnull">
+                                    <h3 class="box-title titlefix"><i class="fa fa-users"></i>
+
+                                     </h3>
+                                    
+                                
+                                </div>
+
+
+                                <div class="box-body">
+                                <div class="tab-pane active table-responsive no-padding" id="tab_1">
+
+                                    <div class="download_label"> <?php echo $this->lang->line('student'); ?> <?php echo $this->lang->line('list'); ?></div>
+
+                                    <?php
+
+                                    if (!empty($subjectlist)) 
+                                    {
+                                    ?>
+                                    
+
+
+                                    <table class="table table-striped table-bordered table-hover table-student" cellspacing="0" width="50%">
+                                        <thead>
+                                            <tr>
+
+                                               <th><?php echo $this->lang->line('student'); ?></th>
+                                               <th><?php echo $this->lang->line('admission_no'); ?></th>
+                                               <th><?php echo $this->lang->line('roll_no'); ?></th>
+                                               <th><?php echo $this->lang->line('mobile_no'); ?></th>
+                                               <th><?php echo $this->lang->line('email'); ?></th>
+                                               <th><?php echo $this->lang->line('gender'); ?></th>
+                                               <th><?php echo $this->lang->line('current_address'); ?></th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <?php
+                                             $sl=1;
+                                            foreach($subjectlist as $sub) 
+                                            {
+
+                                            ?>
+                                            <tr>
+                                                                                     
+                                            <td><b><?php echo $sub['firstname']; ?>&nbsp;<?php echo $sub['middlename']; ?>&nbsp;<?php echo $sub['lastname']; ?></b>
+                                            <br>
+                                            <br>
+                                            <?php echo "Class:".'&nbsp;&nbsp;'. $sub['classname']; ?>
+                                            <br>
+                                            <?php echo "Section:".'&nbsp;&nbsp;'. $sub['sectionsname']; ?>
+                                           
+                                            
+                                            </td>
+                                            <td><?php echo $sub['admission_no']; ?></td> 
+                                            <td><?php echo $sub['roll_no']; ?></td>
+                                            <td><?php echo $sub['mobileno']; ?></td>
+                                            <td><?php echo $sub['email']; ?></td>
+                                            <td><?php echo $sub['gender']; ?></td>
+                                            <td><textarea readonly class="form-control" rows="5" ><?php echo $sub['current_address']; ?></textarea></td>
+                                            
+                                            
+                                            <td>
+
+
+
+
+                                            <input type="hidden" name="examgroup" id="examgroup<?php echo $sl; ?>" value="<?php echo $sub['examgroup']; ?>">
+                                            <input type="hidden" name="exambatch" id="exambatch<?php echo $sl; ?>" value="<?php echo $sub['exambatch']; ?>">
+
+
+
+
+                                            <input type="hidden" name="student" id="student<?php echo $sl; ?>" value="<?php echo $sub['studid']; ?>">
+
+
+
+
+
+                        <button type="button" class="btn btn-info btn-lg" onclick="getdata(<?php echo $sl; ?>)"  data-toggle="modal" data-target="#myModal">
+                                    View
+                         </button>
+
+
+                                            </td>                                            
+                                            </tr>
+
+                                        <?php
+                                        $sl++;
+                                        }
+                                        ?>
+                                            </tbody>            
+                                            </table>
+
+                                        <?php } ?>
+
+
+
+
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Exam Details </h4>
+      </div>
+      <div class="modal-body">
+
+
+        
+
+       <div style="width:100%;" id="mod">
+
+       </div>
+       
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+                                </div>                                                                           
+                                </div>                                                         
+                            </div>
+                     
+
+           
+
+                    
+
+
+
+                  
+                    </div>  
+                 
+            </div>
+
+        </div>
+
+    </section>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+
+    var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'mm', 'Y' => 'yyyy']) ?>';
+    var class_id = '<?php echo set_value('class_id') ?>';
+    var section_id = '<?php echo set_value('section_id') ?>';
+    var session_id = '<?php echo set_value('session_id') ?>';
+    var exam_group_id = '<?php echo set_value('exam_group_id') ?>';
+    var exam_id = '<?php echo set_value('exam_id') ?>';
+    getSectionByClass(class_id, section_id);
+    getExamByExamgroup(exam_group_id, exam_id);
+
+    $(document).on('change', '#exam_group_id', function (e)
+     {
+
+
+
+        $('#exam_id').html("");
+        var exam_group_id = $(this).val();
+        getExamByExamgroup(exam_group_id, 0);
+    });
+
+    $(document).on('change', '#class_id', function (e) {
+        $('#section_id').html("");
+        var class_id = $(this).val();
+        getSectionByClass(class_id, 0);
+    });
+
+    
+    
+       function getSectionByClass(class_id, section_id)
+        {
+
+        if (class_id != "") {
+            $('#section_id').html("");
+            var base_url = '<?php echo base_url() ?>';
+            //var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
+
+            $.ajax({
+                type: "GET",
+                url: base_url + "user/user/getByClass",
+                data: {'class_id': class_id},
+                dataType: "json",
+                beforeSend: function () {
+                    $('#section_id').addClass('dropdownloading');
+                },
+                success: function (data) {
+                    $.each(data, function (i, obj)
+                    {
+                        var sel = "";
+                        if (section_id == obj.section_id) {
+                            sel = "selected";
+                        }
+                        div_data += "<option value=" + obj.section_id + " " + sel + ">" + obj.section + "</option>";
+                    });
+                    $('#section_id').append(div_data);
+                },
+                complete: function () {
+                    $('#section_id').removeClass('dropdownloading');
+                }
+            });
+        }
+    } 
+
+   
+
+
+
+       function getExamByExamgroup(exam_group_id, exam_id) 
+        {
+
+        if (exam_group_id != "")
+         {
+            $('#exam_id').html("");
+            var base_url = '<?php echo base_url() ?>';
+            var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
+
+            $.ajax({
+                type: "POST",
+                url: base_url + "user/user/getExamByExamgroup",
+                data: {'exam_group_id': exam_group_id},
+                dataType: "json",
+                beforeSend: function () {
+                    $('#exam_id').addClass('dropdownloading');
+                },
+                success: function (data) {
+                    $.each(data, function (i, obj)
+                    {
+                        var sel = "";
+                        if (exam_id == obj.id) {
+                            sel = "selected";
+                        }
+                        div_data += "<option value=" + obj.id + " " + sel + ">" + obj.exam + "</option>";
+                    });
+                    $('#exam_id').append(div_data);
+                },
+                complete: function () {
+                    $('#exam_id').removeClass('dropdownloading');
+                }
+            });
+        }
+    }
+
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+
+
+    function getsubjectid()
+    {
+    var examid=$('#exam_id').val();
+    var subject_id=$('#subject_id').val();       
+      $.ajax({
+      type: "POST",
+      //dataType: "json",  
+      data: {examid: examid},
+      
+      url: "<?php echo site_url('user/user/online_examination_get_subjectid');?>",
+      success:function(result)
+      {
+
+      //$('#subject_id').empty();      
+
+      var jsondata= JSON.parse(result);
+    
+      $('#subject_id').html('<option value=""></option>');
+
+      $.each(jsondata, function(key, value) 
+      {
+
+      $('select[name="subject_id"]').append('<option value="'+ value.subjectid +'">'+ value.subject +'</option>');
+
+      });
+
+      },
+      }); 
+      }
+
+
+
+            function getdata(row)
+            {                      
+
+            var examgroup           =  $('#examgroup'+row).val();
+            var exambatch           =  $('#exambatch'+row).val();
+            var student             =  $('#student'+row).val();          
+
+            $.ajax({
+            type: "POST",   
+            data: {examgroup:examgroup,exambatch:exambatch,student:student},  
+            url: "<?php echo site_url('admin/onlineexam/list_onlineexam');?>",
+            success:function(result)
+            {
+            $('#myModal').modal("show");
+            $('#mod').html(result);
+           // Popup(result.page);
+            }
+            });
+            }
+            
+            
+            
+            
+            
+    
+
+</script>
+<script>
+
+       $(document).on('submit', 'form#printCard', function (e)
+       {
+        e.preventDefault();
+        var form = $(this);
+        var subsubmit_button = $(this).find(':submit');
+        var formdata = form.serializeArray();
+  
+        //var list_selected =  $('form#printCard input[name="exam_group_class_batch_exam_student_id[]"]:checked').length;
+
+      
+      //if(list_selected > 0)
+      //{         
+
+        $.ajax({
+            type: "POST",
+            url: form.attr('action'),
+            data: formdata, // serializes the form's elements.
+            dataType: "JSON", // serializes the form's elements.
+            beforeSend: function ()
+             {
+                subsubmit_button.button('loading');
+            },
+            success: function (response)
+            {
+
+
+                Popup(response.page);
+                // $('.rrrrrr').html(response.page);
+
+
+
+            },
+            error: function (xhr) { // if error occured
+
+                alert("Error occured.please try again");
+                subsubmit_button.button('reset');
+            },
+            complete: function () {
+                subsubmit_button.button('reset');
+            }
+        });
+   // }
+    //else
+    //{
+         //confirm("<?php echo $this->lang->line('please_select_student'); ?>");
+   // }
+
+    });
+    /*$(document).on('click', '#select_all', function () {
+        $(this).closest('table').find('td input:checkbox').prop('checked', this.checked);
+    });*/
+
+</script>
+
+
+<!--
+
+<script type="text/javascript">
+
+    var base_url = '<?php echo base_url() ?>';
+    function Popup(data)
+    {
+
+
+    /*var idd = document.querySelector('.checkbox:checked').value;
+    $.ajax({
+        type : "POST",
+
+        url: base_url + "admin/Examresult/getstudent",
+       data: {'idd': idd},        
+        datatype : 'JSON',      
+
+        success:function(data)
+        {
+
+var json = JSON.parse(data);
+var firstname=json['firstname'];
+//alert(firstname);
+
+document.cookie = "name = " + firstname;
+
+document.title = "<?php echo $name= $_COOKIE['name']; ?> ";
+   var json = JSON.parse(data);
+    $.each(json, function (index, obj)
+    { 
+    var firstname=obj.firstname;
+    document.cookie = "name = " + firstname;
+
+    });
+
+   
+
+        },
+        }); 
+*/
+
+
+
+//$_COOKIE['name']="";
+ 
+        var frame1 = $('<iframe />');
+        frame1[0].name = "frame1";
+
+        $("body").append(frame1);
+
+        var frameDoc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
+
+        frameDoc.document.open();
+
+//Create a new HTML document.
+        frameDoc.document.write('<html>');
+        frameDoc.document.write('<head>');
+        frameDoc.document.write('<title><?php  echo $this->customlib->getAppName(); ?>  </title>');
+// frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/dist/css/idcard.css">');
+
+        frameDoc.document.write('</head>');
+        frameDoc.document.write('<body>');
+        frameDoc.document.write(data);
+        frameDoc.document.write('</body>');
+        frameDoc.document.write('</html>');
+
+
+        frameDoc.document.close();
+        setTimeout(function () {
+            window.frames["frame1"].focus();
+            window.frames["frame1"].print();
+            frame1.remove();
+        }, 500);
+
+
+  
+
+
+
+        return true;
+
+        window.location.reload(true);
+
+    }   
+
+</script>
+
+-->
+
+
+
+<script type="text/javascript">
+
+    var base_url = '<?php echo base_url() ?>';
+    
+    function Popup(data)
+    {
+
+        var frame1 = $('<iframe />');
+        frame1[0].name = "frame1";
+
+        $("body").append(frame1);
+        var frameDoc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
+        frameDoc.document.open();
+//Create a new HTML document.
+        frameDoc.document.write('<html>');
+        frameDoc.document.write('<head>');
+        frameDoc.document.write('<title></title>');
+// frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/dist/css/idcard.css">');
+
+        frameDoc.document.write('</head>');
+        frameDoc.document.write('<body>');
+        frameDoc.document.write(data);
+        frameDoc.document.write('</body>');
+        frameDoc.document.write('</html>');
+        frameDoc.document.close();
+        setTimeout(function () {
+            window.frames["frame1"].focus();
+            window.frames["frame1"].print();
+            frame1.remove();
+        }, 500);
+
+        return true;
+    }
+    
+    
+</script>

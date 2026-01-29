@@ -1,0 +1,1643 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil Calibri;}{\f2\fnil\fcharset1 Cambria Math;}{\f3\fnil\fcharset1 Segoe UI Symbol;}{\f4\fnil\fcharset0 Cambria Math;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue255;\red51\green51\blue51;\red0\green0\blue0;\red0\green77\blue187;\red0\green176\blue80;}
+{\*\generator Riched20 10.0.22621}{\*\mmathPr\mmathFont2\mwrapIndent1440 }\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang9\par
+\par
+\par
+\b //////Hidayath display Balance and previous-  Collect Fees\b0\line\line Fees collect-->display  Balance\line\b Controller\b0  \line\b Student Fees   -ajaxSearch()\par
+             $tot=0;\par
+                 $mtotal_amt =0;\par
+                 $mtotal_fine_amount=0;\par
+                 $balance=0;\par
+\par
+                $st_id  =$student->student_session_id;\par
+                $row[] = $student->class.'&nbsp;- &nbsp;'.$student->section;\par
+                // $row[] = $student->section;   \b0\line\line                     $tot        = $this->student_model->get_stdfees($st_id);\par
+                    $mtotal_amt = isset($tot->total_amount) ? $tot->total_amount : 0;\par
+\par
+                    $mtotal_fine_amount = isset($tot->total_fine_amount) ? $tot->total_fine_amount : 0;\par
+\par
+                    $dep         = $this->student_model->get_deposit($st_id);\par
+\par
+                    $discount    = $this->student_model->get_discount($st_id);\par
+\par
+                    $balance     = $mtotal_amt - $dep;\par
+\par
+                    $paid       =$dep-$discount;              \par
+\par
+\par
+                    $row[] = "<b>Total amount - $mtotal_amt</b><br> \par
+                    Fine - $mtotal_fine_amount\par
+\par
+                    <br>Paid amount - $paid<br>\par
+\par
+\par
+                    Discount - $discount<br>\par
+                    <b>Balance - $balance</b>";                \par
+                // $row[] = $student->guardian_phone;\line\line Model\line\line\b student_model\par
+ ///////........................Collect Fees Balance Display  \b0\line public function get_stdfees($id)\par
+        \{\par
+        $this->db->select('SUM(fee_groups_feetype.amount) AS total_amount,SUM(fee_groups_feetype.fine_percentage) AS total_fine_percentage,SUM(fee_groups_feetype.fine_amount) AS total_fine_amount');\par
+        $this->db->from('student_fees_master');\par
+        $this->db->join('fee_groups_feetype', 'fee_groups_feetype.fee_session_group_id = student_fees_master.fee_session_group_id');\par
+\par
+        // Exclude fee_groups_feetype that exist in student_transport_del for this student\par
+        $this->db->where('student_fees_master.student_session_id', $id);\par
+        $this->db->where('fee_groups_feetype.id NOT IN (\par
+        SELECT fee_group_feetypeid \par
+        FROM student_transport_del \par
+        WHERE student_session_id = ' . $this->db->escape($id) . '\par
+        )', null, false);\par
+        $query = $this->db->get();\par
+        return $query->row(); // returns \{ total_amount: actual_total \}\par
+        \} \par
+\par
+\par
+\par
+        public function get_deposit($id)\par
+        \{\par
+        $this->db->select('student_fees_master.id, student_fees_deposite.amount_detail');\par
+        $this->db->from('student_fees_master');\par
+        $this->db->join('student_fees_deposite', 'student_fees_deposite.student_fees_master_id = student_fees_master.id');\par
+        $this->db->where('student_fees_master.student_session_id', $id);\par
+        $query = $this->db->get();\par
+        $results = $query->result();\par
+        $total_amount = 0;\par
+\par
+        foreach ($results as $row) \{\par
+        $details = json_decode($row->amount_detail, true);\par
+        foreach ($details as $item) \{\par
+        $total_amount += (float) $item['amount'];\par
+        \}\par
+        \}\par
+        return $total_amount; \par
+        \}\par
+\par
+\par
+\par
+        public function get_discount($id)\par
+        \{\par
+        $this->db->select('student_fees_master.id, student_fees_deposite.amount_detail');\par
+        $this->db->from('student_fees_master');\par
+        $this->db->join('student_fees_deposite', 'student_fees_deposite.student_fees_master_id = student_fees_master.id');\par
+        $this->db->where('student_fees_master.student_session_id', $id);\par
+        $query = $this->db->get();\par
+        $results = $query->result();\par
+        $dis_amount = 0;\par
+\par
+        foreach ($results as $row) \{\par
+        $details = json_decode($row->amount_detail, true);\par
+        foreach ($details as $item) \{\par
+        $dis_amount += (float) $item['discount_amt'];\par
+        \}\par
+        \}\par
+        return $dis_amount; \par
+        \}    \par
+        public function get_previousbal($id)\par
+        \{\par
+        $this->db->select('SUM(student_fees_master.amount) AS t_amount');\par
+        $this->db->from('student_fees_master');\par
+        $this->db->join('fee_groups_feetype', 'fee_groups_feetype.fee_session_group_id = student_fees_master.fee_session_group_id');\par
+        \par
+        $this->db->where('student_fees_master.student_session_id', $id);\par
+        $this->db->where('fee_groups_feetype.fee_groups_id', 13);  \par
+        $query = $this->db->get();\par
+        return $query->row(); // returns ->t_amt\par
+        \}\par
+\par
+\line\b View\line public_html/application/views/studentfeeSearch\b0\line\line  <tr>\par
+                                            <th><?php echo $this->lang->line('class').'-'.$this->lang->line('section');  ?></th>\par
+                                            <!-- <th><?php echo $this->lang->line('section'); ?></th> -->\par
+\par
+                                            <th><?php echo $this->lang->line('admission_no'); ?></th>\par
+\par
+                                            <th><?php echo $this->lang->line('student'); ?> <?php echo $this->lang->line('name'); ?></th>\par
+                                            <?php if ($sch_setting->father_name) \{?>\par
+                                                <th><?php echo $this->lang->line('father_name'); ?></th>\par
+                                            <?php \}?>\par
+                                            <!--<th><?php echo $this->lang->line('date_of_birth'); ?></th>-->\par
+                                            \par
+                                            <th><?php echo $this->lang->line('balance'); ?></th>\par
+                                            <!--<th><?php echo $this->lang->line('phone'); ?></th>-->\par
+                                            <th class="text-right noExport"><?php echo $this->lang->line('action'); ?></th>\par
+\par
+                                        </tr>\par
+for action noExport\par
+<th class="text-right noExport"><?php echo $this->lang->line('action'); ?></th>\par
+\par
+\par
+\line\line\line View ->views/studentfee\line\b getcollectfee.php\line\line\cf1\b0 <!-- <div class="form-group">\par
+            <?php echo ('Discount Amount: '); ?>\par
+            <input type="text"  name="discountamount_<?php echo $row_counter; ?>" id="discountamount_<?php echo $row_counter; ?>">\par
+            </div> -->\par
+\cf0\par
+\par
+            <div class="form-group">\par
+            <label for="inputPassword3" class="col-sm-3 control-label"> <?php echo ('Discount Amount: '); ?></label>\par
+\par
+            <div class="col-sm-6">\par
+            <input type="text" class="form-control"  name="discountamount_<?php echo $row_counter; ?>" id="discountamount_<?php echo $row_counter; ?>">\par
+\par
+            </div>\par
+            </div>\par
+            <br>\par
+            <br>\line\line //////////////////////////////////////////////////////////////////////////\par
+\b fees Collect-Collect Fees Module \f1\endash  Trying to print the fee details in the Pay Fees section\par
+\par
+{{\field{\*\fldinst{HYPERLINK https://192.168.0.21/demo/studentfee/ }}{\fldrslt{https://192.168.0.21/demo/studentfee/\ul0\cf0}}}}\f1\fs22\line\f0\lang16393   view->studentfee-->getcollectfee ->add   \par
+<input name="fee_session_group_id_<?php echo $row_counter; ?>" type="hidden" value="<?php echo $fee_value->fee_session_group_id; ?>">\line\line view->studentfee->studentaddfee\line replace \line\par
+$("#collect_fee_group").submit(function (e) \{\par
+    e.preventDefault();\par
+\par
+    var form = $(this);\par
+    var url = form.attr('action');\par
+    var smt_btn = form.find("button[type=submit]");\par
+\par
+    var formData = form.serializeArray();\par
+    var groupedData = \{\};\par
+\par
+    // Group form fields by their suffix number (_1, _2, ...)\par
+    $.each(formData, function (index, item) \{\par
+        var match = item.name.match(/_(\\d+)$/);  // capture suffix number\par
+        if (match) \{\par
+            var idx = match[1];\par
+            var key = item.name.replace(`_$\{idx\}`, '');\par
+            groupedData[idx] = groupedData[idx] || \{\};\par
+            groupedData[idx][key] = item.value;\par
+        \}\par
+    \});\par
+\par
+    var array_to_print = [];\par
+\par
+    // Build array_to_print from groupedData\par
+    $.each(groupedData, function (index, item) \{\par
+        // Check if essential fields exist and are non-empty\par
+        if (item.student_fees_master_id && item.fee_groups_feetype_id && item.fee_amount) \{\par
+            array_to_print.push(\{\par
+                fee_session_group_id: item.fee_session_group_id || '',\par
+                fee_master_id: item.student_fees_master_id,\par
+                fee_groups_feetype_id: item.fee_groups_feetype_id,\par
+                fee_amount: item.fee_amount,\par
+                fine_amount: item.fee_groups_feetype_fine_amount || "0",\par
+                discount_amount: item.discountamount || "0"\par
+            \});\par
+        \}\par
+    \});\par
+ \par
+\par
+    if (array_to_print.length === 0) \{\par
+        alert("No record selected.");\par
+        return;\par
+    \}\par
+    // Proceed with AJAX submission\par
+    $.ajax(\{\par
+        type: "POST",\par
+        url: url,\par
+        dataType: 'JSON',\par
+        data: form.serialize(),\par
+        beforeSend: function () \{\par
+            smt_btn.button('loading');\par
+        \},\par
+        success: function (response) \{\par
+          \par
+            if (response.status === 1) \{                \par
+                $.ajax(\{\par
+                    url: '<?php echo site_url("studentfee/printinfeeSel") ?>',\par
+                    type: 'POST',\par
+                    data: \{ data: JSON.stringify(array_to_print) \},\par
+                    success: function (res) \{                       \par
+\par
+                     \par
+                        Popup(res, true);\par
+                    \},\par
+                    error: function () \{\par
+                        alert("Print request failed.");\par
+                    \}\par
+                \});\par
+\par
+\par
+\par
+            \} else if (response.status === 0) \{\par
+                $.each(response.error, function (index, value) \{\par
+                    $('#form_collection_' + index + '_error').empty().append(value);\par
+                \});\par
+            \}\par
+\par
+\par
+        \},\par
+        error: function () \{\par
+            alert("Error occurred, please try again.");\par
+        \},\par
+        complete: function () \{\par
+            smt_btn.button('reset');\par
+        \}\par
+    \});\par
+\});\b0\lang9\par
+\b studentfee/printinfeeSel ->controller\line\line  public function printinfeeSel()\par
+        \{\par
+        $data['sch_setting'] = $this->sch_setting_detail;\par
+        $record              = $this->input->post('data');\par
+        $record_array        = json_decode($record);\par
+        $fees_array          = array();\par
+\par
+        $data['record_array']=$record_array;\par
+\par
+        foreach ($record_array as $key => $value) \par
+        \{\par
+        $fee_groups_feetype_id = $value->fee_groups_feetype_id;\par
+        $fee_master_id         = $value->fee_master_id;\par
+        $fee_session_group_id  = $value->fee_session_group_id;\par
+        $fee_amount            = $value->fee_amount;\par
+\par
+        $feeList               = $this->studentfeemaster_model->getDueFeeByFeeSessionGroupFeetypeSel($fee_session_group_id, $fee_master_id, $fee_groups_feetype_id);\par
+\par
+        $fees_array[]          = $feeList;\par
+        \}\par
+        $data['feearray'] = $fees_array;\par
+        $this->load->view('print/printFeesByGroupArraySelect',$data);\par
+        \}\par
+\par
+model\b0\par
+studentfeemaster_model->getDueFeeByFeeSessionGroupFeetypeSel->\par
+  public function \b getDueFeeByFeeSessionGroupFeetypeSel\b0 ($fee_session_groups_id, $student_fees_master_id, $fee_groups_feetype_id)\par
+    \{\par
+\par
+    $sql = "SELECT student_fees_master.id,student_fees_master.is_system,student_fees_master.student_session_id,student_fees_master.fee_session_group_id,student_fees_master.amount as `student_fees_master_amount`,fee_groups_feetype.id as `fee_groups_feetype_id`,students.id as student_id,students.firstname,students.middlename,students.admission_no,students.lastname,student_session.class_id,classes.class,sections.section,students.guardian_name,students.father_name,students.roll_no,student_session.section_id,student_session.student_id,fee_groups_feetype.amount,fee_groups_feetype.due_date,fee_groups_feetype.fine_amount,fee_groups_feetype.fee_groups_id,fee_groups.name,fee_groups_feetype.feetype_id,feetype.code,feetype.type, IFNULL(student_fees_deposite.id,0) as `student_fees_deposite_id`, IFNULL(student_fees_deposite.amount_detail,0) as `amount_detail` FROM `student_fees_master` INNER JOIN fee_session_groups on fee_session_groups.id = student_fees_master.fee_session_group_id INNER JOIN fee_groups_feetype on  fee_groups_feetype.fee_session_group_id = fee_session_groups.id  INNER JOIN fee_groups on fee_groups.id=fee_groups_feetype.fee_groups_id INNER JOIN feetype on feetype.id=fee_groups_feetype.feetype_id LEFT JOIN student_fees_deposite on student_fees_deposite.student_fees_master_id=student_fees_master.id and student_fees_deposite.fee_groups_feetype_id=fee_groups_feetype.id INNER JOIN student_session on student_session.id= student_fees_master.student_session_id INNER JOIN classes on classes.id= student_session.class_id INNER JOIN sections on sections.id= student_session.section_id INNER JOIN students on students.id=student_session.student_id  WHERE student_fees_master.fee_session_group_id =" . $fee_session_groups_id . " and student_fees_master.id=" . $student_fees_master_id . " and fee_groups_feetype.id= " . $fee_groups_feetype_id;\par
+\par
+    $query = $this->db->query($sql);\par
+    return $query->row();\par
+    \}\line\line\line\b add-->print page -[ views-print->printfeebygroupselect.php]\b0\par
+\par
+//////////////////////////////////////////////////////////////////////////////////////\par
+\line\b 1.Restrict Past Dates in "To Date" Calendar Based on Selected "From Date" #42\par
+      \b0\par
+\b 2. Same functionality\par
+\b0 Date Period ->Date From  to   From and to \line url ->admin/income/incomesearch\line view-$this->load->view('admin/income/incomeSearch', $data);\b\par
+\par
+\line         $this->load->view('reports/betweenDate');\line        <label><?php echo $this->lang->line('from'); ?></label>\line       <label><?php echo $this->lang->line('to'); ?></label>\par
+       <div class="col-sm-6 col-md-3">\par
+        <div class="form-group">\par
+         <label><?php echo $this->lang->line('from'); ?></label>\par
+            <input name="date_from"  onchange="validatedate()"  id="date_from"  placeholder="" type="text" class="form-control date date_betweenfrom" value="<?php echo $date_from; ?>"  />\par
+            <span class="text-danger"><?php echo form_error('date_from'); ?></span>\par
+            </div>  \line           </div> \par
+            <div class="col-sm-6 col-md-3">\par
+            <div class="form-group">\par
+            <label><?php echo $this->lang->line('to'); ?></label>\par
+            <input  name="date_to" onchange="validatedate()" id="date_to"  placeholder="" type="text" class="form-control date date_betweento" value="<?php echo $date_to; ?>"  />\par
+            <span class="text-danger"><?php echo form_error('date_to'); ?></span>\par
+            </div>\line             </div> \par
+\par
+footer\line\b0\line\b function validatedate() \par
+        \{             \par
+        const fromDateInput = document.getElementsByClassName('date_betweenfrom')[0];\par
+        const toDateInput   = document.getElementsByClassName('date_betweento')[0];\par
+        const fromDateStr   = fromDateInput.value;\par
+        const toDateStr     = toDateInput.value;\par
+   \par
+        const fromDate      = convertToDate(fromDateStr);\par
+        const toDate        = convertToDate(toDateStr);\par
+\par
+        // Reset disabled state each time\par
+        toDateInput.disabled = false;\par
+\par
+        if (!fromDate || !toDate)\par
+        \{\par
+        return false;\par
+        \}\par
+\par
+        if (toDate < fromDate) \{\par
+        alert("To date should not be less than From date.");\par
+        toDateInput.value = '';\par
+        toDateInput.disabled = true;\par
+        return false;\par
+        \}\par
+        return true;\par
+        \}\par
+\par
+        document.getElementsByClassName('date_betweenfrom')[0].addEventListener('change', function () \{\par
+        document.getElementsByClassName('date_betweento')[0].disabled = false;\par
+        \}); \par
+\par
+\par
+function convertToDate(dateStr) \{\par
+        // Assumes format: dd-MMM-yyyy (e.g. 21-Jun-2025)\par
+        const parts = dateStr.trim().split('-');\par
+        if (parts.length !== 3) return null;\par
+\par
+        const day = parseInt(parts[0], 10);\par
+        const monthStr = parts[1].toLowerCase();\par
+        const year = parseInt(parts[2], 10);\par
+\par
+        const monthNames = \{\par
+            jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,\par
+            jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11\par
+        \};\par
+\par
+        const month = monthNames[monthStr];\par
+        if (month === undefined || isNaN(day) || isNaN(year)) return null;\par
+\par
+        return new Date(year, month, day);\par
+        \}\par
+\par
+////////////////////////////////////////////////////////////////////////////////////////\par
+\line\b0\line\line 2.language ->english all setting to   like General Settings,captcha Settings\line\line 3.\line url-->demo/admin/enquiry\line a.  view->$this->load->view('admin/frontoffice/enquiryview', $data);\line\line <?php  echo date('d-M-Y') ?>\par
+\line b.  $this->load->view('admin/frontoffice/follow_up_modal', $data);\line       <?php  echo date('d-M-Y') ?>\line\line c.  {{\field{\*\fldinst{HYPERLINK https://192.168.0.21/demo/student/create }}{\fldrslt{https://192.168.0.21/demo/student/create\ul0\cf0}}}}\f0\fs22\line          $this->load->view('student/studentCreate', $data);\line\line         <?php  echo date('d-M-Y') ?>\line\par
+4. Sibling image not displaying \par
+
+\pard\li720\sa200\sl276\slmult1 {\b{\field{\*\fldinst{HYPERLINK https://192.168.0.21/demo/student/view/1787 }}{\fldrslt{https://192.168.0.21/demo/student/view/1787\ul0\cf0}}}}\b\f0\fs22   -$this->load->view('student/studentShow', $data);\b0\line\line <div class="siblingview">\par
+                                        <?php\par
+                                        $default_image = '';\par
+                                        if (empty($sibling_value->image)) \{\par
+\par
+                                        if ($sibling_value->gender == 'Female') \{\par
+                                        $default_image = base_url() . "uploads/student_images/default_female.jpg";\par
+                                        \} elseif ($sibling_value->gender == 'Male') \{\par
+                                        $default_image = base_url() . "uploads/student_images/default_male.jpg";\par
+                                        \} else \{\par
+\par
+                                        $default_image = base_url() . "uploads/student_images/default_avatar.jpg";\par
+                                        \}\par
+                                        $image_url = $default_image;\par
+                                        \} else \{\par
+\par
+                                        $image_url = base_url() . $sibling_value->image;\par
+                                        \}\par
+                                        ?>\par
+\par
+                                        <img class="" src="<?php echo $image_url; ?>" alt="Image">\par
+\par
+\line {\b{\field{\*\fldinst{HYPERLINK https://192.168.0.21/demo/student/edit/1787 }}{\fldrslt{https://192.168.0.21/demo/student/edit/1787\ul0\cf0}}}}\b\f0\fs22\line $this->load->view('student/studentEdit', $data);\line\line\b0\par
+                                        <?php\par
+                                        $default_image = '';\par
+                                        if (empty($sibling_value->image)) \{\par
+\par
+                                        if ($sibling_value->gender == 'Female') \{\par
+                                        $default_image = base_url() . "uploads/student_images/default_female.jpg";\par
+                                        \} elseif ($sibling_value->gender == 'Male') \{\par
+                                        $default_image = base_url() . "uploads/student_images/default_male.jpg";\par
+                                        \} else \{\par
+\par
+                                        $default_image = base_url() . "uploads/student_images/default_avatar.jpg";\par
+                                        \}\par
+                                        $image_url = $default_image;\par
+                                        \} else \{\par
+\par
+                                        $image_url = base_url() . $sibling_value->image;\par
+                                        \}\par
+                                        ?>\par
+                                        <img class="" src="<?php echo $image_url; ?>" alt="Image">\par
+\par
+\b 5. input box to Textarea\line single line to multi line\par
+\b0 url ->demo/admin/schoolhouse/create\line\b view-$this->load->view('admin/schoolhouse/houselist', $data);\b0\line\line <textarea id="description" name="description" class="form-control" rows="7" cols="5"><?php echo $description; ?></textarea>\line\par
+
+\pard\sa200\sl276\slmult1\line\cf3 6.Datatables remove action (excel) \par
+  \line              url -{\cf0{\field{\*\fldinst{HYPERLINK https://192.168.0.21/demo/category }}{\fldrslt{https://192.168.0.21/demo/category\ul0\cf0}}}}\f0\fs22\line               \b view-$this->load->view('category/categoryList', $data); \line               view-$this->load->view('category/categoryEdit', $data); \b0\line <th class="text-right noExport"><?php echo $this->lang->line('action'); ?></th>\par
+\cf0 <script type="text/javascript">\line $('.example').DataTable(\{\par
+    dom: 'Bfrtip',\par
+    buttons: [\par
+        \{\par
+            extend: 'excel',\par
+            exportOptions: \{\par
+                columns: ':not(.noExport)'  // Exclude columns with class 'noExport'\par
+            \}\par
+        \}\par
+    ]\par
+\});\par
+</script>\par
+      \tab\line\b 7.  Front Office-->Admission Enquiry\b0\par
+enquiryview.php\par
+<input type="text" autocomplete="off" name="from_date" class="form-control  date"  value\b ="<?php  echo date('d-M-Y'); ?>">\b0\par
+<input type="text" autocomplete="off" name="to_date" class="form-control  date"  value\b ="<?php  echo date('d-M-Y'); ?>">\b0\par
+<?php  echo date('d-M-Y'); ?>\par
+\par
+\b 8. Proper email validation\line ->demo/admin/enquiry\par
+ public function add() \{\par
+ function editpost($id) \{\par
+\b0\line  $this->form_validation->set_rules('email', $this->lang->line('email'), 'trim|required|valid_email|xss_clean');\par
+\line 'email' => form_error('email'),\par
+\par
+\b 9.Highlight the Current Date in Leave Approval Calendar--HR\par
+          {\b0{\field{\*\fldinst{HYPERLINK https://192.168.0.21/demo/admin/leaverequest/leaverequest }}{\fldrslt{https://192.168.0.21/demo/admin/leaverequest/leaverequest\ul0\cf0}}}}\f0\fs22\line     $this->load->view("admin/staff/staffleaverequest", $data);\line\b0\line\b function addLeave() \par
+\{\b0\line         $('input[type=text][name=leave_from_date]').val(date);\par
+        $('input[type=text][name=leave_to_date]').val(date);\line\line\line\b Attendence-->Approve_leave\line set date \par
+\b0\line  <input type="text" name="apply_date" id="apply_date" value\b ="<?php echo set_value('apply_date', date($this->customlib->getSchoolDateFormat())); ?>"  \b0 class="form-control date">\par
+  <input type="text" name="from_date" id="from_date"  value\b ="<?php echo set_value('from_date', date($this->customlib->getSchoolDateFormat())); ?>" \b0 class="form-control date">\line\line\line <input type="text" name="to_date" id="to_date" value\b ="<?php echo set_value('to_date', date($this->customlib->getSchoolDateFormat())); ?>\b0 "  class="form-control date">\par
+\par
+\b 10.Remove the Action column and add description column\b0\par
+           {{\field{\*\fldinst{HYPERLINK https://192.168.0.21/demo/admin/incomehead }}{\fldrslt{https://192.168.0.21/demo/admin/incomehead\ul0\cf0}}}}\f0\fs22\line\line           \b $this->load->view('admin/incomehead/incomeheadList', $data);\b0\line           \b $this->load->view('admin/incomehead/incomeheadEdit', $data);\line\line <th class="text-right noExport"><?php echo $this->lang->line('action'); ?></th>\par
+disable description \line <td><?php echo $category['description']; ?></td>\line\line\b0 $('.example').DataTable(\{\par
+    dom: 'Bfrtip',\par
+    buttons: [\par
+        \{\par
+            extend: 'excel',\par
+            exportOptions: \{\par
+                columns: ':not(.noExport)'  // Exclude columns with class 'noExport'\par
+            \}\par
+        \}\par
+    ]\par
+\});\line\line 11.Message after Deletion\par
+{{\field{\*\fldinst{HYPERLINK https://192.168.0.21/demo/admin/incomehead/index }}{\fldrslt{https://192.168.0.21/demo/admin/incomehead/index\ul0\cf0}}}}\f0\fs22\line\line\line\b 12. change Add new record or search with different criteria\rdblquote  appears clickable but isn\rquote t. \par
+\b0\line style-main.css\line .\b dataTables_empty\{color:#f7bbbb;\} to\b0\par
+.dataTables_empty \{\par
+    color: #3c763d;\par
+\}\par
+\b boostrap.min.css\line text-success\{color:#3c763d\} to \b0\par
+text-success\{color:#f7bbbb\}\line\line\line\b 13. Update Placeholder Text in Income Search Field\b0\line          {{\field{\*\fldinst{HYPERLINK https://192.168.0.21/demo/admin/income/incomesearch }}{\fldrslt{https://192.168.0.21/demo/admin/income/incomesearch\ul0\cf0}}}}\f0\fs22\line\b view-$this->load->view('admin/income/incomeSearch', $data);\line Search by Income To Name\line placeholder="Search by Name">\line\line\line 14.Remove Asterisk from WhatsApp and Passport Number Fields if\par
+                   {{\field{\*\fldinst{HYPERLINK https://192.168.0.21/demo/student/create }}{\fldrslt{https://192.168.0.21/demo/student/create\ul0\cf0}}}}\f0\fs22\line   helpers->customfield_helper.php\par
+render_input_field()\line   // $input .= "<small class='req'> *</small>";\par
+            $input .= "<small class='req'> </small>";\par
+render_textarea_field()\line // $input .= "<small class='req'> *</small>";\par
+            $input .= "<small class='req'> </small>";\line\par
+\line 15.No Error Message When Required Fields Are Left Empty\line {{\field{\*\fldinst{HYPERLINK https://192.168.0.21/demo/student/create }}{\fldrslt{https://192.168.0.21/demo/student/create\ul0\cf0}}}}\f0\fs22\line firstname form_error\line\line\b0 span class="text-danger"><?php echo form_error('firstname'); ?></span>\par
+\b 16.No Success Message Displayed After Updating Student Details\line {{\field{\*\fldinst{HYPERLINK https://192.168.0.21/demo/student/edit/650 }}{\fldrslt{https://192.168.0.21/demo/student/edit/650\ul0\cf0}}}}\f0\fs22\line\par
+edit()\line add set_flashdata\line\b0  $this->session->set_flashdata('msg', '<div class="alert alert-success">' . $this->lang->line('update_message') . '</div>');\par
+            redirect($_SERVER['HTTP_REFERER']);\line\par
+\par
+\line\b 17. Implement Income Head Management Module\line            Display a success message upon successful deletion of an item.\line                 -->{{\field{\*\fldinst{HYPERLINK https://192.168.0.21/demo/admin/incomehead/index }}{\fldrslt{https://192.168.0.21/demo/admin/incomehead/index\ul0\cf0}}}}\f0\fs22\line view--> $this->load->view('admin/incomehead/incomeheadList', $data);\par
+\line CHANGE ON ALL PAGE\par
+\b0 incomehead----------------------->\par
+incomeheadList.php\par
+incomeheadEdit.php\par
+\par
+Income->  controller->\par
+  public function getincomelist()\line $deletebtn = "<a onclick='return doconfirm();' href='" . base_url() . "admin/income/delete/" . $value->id . "' class\par
+\b\line\line onclick="return doconfirm();"\line\line footer.php\line   function doconfirm() \{\par
+    var job = confirm('Do you want to delete?');\par
+    if (job) \{\par
+        alert('Deleted successfully!');\par
+        return true;\par
+    \} else \{\par
+        return false;\par
+    \}\par
+\}\par
+\par
+18.language\par
+\line  Label \ldblquote Complain\rdblquote  Should Be Changed to \ldblquote Complaint\rdblquote\line\line $lang['complain'] = 'Complaint';\par
+$lang['complain_by'] = 'Complaint By';\par
+$lang['complain_type'] = 'Complaint Type';\line $lang['thank_you_for_your_complain'] = "Thank you for your Complaint";\par
+\par
+19.Implement Upload Functionality in Download Centre.\par
+\line          1. The section field should also be disabled, similar to the class field, when the "Available for all Classes" option is checked.\line\line           {{\field{\*\fldinst{HYPERLINK https://192.168.0.21/demo/admin/content }}{\fldrslt{https://192.168.0.21/demo/admin/content\ul0\cf0}}}}\f0\fs22\line\line  $("#chk").click(function () \{\par
+            if ($(this).is(":checked")) \{\par
+            $("#class_id").prop("disabled", true);\par
+            $("#section_id").prop("disabled", true);\par
+            \} else \{\par
+            $("#class_id").prop("disabled", false);\par
+            $("#section_id").prop("disabled", false);\par
+            \}\par
+            \});\par
+            if ($("#chk").is(":checked")) \{\par
+            $("#class_id").prop("disabled", true);\par
+            $("#section_id").prop("disabled", true);\par
+            \} else \{\par
+            $("#class_id").prop("disabled", false);\par
+            $("#section_id").prop("disabled", false);\par
+            \}\par
+\par
+            2.\par
+\line 20.Clicking on "Edit Dashboard Logo" displays a success message: "Record updated successfully."\line           --->{{\field{\*\fldinst{HYPERLINK https://192.168.0.20/demo/schsettings }}{\fldrslt{https://192.168.0.20/demo/schsettings\ul0\cf0}}}}\f0\fs22\line\line\par
+\b0 public function ajax_dashboardlogo()\par
+    \{\par
+        $this->form_validation->set_rules('id', 'ID', 'trim|required|xss_clean');\par
+        $this->form_validation->set_rules('file', 'Image', 'callback_handle_upload');\par
+\par
+        if ($this->form_validation->run() == false) \{\par
+            $data = array(\par
+                'file' => form_error('file'),\par
+            );\par
+            $array = array('success' => false, 'error' => $data);\par
+            echo json_encode($array);\par
+        \} else \{\par
+\par
+            $id = $this->input->post('id');\par
+\par
+            if (isset($_FILES["file"]) && !empty($_FILES['file']['name'])) \{\par
+                $fileInfo = pathinfo($_FILES["file"]["name"]);\par
+                $img_name = $id . '.' . $fileInfo['extension'];\par
+                move_uploaded_file($_FILES["file"]["tmp_name"], "./uploads/school_content/dashboardimage/" . $img_name);\par
+            \}\par
+\par
+            $data_record = array('id' => $id, 'dashboard_logo' => $img_name);\par
+\par
+            $this->setting_model->add($data_record);\par
+            $array = array('success' => true, 'error' => '', 'message' => 'Record Updated Successfully');\par
+            echo json_encode($array);\par
+        \}\par
+    \}\par
+\b\par
+view\line\b0 <div class="box box-primary">\par
+                    <div class="box-body text-center">\par
+                        <?php\par
+                        if ($result->dashboard_logo == "") \{\par
+                            ?>\par
+                            <img src="<?php echo base_url() ?>uploads/school_content/logo/images.png" class="img-thumbnail img-responsive " alt="" width="" height="">\par
+                            <?php\par
+                        \} else \{\par
+                            ?>\par
+                            <img src="<?php echo base_url() ?>uploads/school_content/dashboardimage/<?php echo $result->dashboard_logo; ?>" class="img-responsive" alt="" width="" height="">\par
+                            <?php\par
+                        \}\par
+                        ?>\par
+                        <br/>\par
+                        <a href="#dashboard_logo" role="button" class="btn btn-primary btn-sm upload_dashboard_logo" data-toggle="tooltip" title="<?php echo $this->lang->line('edit_app_logo'); ?>" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing"><i class="fa fa-picture-o"></i> <?php echo $this->lang->line('edit_dashboard_logo'); ?></a>\par
+                    </div>\par
+                </div>\line\line\line\line <script type="text/javascript">\par
+    $('.upload_dashboard_logo').on('click', function (e) \{\par
+        e.preventDefault();\par
+        var $this = $(this);\par
+        logo_type = $this.data('logo_type');\par
+\par
+        $this.button('loading');\par
+        $('#modal-upload_dashboard_logo').modal(\{\par
+            show: true,\par
+            backdrop: 'static',\par
+            keyboard: false\par
+        \});\par
+    \});\par
+// set focus when modal is opened\par
+    $('#modal-upload_dashboard_logo').on('shown.bs.modal', function () \{\par
+        $('.upload_dashboard_logo').button('reset');\par
+    \});\par
+\par
+\par
+\par
+    $(function () \{\par
+        // Drag enter\par
+        $('.upload-dashboard_logo_area').on('dragenter', function (e) \{\par
+            e.stopPropagation();\par
+            e.preventDefault();\par
+            $("h1").text("Drop");\par
+        \});\par
+\par
+        // Drag over\par
+        $('.upload-dashboard_logo_area').on('dragover', function (e) \{\par
+            e.stopPropagation();\par
+            e.preventDefault();\par
+            $("h1").text("Drop");\par
+        \});\par
+\par
+        // Drop\par
+        $('.upload-dashboard_logo_area').on('drop', function (e) \{\par
+            e.stopPropagation();\par
+            e.preventDefault();\par
+\par
+            $("h1").text("Upload");\par
+\par
+            var file = e.originalEvent.dataTransfer.files;\par
+            var fd = new FormData();\par
+\par
+            fd.append('file', file[0]);\par
+            fd.append("id", $('#id_appdashboard_logo').val());\par
+            // fd.append("logo_type", logo_type);\par
+\par
+            uploadSmallData(fd);\par
+        \});\par
+\par
+        // Open file selector on div click\par
+        $("#uploaddashboard_logo").click(function () \{\par
+            $("#file_dashboardlogo").click();\par
+        \});\par
+\par
+        // file selected\par
+        $("#file_dashboardlogo").change(function () \{\par
+            var fd = new FormData();\par
+\par
+            var files = $('#file_dashboardlogo')[0].files[0];\par
+\par
+\par
+            fd.append('file', files);\par
+            fd.append("id", $('#id_dashboard_logo').val());\par
+            // fd.append("logo_type", logo_type);\par
+            uploadDashboardData(fd);\par
+        \});\par
+    \});\par
+\par
+// Sending AJAX request and upload file\par
+    function uploadDashboardData(formdata) \{\par
+\par
+        $.ajax(\{\par
+            url: '<?php echo site_url('schsettings/ajax_dashboardlogo') ?>',\par
+            type: 'post',\par
+            data: formdata,\par
+            contentType: false,\par
+            processData: false,\par
+            dataType: 'json',\par
+            cache: false,\par
+\par
+            beforeSend: function () \{\par
+                $('#modal-upload_dashboard_logo').addClass('modal_loading');\par
+            \},\par
+            success: function (response) \{\par
+\par
+                if (response.success) \{\par
+                    successMsg(response.message);\par
+                    window.location.reload(true);\par
+                \} else \{\par
+\par
+                    errorMsg(response.error.file);\par
+                \}\par
+\par
+            \},\par
+            error: function (xhr) \{ // if error occured\par
+\par
+            \},\par
+            complete: function () \{\par
+                $('#modal-upload_dashboard_logo').removeClass('modal_loading');\par
+\par
+            \}\par
+\par
+\par
+        \});\par
+    \}\line </script>\line\line <div class="modal fade" id="modal-upload_dashboard_logo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">\par
+    <div class="modal-dialog" role="document">\par
+        <div class="modal-content">\par
+            <div class="modal-header">\par
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\par
+                <h4 class="modal-title" id="myModalLabel"><?php echo $this->lang->line('edit_dashboard_logo'); ?></h4>\par
+            </div>\par
+            <div class="modal-body upload_logo_body">\par
+                <!-- ==== -->\par
+                <form class="box_upload boxupload has-advanced-upload" method="post" action="<?php echo site_url('schsettings/ajax_editlogo') ?>" enctype="multipart/form-data">\par
+                    <input value="<?php echo $result->id ?>" type="hidden" name="id" id="id_dashboard_logo"/>\par
+                    <input type="file" name="file" id="file_dashboardlogo">\par
+                    <!-- Drag and Drop container-->\par
+                    <div class="box__input upload-dashboard_logo_area"  id="uploaddashboard_logo">\par
+                        <i class="fa fa-download box__icon"></i>\par
+                        <label><strong><?php echo $this->lang->line('choose_a_file'); ?></strong><span class="box__dragndrop"> <?php echo $this->lang->line('or') ?> <span><?php echo $this->lang->line('drag') ?></span><?php echo $this->lang->line('it_here') ?></span>.</label>\par
+\par
+                    </div>\par
+\par
+                </form>\par
+            </div>\par
+\par
+        </div>\par
+    </div>\par
+</div>\par
+\par
+21.Icon Alignment issue-->\par
+sidebar toggle icon issue\par
+{{\field{\*\fldinst{HYPERLINK https://192.168.0.20/demo/studentfee/addfee/2540 }}{\fldrslt{https://192.168.0.20/demo/studentfee/addfee/2540\ul0\cf0}}}}\f0\fs22\line\line\b view-->studentfee->studentaddfee.php\line\line <div class="row">\par
+                            <div class="col-md-10">\par
+                                <h3 class="box-title"><?php echo $this->lang->line('student_fees'); ?></h3>\par
+                            </div>\par
+                            <div class="col-md-2">\par
+                                <div class="pull-center">\par
+                                    <a href="<?php echo base_url() ?>studentfee" type="button" class="btn btn-primary btn-xs">\par
+                                        <i class="fa fa-arrow-left"></i> <?php echo $this->lang->line('back'); ?></a>\par
+                                </div>\par
+                            </div>\line\line style-main.css\line .studentsideopen\{ position: fixed;right:28px; cursor: pointer;\par
+\par
+staff also\par
+\line\b0 pull-right" style="\b margin-right:50px"\line\line\b0\line\line\line 22.Same issue icon on\line  {{\field{\*\fldinst{HYPERLINK https://192.168.0.20/demo/student/view/650 }}{\fldrslt{https://192.168.0.20/demo/student/view/650\ul0\cf0}}}}\f0\fs22\line\line\line\line\line\par
+\b 23.Centre Align the message--\line\line                align center 'no records matching'\line\line Add a Label "Type" for the field\line to radio button\line {{\field{\*\fldinst{HYPERLINK https://192.168.0.20/demo/admin/subject }}{\fldrslt{https://192.168.0.20/demo/admin/subject\ul0\cf0}}}}\f0\fs22\line\line\line 24.Module: Examinations/Exam Group List (Excel)\par
+\par
+1.Remove the "Action" column from the Excel export & pdf of the Exam Group list.\par
+2. Create a separate column for description in pdf of exam group list.\par
+{{\field{\*\fldinst{HYPERLINK https://192.168.0.20/demo/admin/examgroup }}{\fldrslt{https://192.168.0.20/demo/admin/examgroup\ul0\cf0}}}}\f0\fs22\line\line                                  <th><?php echo $this->lang->line('description'); ?></th>\line <td >\par
+\par
+                                                     <?php\par
+                                                        if ($examgroup->description == "") \{\par
+                                                            ?>\par
+                                                            <p class="text text-danger"><?php echo $this->lang->line('no_description'); ?></p>\par
+                                                            <?php\par
+                                                        \} else \{\par
+                                                            ?>\par
+                                                            <p class="text text-info"><?php echo $examgroup->description; ?></p>\par
+                                                            <?php\par
+                                                        \}\par
+                                                        ?>\par
+\par
+                                                </td>\par
+\par
+\par
+\par
+25.Highlight the current date\par
+user side->\line Module: Student Login/Apply leave\par
+{{\field{\*\fldinst{HYPERLINK https://192.168.0.20/demo/user/apply_leave }}{\fldrslt{https://192.168.0.20/demo/user/apply_leave\ul0\cf0}}}}\f0\fs22\par
+Highlight the current date in calendar for the from and to date\line\line  \b0 value="<?php echo date($this->customlib->getSchoolDateFormat()); ?>"\line value="<?php echo set_value('date', date($this->customlib->getSchoolDateFormat())); ?>"\par
+\b\par
+26,Student profile update allows empty required fields\par
+When editing my profile (student login), the form allows submission even if required fields are left empty. It still shows the message: "Recorded updated successfully".\par
+{{\field{\*\fldinst{HYPERLINK https://192.168.0.20/demo/user/user/editstudent/650 }}{\fldrslt{https://192.168.0.20/demo/user/user/editstudent/650\ul0\cf0}}}}\f0\fs22\par
+\par
+check table student_edit_fields\line list all fields which we need validation\par
+\par
+\par
+27.No Warning or Confirmation Message on Deletion\par
+Expected Behavior:\par
+A confirmation dialog should appear before the deletion is processed, asking the user to confirm or cancel the action.\par
+\par
+Affected Module: Expense > Expense Head/ Add Expense\line\line {{\field{\*\fldinst{HYPERLINK https://192.168.0.20/demo/admin/expensehead/index }}{\fldrslt{https://192.168.0.20/demo/admin/expensehead/index\ul0\cf0}}}}\f0\fs22\line\line  \b0 public function ajaxSearch()\par
+    \{\line if ($permission_delete) \{\par
+                    $action .= "<a data-placement='left'  \par
+\b onclick='return doconfirm()\line\b0\line\par
+ <a data-placement="left" href="<?php echo base_url(); ?>admin/expensehead/delete/<?php echo $category['id'] ?>"class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>"  \b onclick="return doconfirm();" \b0 >\line\line\line\b\line 28.  \line Description:\par
+The "Search" button shifts position inconsistently based on the selected "Search Type".\par
+Expected Behavior:\par
+The button should align to the left only when "Period" is selected and remain below the input otherwise.\par
+Affected Module: Expense> Search Expense\line\line (same like income search)\par
+\par
+\par
+\par
+\b0 <div  id="\b select_col\b0 "   class="col-sm-6 col-md-6">\par
+                                            <div class="form-group">\par
+                                                <label><?php echo $this->lang->line('search') . " " . $this->lang->line('type'); ?></label><small class="req"> *</small>\par
+                                                <select class="form-control" name="search_type"  id="search_type" \b onchange="adjustSelectBox(this.value); showdate(this.value)">\line\line\line\line\b0 function adjustSelectBox(value) \{\par
+\par
+    \par
+    \par
+\par
+    const selectCol = document.getElementById('select_col');    \par
+    if (value === 'period') \{\par
+        selectCol.className = 'col-sm-6 col-md-6';\par
+    \} else \{\par
+        selectCol.className = 'col-sm-12 col-md-12';\par
+    \}\par
+\}\par
+\par
+document.addEventListener("DOMContentLoaded", function () \{\par
+    const selectedValue = document.getElementById('search_type').value;\par
+    adjustSelectBox(selectedValue);\par
+\});\par
+\b\par
+29>Enable Admin Small Logo Upload in General Settings\line give class="img-responsive" \par
+view->setting->settinglist\par
+\par
+30. Addincome , add expense , current date \line\line $this->load->view('admin/expense/expenseList', $data);\line\line\line 31.Logo Appears Misaligned or Improperly Sized\line\line\b0  set small image and large logo -(not a bug--sch setting give proper image)\line just give image resolution \line\line\b view settings->settinglist\par
+\b0\line <span style="display: inline-block; background-color: #e9ecef; color: #333; padding: 5px 10px; border-radius: 4px; margin-top: 10px; font-size: 13px;">\par
+                    32px \'d7 32px\par
+                    </span>\line\line\b 32.Display Accepted File Formats in the Error Message\par
+student_edit and create\b0\par
+                                                    <label for="exampleInputFile"><?php echo $this->lang->line('guardian') . " " . $this->lang->line('photo'); \b\line &nbsp;(jpg, jpeg, png,svg,bmp)</\b0 label>\par
+\par
+{{\field{\*\fldinst{HYPERLINK https://192.168.0.20/demo/student/create }}{\fldrslt{https://192.168.0.20/demo/student/create\ul0\cf0}}}}\f0\fs22\line set_value blood also\line    <select class="form-control" name="blood_group">\par
+            <option value=""><?php echo $this->lang->line('select'); ?></option>\par
+            <?php foreach ($bloodgroup as $bgkey => $bgvalue): ?>\par
+            <option value="<?php echo $bgvalue; ?>" <?php echo set_select('blood_group', $bgvalue); ?>>\par
+            <?php echo $bgvalue; ?>\par
+            </option>\par
+            <?php endforeach; ?>\par
+            </select>\par
+\par
+\b\line\cf1 33.Image Preview Does Not Maintain Fixed/Responsive Thumbnail Size or Aspect Ratio\line\line father ,student,guradian ,mother image not proper on input  box\line\par
+dropify.min.css\par
+.dropify-wrapper .dropify-preview \{\line disable padding \line padding: 4px; to 0px\line\par
+\par
+\cf4 34. Misalignment of "Note" Label and Input Box in Staff Attendance Module\b0\line\line               {\cf0{\field{\*\fldinst{HYPERLINK https://192.168.0.20/demo/admin/staffattendance/index }}{\fldrslt{https://192.168.0.20/demo/admin/staffattendance/index\ul0\cf0}}}}\f0\fs22\line  $this->load->view('admin/staffattendance/staffattendancelist', $data);\line remove   <th class="\b text-right\b0 "><?php echo $this->lang->line('note'); ?></th>\par
+\par
+\b 35.Label "Complaint #" Should Be "Complaint No"\line\line                                       {\cf0{\field{\*\fldinst{HYPERLINK https://192.168.0.20/demo/admin/complaint }}{\fldrslt{https://192.168.0.20/demo/admin/complaint\ul0\cf0}}}}\f0\fs22\line\b0 <th><?php echo $this->lang->line('complain').'&nbsp;'.$this->lang->line('no'); ?> </th>\line <th class="text-right noExport"><?php echo $this->lang->line('action'); ?></th>\b\par
+\par
+36.Display Allowed File Types in Upload Field #59\par
+Module: Front Office/Postal Dispatch\par
+The file upload field does not show the accepted file formats. This may confuse users when uploading unsupported files.\par
+Expected Behavior:\par
+Display a note near the upload field like:\par
+"Allowed file types: JPG, JPEG, PNG"\line\line\line {\cf0{\field{\*\fldinst{HYPERLINK https://192.168.0.20/demo/admin/dispatch }}{\fldrslt{https://192.168.0.20/demo/admin/dispatch\ul0\cf0}}}}\b0\f0\fs22\line                               $this->load->view('admin/frontoffice/dispatchview', $data);\par
+\par
+\cf0\b &nbsp;(jpg, jpeg, png,svg,bmp,doc,pdf,csv,xlsx)\par
+\line\b0 &nbsp;<span  class="extstyle"><?php echo $this->lang->line('need_ext_image'); ?></span>\b\par
+\par
+37.Improve Visibility of Attendance Status in Staff Details View\b0\line                            Use bolder colors or icons for marking attendance statuses (P, A, L, F, H).\line\cf5 this->load->view('admin/staff/staffprofile', $data);\line\line change from table\line SELECT * FROM `staff_attendance_type`success to primary for 'P'\par
+\par
+\cf4\b 38. Unable to View the Last Item in the Disabled Students List\par
+sidebar toggle \par
+scroll down issue on right side bar menu(student, fee stafflist)\b0\par
+\par
+  .mCustomScrollBox\par
+        \{\par
+            overflow: unset !important;\par
+        \}\par
+\b header\par
+ \b0 add plugin-<script src="{\cf0{\field{\*\fldinst{HYPERLINK https://code.jquery.com/jquery-3.6.0.min.js }}{\fldrslt{https://code.jquery.com/jquery-3.6.0.min.js\ul0\cf0}}}}\f0\fs22 "></script>\line (Note :-no  need this plugin--check exam group list not displaying)\b\line\cf0   footer      -no need this script \par
+\par
+$this->load->view('student/studentShow', $data);\par
+ $this->load->view('studentfee/studentAddfee', $data);\par
+\par
+\b0 <script>\par
+  $(document).ready(function () \par
+  \{   \par
+    // Fix overflow issue on page load\par
+    $('.studentsidebar').css('overflow', '').css('overflow-y', 'auto');\par
+\par
+    // Optional: If the sidebar opens via button or menu\par
+    $('#sidebarCollapse').on('click', function () \{\par
+      $('.studentsidebar').css('overflow', '').css('overflow-y', 'auto');\par
+    \});\par
+  \});\par
+</script>      \line\line\line\line just add\line\b  style-main.css\par
+\b0\line css\line .studentsidebar \{\par
+  width: 250px;\par
+  position: fixed;\par
+  right: -270px;\b\par
+  height: calc(100vh - 50px); /* Leaves 50px space at bottom */\par
+\b0   z-index: 1050;\par
+  box-shadow: -10px 3px 12px 0 rgba(0, 0, 0, 0.26);\par
+  background: #fff;\par
+  color: #000;\par
+  transition: all 0.3s;\par
+  overflow-y: auto;\par
+\}\line\line\line\line and  display image  if no image on toggle list(right side)\line     <div class="studentname">\par
+                    <a class="" href="<?php echo base_url() . "student/view/" . $stvalue["id"] ?>">\par
+\par
+                    <div class="icon">\par
+                    <?php if ($sch_setting->student_photo) \{\par
+\par
+\par
+                     if (!empty($stvalue["image"])) \{\par
+              // If image is available, use it\par
+              $image = base_url() . $stvalue["image"];\par
+          \} else \{\par
+              // No image available, use gender-specific or default placeholder\par
+              if (isset($student['gender']) && $student['gender'] == 'Female') \{\par
+                  $image = base_url() . "uploads/student_images/default_female.jpg";\par
+              \} elseif (isset($student['gender']) && $student['gender'] == 'Male') \{\par
+                  $image = base_url() . "uploads/student_images/default_male.jpg";\par
+              \} else \{\par
+                  // If gender is unknown, use a general placeholder\par
+                  $image = base_url() . "uploads/student_images/no_image.png";\par
+              \}\par
+          \}\par
+          echo '<img src="' . $image . '" alt="Student Image">';\par
+\par
+                    \}\par
+                    ?>\par
+                    </div>                 \b\par
+\cf4\b0\line\cf1\b\line\cf4 37. Module: My Profile / Student Login\par
+WhatsApp, Passport, Pickup, Dropoff fields and notes fields are not saving after update.\par
+Update  Student Details\line thatis only for admin not updated for students(no option for students toupadte custom fields)\par
+view->user->edit\b0\par
+\cf1\b <form action="<?php echo site_url("user/user/edit/" . $student['id']) ?>" \par
+\par
+\cf4 39.No Confirmation Message Before Removing Images\par
+ \tab\tab\b0 Module: Examinations/Print Marksheet\par
+{\cf0{\field{\*\fldinst{HYPERLINK https://192.168.0.20/demo/admin/examresult/marksheet }}{\fldrslt{https://192.168.0.20/demo/admin/examresult/marksheet\ul0\cf0}}}}\f0\fs22\par
+\par
+\par
+<script>\par
+$(document).ready(function () \{\par
+    $('#layoutForm').on('submit', function (e) \{\par
+        e.preventDefault();\par
+\par
+        var formData = new FormData(this);\par
+\par
+        $.ajax(\{\par
+            url: '<?php echo site_url('progresscard/progresscardlayout'); ?>',\par
+            type: 'POST',\par
+            data: formData,\par
+            contentType: false,\par
+            processData: false,\par
+            success: function (response) \{\par
+                // Show success message inside modal\par
+                $('#flash-message')\par
+                    .html('<div class="alert alert-success">Changes saved successfully.</div>')\par
+                    .fadeIn()\par
+                    .delay(3000)\par
+                    .fadeOut\par
+                    (function () \{\par
+            location.reload(); // reloads the entire page\par
+            // If you want to keep the modal open after reload,\par
+            // you need to use sessionStorage to remember it was open\par
+            sessionStorage.setItem('openModal', 'yes');\par
+        \});\par
+            \},\par
+            error: function () \{\par
+                $('#flash-message')\par
+                    .html('<div class="alert alert-danger">Error saving changes. Please try again.</div>')\par
+                    .fadeIn()\par
+                    .delay(3000)\par
+                    .fadeOut();\par
+            \}\par
+        \});\par
+    \});\par
+\});\par
+</script>\par
+\b <div id="flash-message"></div>\b0\par
+<div class="modal-footer">\par
+\par
+\b 40.Add Visibility Controls for Income Head Records\b0\line give th width and class for th and td\par
+\line\b view\b0 -\b income head-->incomeheadlist\b0\par
+\line just hide this\line <!-- <a href="#" data-toggle="popover" class="detail_popover" > -->\par
+\par
+\b 41.Implement Upload Functionality in Download Centre\par
+\line                           Only the "View" option was selected, but the download option is also available after creation.\line\b0\line                                  {\cf0{\field{\*\fldinst{HYPERLINK https://192.168.0.20/demo/admin/content }}{\fldrslt{https://192.168.0.20/demo/admin/content\ul0\cf0}}}}\f0\fs22\par
+\par
+\par
+\par
+\b 42.Success Message Popup Does Not Disappear After Student Admission\par
+footer\line\line\b0 <div id="footer-flash">\par
+    <?php if ($this->session->flashdata('msg')): ?>\par
+        <div class="alert alert-success custom-flash">\par
+            <button type="button" class="close" aria-label="Close">&times;+</button>\par
+            <strong></strong><?php echo  $this->session->flashdata('msg');?>\par
+        </div>\par
+    <?php endif; ?>\par
+</div>\par
+ $(document).ready(function () \par
+ \{\par
+    var flashMsg = $('#footer-flash .alert');\par
+\par
+    if (flashMsg.length > 0) \{\par
+        flashMsg.css(\{\par
+            position: 'fixed',\par
+            top: '20px',       // Change from bottom to top\par
+            right: '-400px',\par
+            zIndex: 9999\par
+        \}).animate(\{ right: '20px' \}, 1000);\par
+\par
+        setTimeout(function () \{\par
+            flashMsg.fadeOut('slow');\par
+        \}, 3000);\par
+\par
+        flashMsg.on('click', '.close', function () \{\par
+            $(this).closest('.alert').fadeOut('slow');\par
+        \});\par
+    \}\par
+\});\line\line\b 43.Develop Homework Management Module\par
+  Add this in script-admin/ homeworklist\par
+ initDatatable('homework-list', 'homework/dthomeworklist_initial', \{\}, [], 100);\line\line and add homework/dthomeworklist_initial',  in controller and search_dthomework_ini function in model\par
+\par
+\line\line\par
+44.Add Language Selection to Settings\par
+style-main.css\par
+\b0 .verttop \{\par
+    padding-top: 56px;\par
+    display: inline-block;\par
+    max-width: 180px;\par
+    white-space: nowrap;\par
+    overflow: hidden;\par
+    text-overflow: ellipsis;\par
+    vertical-align: middle;\par
+\}\par
+\line\b 45. Validation Error Message Persists After Entering Valid Input\line\line Clear validation errors when a user enters input or selects a value.\b0\par
+<span class="text-danger"   \b id="form_error_name"  ><\b0 p><?php echo form_error('name') ?></p></span>\line\line <script>\par
+$(document).ready(function () \{\par
+    $('input, textarea, select').on('keyup change', function () \{       \par
+        var fieldId = $(this).attr('id');\par
+        if (!fieldId) \{\par
+            console.log("No ID found on this element:", this);\par
+        \} else \{\par
+            console.log("Changed field:", fieldId);\par
+            $('#form_error_' + fieldId).text('');\par
+        \}\par
+    \});\par
+\});\par
+</script>\par
+\b 46. Validation Error Message Persists After Entering Valid Input\line         _partialexamSubjects.php and Add Exam\line view->Exam group->Add Exam \par
+\par
+\par
+\line\b0 // === Validate All Rows ===\par
+function validateRows() \{\par
+    var isValid = true;\par
+\par
+    $('#item_table input, #item_table select').removeClass('is-invalid');\par
+\par
+    $('#item_table tbody tr').each(function () \{\par
+        var row = $(this);\par
+        var subject = row.find('select[name^="subject_"]').val();\par
+        var date_from = row.find('input[name^="date_from_"]').val();\par
+        var time_from = row.find('input[name^="time_from"]').val();\par
+        var duration = row.find('.duration').val();\par
+        var credit_hours = row.find('.credit_hours').val();\par
+        var room_no = row.find('.room_no').val();\par
+        var max_marks = row.find('.max_marks').val();\par
+        var min_marks = row.find('.min_marks').val();\par
+\par
+        if (!subject) \{\par
+            row.find('select[name^="subject_"]').addClass('is-invalid');\par
+            isValid = false;\par
+        \}\par
+        if (!date_from) \{\par
+            row.find('input[name^="date_from_"]').addClass('is-invalid');\par
+            isValid = false;\par
+        \}\par
+        if (!time_from) \{\par
+            row.find('input[name^="time_from"]').addClass('is-invalid');\par
+            isValid = false;\par
+        \}\par
+        if (!duration || duration <= 0) \{\par
+            row.find('.duration').addClass('is-invalid');\par
+            isValid = false;\par
+        \}\par
+        if (!credit_hours || credit_hours <= 0) \{\par
+            row.find('.credit_hours').addClass('is-invalid');\par
+            isValid = false;\par
+        \}\par
+        if (!room_no) \{\par
+            row.find('.room_no').addClass('is-invalid');\par
+            isValid = false;\par
+        \}\par
+        if (!max_marks || max_marks <= 0) \{\par
+            row.find('.max_marks').addClass('is-invalid');\par
+            isValid = false;\par
+        \}\par
+        if (!min_marks || min_marks < 0) \{\par
+            row.find('.min_marks').addClass('is-invalid');\par
+            isValid = false;\par
+        \}\par
+    \});\par
+\par
+    return isValid;\par
+\}\par
+\par
+$(document).on('click', '#submit_button', function (e) \{\par
+    if (!validateRows()) \{\par
+        e.preventDefault();\par
+        alert("Please correct the highlighted fields before submitting.");\par
+    \}\par
+\});\par
+\b  <style>\par
+        .is-invalid \{\par
+        border: 1px solid red !important;\par
+        \}\par
+        </style>\par
+\par
+\par
+47.Add Reset Button to Refresh Searched Content\par
+Add reset button on page\par
+\b0 <div class="col-md-2">\par
+<button type="button" id="resetBtn" class="btn btn-default btn-sm resetstyle">Reset</button>\par
+</div> \par
+\par
+\par
+\b footer\b0\line\line   $(document).ready(function() \{\par
+                $('#resetBtn').click(function () \{\par
+                // Reset the form\par
+                $('#myform')[0].reset();\par
+                location.reload(); \par
+\par
+                \});\par
+                \});\line\line\par
+\cf1\b 48.Image Preview Does Not Maintain Fixed/Responsive Thumbnail Size or Aspect Ratio\b0\par
+\b dropify-min.css\b0\par
+.dropify-wrapper \{\par
+\par
+    position: relative;\par
+    cursor: pointer;\par
+    overflow: hidden;\par
+    width: 100%;\par
+    max-width: 100%;\par
+    height: 111px;\par
+    padding: 0px 5px;\par
+    /* font-size: 14px; */\par
+    line-height: 26px;\par
+    color: #777;\par
+    background-color: #FFF;\par
+    background-image: none;\par
+    text-align: center;\par
+    /* border: 1px solid #ccc; */\par
+    -webkit-transition: border-color .15s linear;\par
+    transition: border-color .15s linear;\par
+\par
+\cf4\b 49.Download option visible for view-only assignment data\line\b0 just add image view and download options\b\par
+\line 50.Suggestion: Restricted Fields Appear Editable in Student Profile Edit Page\line      \b0 On clicking Save, the data is not saved and no message is shown.\line (its custom field , no option for update)\par
+\b\par
+51.Suggestion: Display and validate the field that corresponds to the selected Fine Type\line\par
+\par
+52.Missing Label for Fee Group Category (Radio Buttons) in Fee Group Form\par
+  view feeGroupEdit.php\line feeGroupList.php\line add category label,remove pull right from td , add noExport in Action\par
+(jpg, jpeg, png,svg,bmp)\par
+&nbsp;<span  class="extstyle"><?php echo $this->lang->line('need_ext_image'); ?></span>\par
+51.\par
+\line    \b0 just add There is no label or heading indicating what the radio buttons are meant for, making it unclear what the user is expected to select.\par
+\par
+\b 53.Missing Validation Message for Unselected Fee Group Category in Fee Group Form\par
+\b0 just add label in view (feegrouplist)\line\line  <br>\par
+                                <span class="text-danger" id="form_error_fee_groupcategory"><?php echo form_error('fee_groupcategory'); ?></span>\line and controller\line $this->form_validation->set_rules('fee_groupcategory', $this->lang->line('category'), 'trim|required|xss_clean');\par
+\par
+\par
+\par
+\b 54.Unable to Scroll Teams Dropdown List in Fee Type Form\line\par
+ $this->load->view('feemaster/feemasterList', $data);\par
+css\line      .bootstrap-multiselect .dropdown-menu \{\par
+                max-height: 200px;\par
+                overflow-y: auto;\par
+                \}\line script \line <script>\par
+$(document).ready(function () \{\par
+$('#ftype').multiselect(\{\par
+includeSelectAllOption: true,\par
+enableFiltering: true,\par
+maxHeight: 200, // Controls visible height of dropdown\par
+buttonWidth: '100%' // Optional: makes the button match form-control width\par
+\});\par
+\});\par
+</script>\line\b0\line\par
+\b $this->load->view('feemaster/feemasterEdit', $data);\par
+<script>\par
+$(document).ready(function () \{\par
+$('#ftype').multiselect(\{\par
+includeSelectAllOption: true,\par
+enableFiltering: true,\par
+maxHeight: 200, // Controls visible height of dropdown\par
+buttonWidth: '100%' // Optional: makes the button match form-control width\par
+\});\par
+\});\par
+</script>\line\par
+\cf1\b0\par
+\cf4\b 55.Student Creation Succeeds Even When Required Fields Are Left Blank in Uploaded Template\line {\cf0{\field{\*\fldinst{HYPERLINK https://192.168.0.20/demo/student/import }}{\fldrslt{https://192.168.0.20/demo/student/import\ul0\cf0}}}}\f0\fs22\par
+remove required label from import students\par
+\par
+\par
+\par
+56.Remove Blank Space and Align Text Fields Properly in Student Create/Edit\line some alignment issue on create and ewdit studnt page \cf1\b0\par
+\cf4\b just add\b0\line <div class="col-md-4">\par
+                    <div class="form-group">\line to rte\line and \line <div class="col-md-6"> to previous_school_details\line\line\b 57.Reset \b0\line\line <form id="form1" action="<?php echo base_url() ?>admin/feetype"  id="employeeform" name="employeeform" \b class="common-reset-form\b0 " method="post" accept-charset="utf-8\par
+                                  <button type="button" id="resetBtn" class="btn btn-warning pull-right  custombtn"><?php echo $this->lang->line('reset'); ?></button>\par
+\par
+\par
+                             <button type="button"  class="btn btn-primary pull-right custombtn" onclick="window.history.back();">\par
+                            <?php echo $this->lang->line('back'); ?>\par
+                            </button>\b\par
+\par
+58.Newly Created Student Records Show Count as 0\line\b0    not an issue\line if no sibling added and save it shows 0\b\line\par
+59.Incorrect Sorting Logic\line\line\line\line 60.Suggestion: Limit Description Length with Ellipsis\line\line\b0 class="ellipsis-text "\line\line style-main.css\line .ellipsis-text \{\par
+  white-space: nowrap;\par
+  overflow: hidden;\par
+  text-overflow: ellipsis;\par
+  max-width: 200px; /* adjust as needed */\par
+  display: inline-block;\par
+\}\line\b\line 61.Suggestion: Set Default Search Filter to "Monthly" in Income Search Module\par
+\par
+<script type="text/javascript">\par
+    $(document).ready(function () \{\par
+    initDatatable('income-list', 'admin/income/getincomesearchlist_default', \{\}, [], 100);\par
+\});\line\line add this getincomesearchlist_default function \line\line\line 62.Suggestion: Online Examination attach file types\par
+\par
+\par
+63.Module: Online Examinations/ Online Exam\par
+\par
+Style-main.css\line line 110\line\b0 .sidebar-menu li>a>.pull-right\par
+Specificity: (0,2,2)\par
+ \{\par
+    position: absolute;\par
+    top: 50%;\par
+\b     right: -7px;\par
+\b0     margin-top: -5px;\par
+\}\line\par
+\b 64.Restrict Selection of Past Dates\b0\par
+<input type="text" id="date" name="date" class="form-control date \b valid-future-date\b0 " value="<?php echo set_value('date', date($this->customlib->getSchoolDateFormat())); ?>" readonly="">\line\par
+\b footer.php\b0\line <script>\par
+  $(document).ready(function () \{\par
+    $('.valid-future-date').datepicker(\{\par
+      format: 'dd-mm-yyyy', // match your format\par
+      startDate: new Date(), // disable past\par
+      autoclose: true,\par
+      todayHighlight: true\par
+    \});\par
+  \});\par
+</script>\par
+\par
+\b 65.Total Pay Amount Not Updated Automatically When Discount Is Added\line\line getcollectfees\par
+\b0\par
+<input type="text" class="form-control \b discount-amount-input" \b0 data-row="<?php echo $row_counter; ?>" name="discountamount_<?php echo $row_counter; ?>" id="discountamount_<?php echo $row_counter; ?>">\line\b\line $(document).ready(function () \{\par
+    $(document).on('change', '.discount-amount-input', function () \{\par
+        alert('Discount changed!');\par
+\par
+        var totalAmount = <?php echo $total_amount; ?>;\par
+        var totalDiscount = 0;\par
+\par
+        // Loop through all discount inputs to sum total discount\par
+        $('.discount-amount-input').each(function () \{\par
+            var val = parseFloat($(this).val()) || 0;\par
+            totalDiscount += val;\par
+        \});\par
+\par
+        var finalAmount = totalAmount - totalDiscount;\par
+        $('#finalamt').val(finalAmount.toFixed(2));\par
+    \});\par
+\});\par
+\par
+66.Teacher Rating in Teachers Rating Module\par
+Problem\par
+\b0 Student Panel \f2\u8594?\f0  Teacher Rating page is blank. No teachers are listed.\par
+\par
+This usually happens due to missing role mappings, class assignments, or inactive staff.\par
+\par
+\f3\u9989?\f0  Check These Points:\par
+1. Teacher (Staff) must be assigned to a subject/class\par
+Go to Admin Panel \f2\u8594?\f0  Academics \f2\u8594?\f0  Assign Class Teacher\par
+Or Assign Subjects under Academics \f2\u8594?\f0  Assign Subject\par
+Make sure the staff (teacher) is linked to at least one class or subject.\par
+Without this, the system won\rquote t show them in the Teacher Rating page.\par
+\b 67.Navigation\f4  \f0 Drawer\f4  \f0 Resets\f4  \f0 to\f4  \f0 Top\f4  \f0 After\f4  \f0 Selecting\f4  \f0 Bottom\f4  \f0 Menu\f4  \f0 Item\b0\lang9\line\b Footer\b0\par
+<!-- Navigation Drawer Resets to Top After Selecting Bottom Menu Item (Sidebar Scroll)-->\par
+<script>\par
+  document.addEventListener("DOMContentLoaded", function () \{\par
+    const sidebar = document.getElementById('sibe-box');\par
+\par
+   \par
+    \par
+    const savedScroll = sessionStorage.getItem('sibeScroll');\par
+    if (savedScroll !== null && sidebar) \{\par
+      sidebar.scrollTop = parseInt(savedScroll, 10);\par
+    \}\par
+\par
+    // Save scroll position on link click\par
+    if (sidebar) \{\par
+      const links = sidebar.querySelectorAll('a');\par
+      links.forEach(link => \{\par
+        link.addEventListener('click', () => \{\par
+          sessionStorage.setItem('sibeScroll', sidebar.scrollTop);\par
+        \});\par
+      \});\par
+    \}\par
+  \});\par
+</script>\line\line sidebar id\line\par
+    <section class="sidebar" id="sibe-box">\par
+\par
+\par
+\b 68.Balance Master (Previous Session Balance) Not Displayed in PDF Printout\line\line          \par
+69.Suggestion: Limit Description Length with Ellipsis\par
+->Add income\par
+\par
+controoller->income\par
+    public function getincomelist()\par
+                if ($value->note == "") \{\par
+                $row[] = '<span class="ellipsis-text">' . $this->lang->line('no_description') . '</span>';\par
+                \} else \{\par
+                $row[] = '<span class="ellipsis-text">' . $value->note . '</span>';\par
+                \}\par
+\par
+70.Add Asterisk to Mandatory Fields    \par
+notice board\line {\cf0{\field{\*\fldinst{HYPERLINK https://192.168.0.31/demo/admin/notification/add }}{\fldrslt{https://192.168.0.31/demo/admin/notification/add\ul0\cf0}}}}\f0\fs22\line Add class\par
+71.        Use consistent spacing between the buttons #95  \par
+\b0 <button type="button"  class="btn btn-primary  custombtn" onclick="window.history.back();">\par
+                            <?php echo $this->lang->line('back'); ?>\par
+                            </button>\par
+\par
+                            <button type="button" id="resetBtn" class="btn btn-warning  custombtn"><?php echo $this->lang->line('reset'); ?></button>\par
+\par
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i> <?php echo $this->lang->line('send'); ?></button>\par
+\b\par
+72.Download Center/Upload content    #111\par
+  view-content->createcontent\par
+<\b0 label for="exampleInputEmail1">Status</label></label\b ><small class="req"> *</small>\par
+\b0         <br>\par
+        <input type="radio" name="status"   value="1" \b checked="checked" \b0 >  View       \b\par
+\par
+73.Lesson Plan/Add Topic #110\par
+\b0 Delete functionality is not working\par
+                       {\cf0{\field{\*\fldinst{HYPERLINK https://192.168.0.31/demo/admin/lessonplan/topic }}{\fldrslt{https://192.168.0.31/demo/admin/lessonplan/topic\ul0\cf0}}}}\f0\fs22\par
+\par
+\line   $deletebtn = "<a \b onclick='deletetopicbulk(" . $value->lesson_id . ")'  \b0 class='btn btn-default btn-xs' data-placement='left' title='" . $this->lang->line('delete') . "' data-toggle='tooltip'><i class='fa fa-trash'></i></a>";\par
+\par
+function deletetopicbulk(lesson_id) \{\par
+        if (confirm('<?PHP echo $this->lang->line('delete_confirm') ?>')) \{\par
+            $.ajax(\{\par
+                url: base_url + 'admin/lessonplan/deletetopicbulk/' + lesson_id,\par
+                success: function (res) \{\par
+                   \b alert("<?php echo $this->lang->line('deleted_successfully'); ?>")\par
+\b0                     // successMsg('Deleted successfully'); // Show message\par
+                    // successMsg(res.message);\par
+                    window.location.replace("<?php echo base_url("admin/lessonplan/topic") ?>");\par
+                \}                \par
+\par
+            \})\par
+        \}\par
+    \}\par
+\par
+\b 74.Lesson Plan/Add lesson/Add Topic  #109\par
+\b0 Display a confirmation popup when deleting the lessons and topics\par
+{\cf0{\field{\*\fldinst{HYPERLINK https://192.168.0.31/demo/admin/lessonplan/topic }}{\fldrslt{https://192.168.0.31/demo/admin/lessonplan/topic\ul0\cf0}}}}\f0\fs22\par
+{\cf0{\field{\*\fldinst{HYPERLINK https://192.168.0.31/demo/admin/lessonplan/lesson }}{\fldrslt{https://192.168.0.31/demo/admin/lessonplan/lesson\ul0\cf0}}}}\f0\fs22\par
+view->admin->lessonplan->lesson\line add in topic,lesson \line\line  function remove_lesson(id) \{\par
+        \b if (confirm('<?php echo $this->lang->line("delete_confirm"); ?>')) \{   \b0        \par
+        $('#' + id).html("");        \b\par
+        alert("<?php echo $this->lang->line('deleted_successfully'); ?>")\par
+\b0         \}\par
+    \}\par
+\line\b 75. Homework/ Edit Homework   #108\par
+{\cf0{\field{\*\fldinst{HYPERLINK https://192.168.0.31/demo/homework }}{\fldrslt{https://192.168.0.31/demo/homework\ul0\cf0}}}}\f0\fs22\par
+view->homework->homeworklist\b0\par
+ <div class="col-sm-6">\par
+  <div class="form-group">\par
+    <label for="pwd"><?php echo $this->lang->line('attach_document'); ?> </label>\par
+     <input type="file" id="file" name="userfile" class="form-control filestyle">\b\par
+        <br>\par
+         <span id="downloadfiles" ><i class="fa fa-downloads"></i></span>\b0                                        \par
+    </div>\par
+       </div>\par
+\b\par
+add below script inside  modal function\par
+$('#myModal').on('shown.bs.modal', function () \{\par
+\line  \b0 if (res.document && res.document !== '') \{\par
+                        $('#downloadfiles').html(\par
+                        '<a href="' + base_url + 'uploads/homework/' + res.document + '" download>' +\par
+                        'Click to download the attached file. &nbsp;&nbsp;<i class="fa fa-download">&nbsp;&nbsp;Download</i>' +\par
+                        '</a>'\par
+                        );\par
+                        \} else \{\par
+                        $('#downloadfiles').html(\par
+                        '<span class="text-muted"><?php echo $this->lang->line("no_file_attached"); ?></span>'\par
+                        );\par
+                        \}  \par
+\b\par
+            76.  Rename Menu Text from \ldblquote Communicate\rdblquote  to \ldblquote Communication\rdblquote  #100   \b0\line                               system.db.php\par
+                             $lang['communicate'] = '\b Communication'; \par
+\par
+\cf1 77.Date of Joining missing for imported entries #69\par
+\par
+\par
+\par
+\cf4 78. Change Request: Update Informational Text in Quiz Mode #91\line update text-Online Examination > Add Exam\par
+{\cf0{\field{\*\fldinst{HYPERLINK https://192.168.0.31/demo/admin/onlineexam }}{\fldrslt{https://192.168.0.31/demo/admin/onlineexam\ul0\cf0}}}}\f0\fs22\par
+ \b0 view->admin>onlineexam->index.php(page)\par
+System.db.php\b\par
+$lang['check_on_quiz_message'] = "In quiz mode, the result will be displayed immediately after exam submission. Descriptive question types will be disabled.";\par
+\par
+\cf1 79.Result Publish Icon Doesn\rquote t Clearly Show Status #107\par
+\par
+\par
+\cf4 80.Suggestion: Column Header Icons Not Aligned Properly #106\line\par
+\b0 <tr>\par
+\par
+                                        <th><?php echo $this->lang->line('exam'); ?></th>\par
+\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab <th class="text-center"><?php echo $this->lang->line('quiz'); ?></th>\par
+                                        <th class="\b text-center\b0 " width="150"><?php echo $this->lang->line('questions'); ?></th>\par
+                                        <th class="text \b text-center\b0 "><?php echo $this->lang->line('attempt'); ?></th> \par
+                                        <th><?php echo $this->lang->line('exam') . " " . $this->lang->line('from') ?></th>\par
+                                        <th><?php echo $this->lang->line('exam') . " " . $this->lang->line('to') ?></th>\par
+                                        <th><?php echo $this->lang->line('duration') ?></th>\par
+                                        <th class="\b text text-center\b0 "><?php echo $this->lang->line('exam') . " " . $this->lang->line('publish') ?></th>\par
+                                        \par
+                                        <th class="text \b text-center\b0 "><?php echo $this->lang->line('result') . " " . $this->lang->line('publish') ?></th>\par
+                                        <th class=" \b noExport\b0 "><?php echo $this->lang->line('action'); ?></th>\par
+                                    </tr>\line\b\par
+Add text (all class)\par
+\par
+81.Suggestion: Auto-Populate Exam Duration Based on 'From' and 'To' Time #103\line   not a bug ->\par
+The duration refers to the exam hours for each exam, not the 'From' and 'To' dates.\par
+\par
+82.Replace Back Button with Clear or Reset Button #97\line     (check   ->86.Suggestion: Quiz Column Icons Are Confusing #105)\par
+\par
+\par
+view->expense->expensesearch\par
+remove back and add reset\par
+\b0             <form role="form"  action="<?php echo site_url('admin/expense/search') ?>" method="post" class="\b common-reset-form\b0 " id="expenseform" >\par
+\b\line  \b0 <button type="submit" name="search" value="search_filter" class="btn btn-primary btn-sm checkbox-toggle pull-right"><i class="fa fa-search"></i> <?php echo $this->lang->line('search'); ?></button>\par
+         <button type="button" id="resetBtn" class="btn btn-default btn-sm resetstyle pull-right" style="margin-right:10px">Reset</button>\par
+\par
+\b 83. Restrict Future Dates in DOB Field #92\par
+                \b0 Student Information > Student Admission\par
+\par
+class="invalid-future-date"\line //Disable Future date\par
+footer\par
+   $(document).ready(function () \{\par
+    $('.invalid-future-date').datepicker(\{\par
+      format: 'dd-mm-yyyy', // match your format\par
+      endDate: new Date(), // disable past\par
+      autoclose: true,\par
+      todayHighlight: true\par
+    \});\par
+  \});\par
+\b 84 .[UI] Inconsistent Fare Field Placeholder Between Create and Edit Pages #94\par
+view->route->createroute ,editroute\line placeholder="0.00" \par
+\par
+85.Suggestion: Update Error Message for Recipient Group Selection #98\par
+CONTROLLER\par
+{\cf0{\field{\*\fldinst{HYPERLINK https://192.168.0.31/demo/admin/notification/add }}{\fldrslt{https://192.168.0.31/demo/admin/notification/add\ul0\cf0}}}}\f0\fs22\par
+{\cf0{\field{\*\fldinst{HYPERLINK https://192.168.0.31/demo/admin/notification/edit/3 }}{\fldrslt{https://192.168.0.31/demo/admin/notification/edit/3\ul0\cf0}}}}\f0\fs22\par
+REPLACE-> \par
+\b0 // $this->form_validation->set_rules('visible[]', $this->lang->line('at_least_one_receipt'), 'trim|required|xss_clean');\par
+TO \b\par
+        $this->form_validation->set_rules(\par
+        'visible[]',\par
+        '', // leave label empty to avoid "The \{field\} field" format\par
+        'trim|required|xss_clean',\par
+        ['required' => $this->lang->line('at_least_one_receipt')]\par
+        );\line\par
+system.db.php\line $lang['at_least_one_receipt']    =    "At least one recipient group must be selected";\par
+\par
+\par
+\b0\line\b 86.Suggestion: Quiz Column Icons Are Confusing #105\line             {\cf0{\field{\*\fldinst{HYPERLINK https://192.168.0.31/demo/admin/onlineexam }}{\fldrslt{https://192.168.0.31/demo/admin/onlineexam\ul0\cf0}}}}\f0\fs22\line\line Add->System.db.php\line $lang['quiz_mode_enabled']      =    "Quiz Mode Enabled";\par
+$lang['quiz_mode_disabled']     =    "Quiz Mode Disabled";\par
+\par
+$lang['quiz_mode_enabled']      =    "Quiz Mode Enabled";\par
+$lang['quiz_mode_disabled']     =    "Quiz Mode Disabled";\par
+\par
+$lang['publish_result_enabled']  =    "Publish Result Enabled";\par
+$lang['publish_result_disabled'] =    "Publish Result Disabled";\par
+\par
+$lang['exam_publish_enabled']     =    "Exam Publish Enabled";\par
+$lang['exam_publish_disabled']    =    "Exam Publish Disabled";\par
+\par
+\par
+\b0  if($subject_value->publish_result == 1)\{\par
+                        $publish_result= "<i class='fa fa-check-square-o\b '  data-toggle='tooltip' title=' " .$this->lang->line('publish_result_enabled'). " ' \b0 ></i><span style='display:none'>Yes</span>" ;\par
+                    \}else\{\par
+                        $publish_result= "<i class='fa fa-exclamation-circle\b ' data-toggle='tooltip' title=' " .$this->lang->line('publish_result_disabled'). " '\b0 ></i><span style='display:none'>No</span>" ;\par
+                    \}\par
+\b 87.Prevent Submission When Only Spaces Are Entered in Message Field #101\b0\par
+                           Module: Communicate > Notice board\par
+{\cf0{\field{\*\fldinst{HYPERLINK https://192.168.0.31/demo/admin/notification/add }}{\fldrslt{https://192.168.0.31/demo/admin/notification/add\ul0\cf0}}}}\f0\fs22\par
+AND EDIT\line ADD VALIDATION MESSAGE\line\par
+ $\b this->form_validation->set_rules('message', $this->lang->line('message'), 'callback_check_message');\b0\par
+ public function \b check_message($str)\b0\par
+        \{\par
+        // Decode HTML entities and remove all tags\par
+        $cleaned = strip_tags(html_entity_decode($str));\par
+        // Trim spaces and non-breaking spaces\par
+        $cleaned = trim(str_replace("\\xc2\\xa0", '', $cleaned)); // remove &nbsp;\par
+        if ($cleaned === '') \{\par
+        $this->form_validation->set_message('check_message', $this->lang->line('message') . ' cannot be empty or only spaces.');\par
+        return FALSE;\par
+
+\pard\sa200\sl240\slmult1         \}      return TRUE;\par
+
+\pard\sa200\sl276\slmult1         \}\cf6\b\par
+\cf4\line 89.\par
+----->Additional\par
+Add Back \line          \par
+{\cf0{\field{\*\fldinst{HYPERLINK https://192.168.0.31/demo/admin/notification/edit/2 }}{\fldrslt{https://192.168.0.31/demo/admin/notification/edit/2\ul0\cf0}}}}\f0\fs22\par
+                    $this->load->view('admin/notification/notificationEdit', $data);\par
+ <button type="button"  class="btn btn-primary btn-sm  custombtn" onclick="window.history.back();">\par
+                                <?php echo $this->lang->line('back'); ?>\par
+                                </button>\b0\par
+                                <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-envelope-o"></i> <?php echo $this->lang->line('send'); ?> </button>\b                        \line\par
+\par
+\cf6\line\cf4 89.Notice Visible to User Before Publish Date #102\par
+add date in where condition\line notification_model\par
+\b0 public function \b getNotificationForStudent\b0 ($studentid = null) \{\par
+        $date = date('Y-m-d');  \par
+          $studentid_escaped = $this->db->escape($studentid);\b\par
+    $date_escaped = $this->db->escape($date);   \par
+\b0     \par
+        $query = $this->db->query("SELECT\par
+send_notification.id,send_notification.title,send_notification.publish_date,send_notification.date,send_notification.message,\par
+IF (read_notification.id IS NULL,'unread','read') as notification_id\par
+FROM send_notification\par
+LEFT JOIN read_notification ON send_notification.id = read_notification.notification_id and \par
+read_notification.student_id=" . $this->db->escape($studentid) . " where send_notification.visible_student='Yes' \b and  send_notification.publish_date<=" . $date_escaped \b0 ." order by send_notification.publish_date desc");\par
+        return $query->result_array();\par
+    \}\par
+    public function \b getNotificationForParent\b0 ($parentid = null) \{\par
+        $date = date('Y-m-d');\par
+        \par
+\b     $date_escaped = $this->db->escape($date);   \par
+\b0\par
+        $query = $this->db->query("SELECT\par
+send_notification.id,send_notification.title,send_notification.publish_date,send_notification.date,send_notification.message,\par
+IF (read_notification.id IS NULL,'unread','read') as notification_id\par
+FROM send_notification\par
+LEFT JOIN read_notification ON send_notification.id = read_notification.notification_id and read_notification.parent_id=" . $this->db->escape($parentid) . " where send_notification.visible_parent='Yes' \b and  send_notification.publish_date<=" . $date_escaped .\b0 " order by send_notification.publish_date desc");\par
+        return $query->result_array();\par
+    \}\par
+\b\par
+      90.  Add Option to Assign Online Exam to a Specific Class #104\par
+          ->admin->onlineexam->\par
+comment this line \line\b0 // if($this->rbac->hasPrivilege('online_assign_view_student', 'can_view') && \b $set_enable \b0 )\{\b                     \b0\par
+     if($this->rbac->hasPrivilege('online_assign_view_student', 'can_view')  )\{\par
+\par
+\b 91.Student Import Success Response is Delayed #93     \par
+\par
+\par
+\par
+92.Disable Dates Before "Notice Date" in "Publish Date" Calendar #96   \par
+\par
+-->view->notificationedit-->and notificationadd\par
+\line\b0 <div class="form-group">\par
+                <label for="exampleInputEmail1"><?php echo $this->lang->line('notice_date'); ?></label><small class="req"> *</small>\par
+                <input id="date" name="date"  placeholder="" type="text" \b onchange="validatedate()" \b0 class="form-control date \b date_betweenfrom\b0 "  value="<?php echo set_value('date'); ?>" />\par
+                <span class="text-danger"><?php echo form_error('date'); ?></span>\par
+                </div>\par
+                <div class="form-group">\par
+                <label for="exampleInputEmail1"><?php echo $this->lang->line('publish_on'); ?></label><small class="req"> *</small>\par
+                <input id="publish_date" name="publish_date" \b onchange="validatedate()"\b0   placeholder="" type="text" class="form-control date \b date_betweento\b0 "  value="<?php echo set_value('publish_date'); ?>" />\par
+                <span class="text-danger"><?php echo form_error('publish_date'); ?></span>\par
+                </div>\b\par
+\par
+93. Provide Inline Validation Messages for Mandatory Fields   #90\line               \b0\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\b BUG\par
+phone validation\par
+{\cf0\b0{\field{\*\fldinst{HYPERLINK https://192.168.0.37/demo/admin/generalcall }}{\fldrslt{https://192.168.0.37/demo/admin/generalcall\ul0\cf0}}}}\b0\f0\fs22  -controller\par
+\b edit and index function\b0\line 1. $this->form_validation->set_rules('contact',$this->lang->line('contact'),'required|numeric|min_length[10]|max_length[10]');\par
+{\cf0{\field{\*\fldinst{HYPERLINK https://192.168.0.37/demo/admin/itemsupplier }}{\fldrslt{https://192.168.0.37/demo/admin/itemsupplier\ul0\cf0}}}}\f0\fs22\par
+\b edit and index function\b0\par
+a.$this->form_validation->set_rules('phone',$this->lang->line('phone'),'required|numeric|min_length[10]|max_length[10]');\par
+\par
+     b. $this->form_validation->set_rules('contact_person_phone',$this->lang->line('contact_person_phone'),'required|numeric|min_length[10]|max_length[10]');\line\line\line  {\cf0{\field{\*\fldinst{HYPERLINK https://192.168.0.37/demo/admin/itemsupplier }}{\fldrslt{https://192.168.0.37/demo/admin/itemsupplier\ul0\cf0}}}}\cf0\f0\fs22\line phone required star\line   add <small class="req"> *</small> to phone\line\line\b 2.{{\field{\*\fldinst{HYPERLINK https://192.168.0.37/demo/admin/staff/create }}{\fldrslt{https://192.168.0.37/demo/admin/staff/create\ul0\cf0}}}}\f0\fs22\par
+\par
+staffcreate-view\par
+ remove  future date \par
+ <input id="dob" name="dob" placeholder="" type="text" class="form-control date date invalid-future-date"  value="<?php echo set_value('dob') ?>" />\par
+\par
+3.staff.php\par
+E:\\xampp\\htdocs\\demo\\application\\controllers\\admin\\Staff.php\par
+edit and  create function\par
+\b0   $this->form_validation->set_rules('contactno',$this->lang->line('contactno'),'required|numeric|min_length[10]|max_length[10]');\par
+$this->form_validation->set_rules('emergency_no',$this->lang->line('emergency_contact_number'),'required|numeric|min_length[10]|max_length[10]');\line\b\line E:\\xampp\\htdocs\\demo\\application\\views\\admin\\staff\\staffcreate.php\line <\b0 label for="exampleInputEmail1"><?php echo $this->lang->line('phone'); ?></label><small class="req"> *</small>\par
+\par
+<label for="exampleInputEmail1"><?php echo $this->lang->line('emergency_contact_number'); ?></label><small class="req"> *</small>\par
+\par
+4\par
+E\b :\\xampp\\htdocs\\demo\\application\\views\\admin\\staffattendance\\staffattendancelist.php\b0\line <input  name="date" placeholder="" type="text" class="form-control date \b invalid-future-date\b0 "  value="<?php echo set_value('date', date($this->customlib->getSchoolDateFormat())); ?>" readonly="readonly"/>\par
+\par
+5\b .E:\\xampp\\htdocs\\demo\\application\\views\\admin\\frontoffice\\complaintview.php\par
+\b0 <input type="text" class="form-control date \b invalid-future-date\b0 " value="<?php echo set_value('date', date($this->customlib->getSchoolDateFormat())); ?>"  name="date" id="date" readonly>\par
+\par
+\b E:\\xampp\\htdocs\\demo\\application\\views\\admin\\frontoffice\\complainteditview.php\par
+\b0 <input type="text" class="form-control date \b invalid-future-date\b0 " value="<?php echo set_value('date', date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($complaint_data['date']))); ?>"  name="date" id="date" readonly>\par
+\par
+6.E:\\\b xampp\\htdocs\\demo\\application\\controllers\\Student.php\b0\par
+create and edit function\par
+$this->form_validation->set_rules('mobileno',$this->lang->line('mobile_no'),'required|numeric|min_length[10]|max_length[10]');\line in edit\line mobile no \par
+\par
+\b 7.E:\\xampp\\htdocs\\demo\\application\\controllers\\Student.php\b0\line\line create and edit function \line\line   if ($this->sch_setting_detail->guardian_phone) \{\par
+                $this->form_validation->set_rules('guardian_phone', $this->lang->line('guardian_phone'), 'numeric|min_length[10]|max_length[10]');\par
+            \}\par
+\par
+\b 8.MANDATORY MARK MISSING FOR CATEGORY FIELD IN ADD FEES GROUP\b0\line E:\\xampp\\htdocs\\demo\\application\\views\\admin\\feegroup\\feegroupList.php\line\line <label for="exampleInputEmail1"><?php echo $this->lang->line('category'); ?></label\b ><small class="req">*</small>\par
+\par
+9.UNABLE TO SELECT MONTH IN "SEARCH DUE TRNSPORT FEES"PAGE\line {{\field{\*\fldinst{HYPERLINK https://192.168.0.37/demo/studentfee/searchstutransportfee }}{\fldrslt{https://192.168.0.37/demo/studentfee/searchstutransportfee\ul0\cf0}}}}\f0\fs22\line\line\line 10.https://192.168.0.42/demo/admin/syllabus/status\line Topic completion future date\par
+E:\\xampp\\htdocs\\demo\\application\\views\\admin\\lessonplan\\index.php\line\line\b0 <input class="form-control date \b invalid-future-date\b0 " id="date" name="date" type="text"  >\b\par
+11.MANDATORY MARK MISSING FOR QTY FIELD IN BOOK LIST\line E:\\xampp\\htdocs\\demo\\application\\views\\admin\\book\\createbook.php\line\par
+\b0   <label for="exampleInputEmail1"><?php echo $this->lang->line('qty'); ?></label\b ><small class="req"> *</small>\par
+\par
+12\line\line\b0\line\line\line\b\line\line\b0\par
+\b\par
+\par
+\line\line\line  \cf4\b0\par
+\par
+\par
+\par
+\line\cf0\b\line\b0 /////////////////////////////////////////\line style-main.css\par
+backend/dist/css/\line .verttop \{\par
+    padding-top: 56px;\par
+    display: inline-block;\par
+    max-width: 180px;\par
+    white-space: nowrap;\par
+    overflow: hidden;\par
+    text-overflow: ellipsis;\par
+    vertical-align: middle;\par
+\}\line .trashstyle\par
+        \{\par
+            color:#d82f2f;\par
+        \}\par
+\par
+        .editstyle\par
+        \{\par
+            color:#4d4d65;\par
+        \}\line\par
+\cf4\b id="form_error_name"  \cf0\par
+
+\pard\li720\sa200\sl276\slmult1\b0 pending--datatables--\line\par
+Align th td on datatables\line\line\line\line\par
+\b reset on three pages\line login details\line create students\line admission enquiry\line\b0\line\line\line pendimg\line reset:  {{\field{\*\fldinst{HYPERLINK https://192.168.0.20/demo/studentfee/searchpayment }}{\fldrslt{https://192.168.0.20/demo/studentfee/searchpayment\ul0\cf0}}}}\f0\fs22\line {{\field{\*\fldinst{HYPERLINK https://192.168.0.20/demo/admin/question }}{\fldrslt{https://192.168.0.20/demo/admin/question\ul0\cf0}}}}\f0\fs22\par
+{{\field{\*\fldinst{HYPERLINK https://192.168.0.20/demo/admin/staffattendance }}{\fldrslt{https://192.168.0.20/demo/admin/staffattendance\ul0\cf0}}}}\f0\fs22\par
+\par
+\par
+footer\par
+\b changing format from settings\b0\line <script>\par
+  $(document).ready(function () \{\par
+    $('.valid-future-date').datepicker(\{\par
+      format: 'dd-mm-yyyy', // match your format\par
+      startDate: new Date(), // disable past\par
+      autoclose: true,\par
+      todayHighlight: true\par
+    \});\par
+  \});\par
+</script>\par
+\par
+///////////////////////////////////////\line\par
+\b custom edit students\b0\par
+ foreach ($custom_fields as $custom_fields_key => $custom_fields_value) \{\par
+            if ($custom_fields_value['validation']) \{\par
+                $custom_fields_id   = $custom_fields_value['id'];\par
+                $custom_fields_name = $custom_fields_value['name'];\par
+                $this->form_validation->set_rules("custom_fields[students][" . $custom_fields_id . "]", $custom_fields_name, 'trim|required');\par
+            \}\par
+        \}\par
+\par
+\par
+\par
+$custom_field_post = $this->input->post("custom_fields[students]");\par
+            if (isset($custom_field_post)) \{\par
+                $custom_value_array = array();\par
+                foreach ($custom_field_post as $key => $value) \{\par
+                    $check_field_type = $this->input->post("custom_fields[students][" . $key . "]");\par
+                    $field_value      = is_array($check_field_type) ? implode(",", $check_field_type) : $check_field_type;\par
+                    $array_custom     = array(\par
+                        'belong_table_id' => $id,\par
+                        'custom_field_id' => $key,\par
+                        'field_value'     => $field_value,\par
+                    );\par
+                    $custom_value_array[] = $array_custom;\par
+                \}\par
+                $this->customfield_model->updateRecord($custom_value_array, $id, 'students');\par
+            \}\par
+\par
+\par
+\par
+Daily \line\line\par
+
+\pard\sa200\sl276\slmult1\par
+}
+ 

@@ -1,0 +1,2 @@
+id,book_title,book_no,isbn_no,rack_no,publish,author,qty,perunitcost,postdate,description,barcode,edition,place_of_publicaton,year_of_publishing,total_pages,second_author
+,SampleBook,SampleBook no,sample_isbn_no,,,,,,,,,,,,,
