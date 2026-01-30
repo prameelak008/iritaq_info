@@ -311,7 +311,6 @@
 
 
 
-
                 public function get_semester_batch_by_program($program_id)
                 { 
                 $this->db->select('batch_semester.bchsem_id,

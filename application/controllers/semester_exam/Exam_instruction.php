@@ -27,7 +27,6 @@
             
             public function index()
             {
-
             $this->current_session = $this->setting_model->getCurrentSession();
             $this->session->set_userdata('top_menu', 'semester_exam');
 

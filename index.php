@@ -63,7 +63,7 @@
 
 
 	// Warning
-	define('ENVIRONMENT', 'production');
+	define('ENVIRONMENT', 'development');
 	
 	
 	if( ! ini_get('date.timezone') )

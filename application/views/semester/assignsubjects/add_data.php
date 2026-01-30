@@ -15,7 +15,10 @@
                 </style>
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                 <!-- Content Wrapper. Contains page content -->
                 <div class="content-wrapper">
 
@@ -43,6 +46,11 @@
                 <h3 class="box-title"><?php echo $this->lang->line('add').'&nbsp;'.$this->lang->line('assign_subject'); ?></h3>
                 </div><!-- /.box-header -->
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                 <form id="form1" action="<?php echo site_url('semester/assignsubjects/') ?>"  id="employeeform" name="employeeform" method="post" accept-charset="utf-8" enctype="multipart/form-data">
 
 
@@ -221,11 +229,23 @@
                 <select id="sem_type" name="sem_type" class="form-control">
                 <option value="">-- Select Batch & Semester --</option>
                 </select>
+<<<<<<< HEAD
                 </div>
 
                 
 
           
+=======
+                  <span class="text-danger"><?= form_error('sem_type'); ?></span>
+
+                </div>
+
+
+
+                <input type="hidden" name="semester_term" id="semester_term">
+
+
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                 <div class="form-group">
                 <label for="exampleInputEmail1"><?php echo $this->lang->line('assign_subjects'); ?><small class="req"> *</small></label> 
                 <div style="max-height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;">
@@ -286,8 +306,12 @@
                 <tr>
                 <!-- <th><input type="checkbox" id="select_all"></th> -->
                 <th><?php echo $this->lang->line('slno'); ?></th>
+<<<<<<< HEAD
                 <th><?php echo $this->lang->line('type'); ?> </th>
                 <th><?php echo $this->lang->line('programee'); ?> </th>
+=======
+                <th><?php echo $this->lang->line('type'); ?>/<?php echo $this->lang->line('programee'); ?> </th>
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                 <!-- <th><?php echo $this->lang->line('mode'); ?> </th> -->
                 <th><?php echo $this->lang->line('batch'); ?> </th>
                 <th><?php echo $this->lang->line('subject').'&nbsp;'.$this->lang->line('group'); ?> </th>
@@ -306,8 +330,12 @@
                 <tr>
                 <!-- <td><input type="checkbox" class="allcheckbox" value="<?php echo $subjects['sem_assign_group_id']; ?>"></td> -->
                 <td><?php  echo $slno; ?></td>
+<<<<<<< HEAD
                 <td><?php  echo $subjects['prog_type_name']; ?></td>
                 <td><?php  echo $subjects['p_name']; ?></td> 
+=======
+                <td><?php echo trim(($subjects['prog_type_name'] ? $subjects['prog_type_name'].' - ' : '').$subjects['p_name']); ?></td> 
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                 <!--   <td><?php  echo $subjects['b_mode_name']; ?></td>-->
                 <td><?php  echo $subjects['batch_group_name'].'&nbsp;&nbsp;'.$subjects['b_year']; ?></td> 
                 <td><?php  echo $subjects['group_names']; ?></td>          
@@ -359,18 +387,36 @@
                 }
                 };
                 xhr.send("id=" + id + "&status=" + (status ? 1 : 0));
+<<<<<<< HEAD
                 }           
+=======
+                }
+
+
+
+                // $(document).on('change', '#sem_type', function () {
+                // const semterm_id = $(this).find(':selected').data('semterm');
+                // $('#semester_term').val(semterm_id);
+                // // // optional debug
+                // console.log('Semester Term ID:', semterm_id);
+                // });
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
 
 
                     $(document).ready(function () 
                     {
+<<<<<<< HEAD
                     $(document).on('change', '#prog_id, #sem_type', function () 
                     {
+=======
+                    $(document).on('change', '#prog_id, #sem_type', function () {
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
                     var program = $('#prog_id').val();
                     var batch   = $('#sem_type').val();
 
+<<<<<<< HEAD
 
                    
 
@@ -379,13 +425,24 @@
                     // var semterm_id = $('#sem_type option:selected').data('semterm');
                     // $('#semester_term').val(semterm_id);
                     // }
+=======
+                    // STEP 1: Set semester_term from selected option
+                    if (batch) {
+                    var semterm_id = $('#sem_type option:selected').data('semterm');
+                    $('#semester_term').val(semterm_id);
+                    }
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
                     // STEP 2: Read AFTER setting
                     var term = $('#semester_term').val();
 
                     // alert(program + " " + batch + " " + term);
 
+<<<<<<< HEAD
                     if (!program || !batch ) {
+=======
+                    if (!program || !batch || !term) {
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                     $("input[name='subject_groups[]']").prop('checked', false);
                     return;
                     }
@@ -398,7 +455,11 @@
                     data: {
                     program: program,
                     batchtype_id: batch,
+<<<<<<< HEAD
                     // semester_term: term,
+=======
+                    semester_term: term,
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                     '<?= $this->security->get_csrf_token_name() ?>':
                     '<?= $this->security->get_csrf_hash() ?>'
                     },

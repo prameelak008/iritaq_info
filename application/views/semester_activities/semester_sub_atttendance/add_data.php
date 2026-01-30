@@ -10,9 +10,15 @@
             background: #f8f9fa;
             border-radius: 10px; */
             }   
+<<<<<<< HEAD
 
 
             /*
+=======
+            
+      
+ /*
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
             .form-group {
             display: flex;
@@ -25,7 +31,11 @@
             }
 
 
+<<<<<<< HEAD
 
+=======
+           
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
             .form-group select,
             .form-group input {
@@ -245,18 +255,26 @@
             </div>
             </div>
 
+<<<<<<< HEAD
   
 
             <div class="table-responsive mailbox-messages">             
 
 
             <form role="form" action="<?php echo site_url('semester_activities/Semester_period_attendance') ?>" method="post" class="class_search_form">
+=======
+            <div class="table-responsive mailbox-messages">
+            
+
+            <form role="form" action="<?php echo site_url('semester_activities/semester_period_attendance') ?>" method="post" class="class_search_form">
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             <div class="promotion-grid">      
             <div class="section-card">
             <div class="section-title"><?php echo $this->lang->line('select_criteria'); ?></div>
 
             <div class="row">
             <div class="col-md-12">
+<<<<<<< HEAD
             <?php echo $this->customlib->getCSRF(); ?>
 
             <div class="col-md-3">
@@ -326,13 +344,93 @@
 
 
             <form id="saveForm" method="POST" action="<?php echo site_url('semester_activities/Semester_period_attendance/save_attendence'); ?>">
+=======
+            <div class="row">
+            <?php echo $this->customlib->getCSRF(); ?>
+            
+
+            <div class="col-md-6">
+            <div class="form-group">
+            <label>Program Type / Program <small class="req">*</small></label> 
+            <?php 
+            echo render_program_dropdown($program_types, $programs, set_value('program')); 
+            ?>
+            <!-- <span class="text-danger"><?php echo form_error('program'); ?></span> -->
+            </div>
+            </div>
+
+            <div class="col-md-6">
+            <div class="form-group">
+            <label>Semester / Batch / Term <small class="req">*</small></label>      
+            <?php
+            echo render_semester_dropdown($semesters_batches, set_value('semester'));
+            ?>
+            <!-- <span class="text-danger"><?php echo form_error('semester'); ?></span> -->
+            </div>
+            </div> 
+
+            <input type="hidden" id="sem_group_id" name="sem_group_id" value="">
+
+            <div class="col-md-6">
+            <div class="form-group">
+            <label>Date<small class="req">*</small></label>
+            <input type="date" name="attendanceDate" id="attendanceDate" class="form-control" value="<?php echo date('Y-m-d') ; ?>">     
+            </div>
+            </div>
+
+
+            <div class="col-md-6">
+            <div class="form-group">
+            <label>Period<small class="req">*</small></label>      
+            <select  class="form-control" name="period" id="period">
+            <option>Select Period</option>
+            </select>
+            </div>
+            </div>
+
+
+
+            </div>
+            </div>
+            <!--./col-md-6-->
+
+          
+            </div>
+            </div><!--./col-md-6-->
+            </div>
+
+
+       
+            <div class="col-md-12">
+            <div class="row">
+                <div class="form-group">
+                    <button type="submit" name="search" value="search_full" class="btn btn-primary pull-right btn-sm checkbox-toggle">
+                    <i class="fa fa-search"></i> &nbsp;<?php echo $this->lang->line('search'); ?>
+                    </button>
+                </div>
+            </div>
+            </div> 
+            </div>
+            </form> 
+
+
+
+            <form id="saveForm" method="POST" action="<?php echo site_url('semester_activities/semester_period_attendance/save_attendence'); ?>">
+           
+
+            <input type="hidden" name="period" id="period" value="<?php echo $period;   ?>" class="form-control" />
+
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             <div class="holiday-section">                
             <?php $shownDate = isset($attendanceDate) && !empty($attendanceDate) ? date('d-M-Y', strtotime($attendanceDate)) : date('d-M-Y'); ?>
             <div class="alert alert-info" style="margin-bottom:10px; text-align:center">
             <strong><?php echo $this->lang->line('date'); ?>:</strong> <?php echo $shownDate; ?>              
             </div>
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             <?php if (isset($attendance_status_summary)): ?>
             <?php if ($attendance_status_summary == 'marked'): ?>
             <div class="alert alert-success text-center">
@@ -359,6 +457,7 @@
             // Determine if ALL students on this date are marked with the same common-leave value (5/6/7)
             $commonLeave = null; // 5,6,7 if uniform across all students; otherwise null
             if (!empty($students)) {
+<<<<<<< HEAD
                 $first = null;
                 $allSame = true;
                 foreach ($students as $s) {
@@ -374,6 +473,23 @@
                     }
                 }
                 if ($allSame && $first !== null) { $commonLeave = $first; }
+=======
+            $first = null;
+            $allSame = true;
+            foreach ($students as $s) {
+            $st = isset($s['attend_status']) ? (int)$s['attend_status'] : 0;
+            if (in_array($st, [5, 6, 7], true)) {
+            if ($first === null) {
+            $first = $st;
+            } elseif ($first !== $st) {
+            $allSame = false; break;
+            }
+            } else {
+            $allSame = false; break;
+            }
+            }
+            if ($allSame && $first !== null) { $commonLeave = $first; }
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             }
             ?>
 
@@ -394,12 +510,18 @@
             </div>
             </div>
 
+<<<<<<< HEAD
 
 
             <input type="hidden" name="at_sem_group_id" id="at_sem_group_id" value="<?php echo $sem_group_id; ?>" class="at_sem_group_id" class="form-control">
 
             <input type="hidden" name="period"  id="period"  value="<?php echo $period_id; ?>"  class="form-control">
 
+=======
+            <input type="hidden" name="at_sem_group_id" value="<?php echo $sem_group_id; ?>" class="at_sem_group_id" class="form-control">
+
+
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             <input type="hidden" name="attendanceDate" value="<?php echo $attendanceDate; ?>"  class="form-control">
             <br>
 
@@ -419,6 +541,7 @@
             <i class="fa fa-circle-o" aria-hidden="true" style="color:#6c757d;"></i> Not Marked
             </span>
             </div>
+<<<<<<< HEAD
 
             </div>
 
@@ -432,6 +555,20 @@
             <th><?php echo $this->lang->line('student'); ?></th>            
             <th><?php echo $this->lang->line('present').'&nbsp;'.$this->lang->line('absent'); ?></th>
             <th><?php echo $this->lang->line('note'); ?></</th>
+=======
+            </div>
+
+
+            <div style="overflow-x: auto;">
+            <table  class="attendance-table">                   
+            <thead>
+            <tr>
+            <th>Sl.No</th>
+            <th>Roll No</th>
+            <th>Student Name</th>            
+            <th>Present / Absent</th>
+            <th>Notes</th>
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             </tr>
             </thead>
             <tbody>
@@ -440,7 +577,10 @@
             foreach ($students as $stud) {
             // Get existing attendance status and notes if available
             $attend_status = isset($stud['attend_status']) ? $stud['attend_status'] : '';
+<<<<<<< HEAD
 
+=======
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             // Determine color and title for each row
             $dotColor = '#6c757d'; // gray default
             $dotTitle = 'Not marked';
@@ -513,14 +653,25 @@
             </tbody>
             </table>
             </div>
+<<<<<<< HEAD
             <div class="box-footer">
             <button type="submit" class="btn btn-info pull-right"><i class="fa fa-save"></i>&nbsp;&nbsp;<?php echo $this->lang->line('save').'&nbsp;&nbsp;'.$this->lang->line('attendance'); ?></button>
             </div>
+=======
+
+            <div class="box-footer">
+            <button type="submit" class="btn btn-info pull-right">
+            <i class="fa fa-save"></i>&nbsp;&nbsp;<?php echo $this->lang->line('save').'&nbsp;&nbsp;'.$this->lang->line('attendance'); ?></button>
+            </div>
+
+
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             </form>
             </div>
             </section>
             </div>
 
+<<<<<<< HEAD
             
             <script> 
             
@@ -559,14 +710,179 @@ $(document).on('change', '#sem_type, #attendanceDate', function () {
         },
         error: function () {
             alert('AJAX error');
+=======
+
+
+<script>            
+            
+//////////////////Program, Semester
+
+$('#semester').change(function () {
+
+    var sem_value = $(this).val(); // "semester|batch|term"
+
+    if (!sem_value) {
+        $('#period').html('<option value="">-- Select Period --</option>');
+        return;
+    }
+
+    var parts = sem_value.split('|');
+    var semester = parts[0];
+    var batch    = parts[1];
+    var term     = parts[2];
+
+    var program_id = $('#program').val();
+
+    if (!program_id) {
+        alert('Please select a Program first.');
+        return;
+    }
+
+    // Step 1: Get sem_group_id
+    $.ajax({
+        url: '<?php echo base_url("student_nexus/homework/get_sem_group_id"); ?>',
+        method: 'POST',
+        dataType: 'json',
+        data: {
+            program_id: program_id,
+            semester: semester,
+            batch: batch,
+            term: term
+        },
+        success: function (response) {            
+
+             $('#sem_group_id').val(response.sem_group_id);
+
+
+            if (!response.sem_group_id) {
+                $('#period').html('<option value="">No Period Found</option>');
+                return;
+            }
+
+            // Step 2: Load periods using sem_group_id
+            loadPeriods(response.sem_group_id);
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
         }
     });
 });
 
 
 
+<<<<<<< HEAD
             $(document).ready(function() 
             {
+=======
+function loadPeriods(sem_group_id, period_id) {
+    $.ajax({
+        url: "<?= base_url('semester_activities/semester_period_attendance/getPeriodsBySemesterGroup') ?>",
+        type: "POST",
+        dataType: "json",
+        data: { sem_group_id: sem_group_id },
+        success: function (res) {
+
+            let html = '<option value="">Select Period</option>';
+
+            $.each(res, function (i, row) {
+                html += `
+                    <option value="${row.periodic_table_id}">
+                        ${row.periodic_table_name}
+                        (${row.periodic_table_timefrom} - ${row.periodic_table_timeto})
+                    </option>
+                `;
+            });
+
+            $('#period').html(html);
+
+            // ✅ SET VALUE ONLY
+            $('#period').val(period_id);
+        }
+    });
+}
+
+
+
+
+            //////////////////////////////
+            $(document).ready(function() 
+            {
+            // var old_program_type  = "<?php echo set_value('program_type'); ?>";
+            // var old_programe      = "<?php echo set_value('programe'); ?>";
+            // var old_batch         = "<?php echo set_value('batch_group'); ?>";
+            // var old_semtype       = "<?php echo set_value('semester_semtype'); ?>";
+            // var old_semterm       = "<?php echo set_value('semester_term'); ?>";
+
+            // //  Function to load programes dynamically
+            // function loadProgrames(prog_type_id, selected_programe = '') {
+            // if (prog_type_id != '') {
+            // $.ajax({
+            // url: "<?php echo base_url('semester/Assignsubjects/getpgm_by_pgmtype'); ?>",
+            // method: "POST",
+            // data: { prog_type_id: prog_type_id },
+            // dataType: "json",
+            // success: function(data) {
+            // $('#programe').empty();
+            // $('#programe').append('<option value=""><?php echo $this->lang->line("select"); ?></option>');
+            // $.each(data, function(key, value) {
+            // var selected = (value.id == selected_programe) ? 'selected' : '';
+            // $('#programe').append('<option value="'+ value.id +'" '+selected+'>'+ value.p_name +'</option>');
+            // });
+
+            // //  Re-trigger the sem_group AJAX if all are selected
+            // triggerSemGroupIfReady();
+            // }
+            // });
+            // } else {
+            // $('#programe').html('<option value=""><?php echo $this->lang->line("select"); ?></option>');
+            // }
+            // }
+
+            // //  On page load: restore previously selected program type & program
+            // if (old_program_type != '') {
+            // $('#program_type').val(old_program_type);
+            // loadProgrames(old_program_type, old_programe);
+            // }
+
+            // //  Restore other dropdowns’ selected values
+            // if (old_batch) $('#batch_group').val(old_batch);
+            // if (old_semtype) $('#semester_semtype').val(old_semtype);
+            // if (old_semterm) $('#semester_term').val(old_semterm);
+
+            // //  Reload programe dropdown when program_type changes
+            // $('#program_type').change(function() {
+            // var prog_type_id = $(this).val();
+            // loadProgrames(prog_type_id);
+            // });
+
+            // //  When dependent dropdowns change, fetch sem_group_id
+            // $('#programe, #batch_group, #semester_semtype ,#semester_term').change(function() { 
+            // triggerSemGroupIfReady();
+            // });
+
+            // function triggerSemGroupIfReady() {
+            // var prog      = $('#programe').val();
+            // var bat       = $('#batch_group').val();
+            // var sem       = $('#semester_semtype').val();  
+            // var sem_term  = $('#semester_term').val();
+
+            // if (prog && bat && sem && sem_term) {
+            // $.ajax({
+            // url  : '<?php echo site_url('semester_activities/teacher_subject_assignments/get_sem_group_id'); ?>',
+            // type : 'POST',
+            // data : { 
+            // prog     : prog,
+            // bat      : bat,
+            // sem      : sem,
+            // sem_term : sem_term 
+            // },
+            // success: function(response) {
+            // var res = JSON.parse(response);
+            // $('.sem_group_id').val(res.sem_group_id);
+            // }
+            // });
+            // }
+            
+
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             function applyCommonLeaveState() {
             const anyChecked = $('.common-leave:checked').length > 0;
             const $radios = $('input[type="radio"][name^="status"]');
@@ -587,6 +903,7 @@ $(document).on('change', '#sem_type, #attendanceDate', function () {
             });
 
 
+<<<<<<< HEAD
             $(document).ready(function()
             {
             $('#saveForm').on('submit', function(e) 
@@ -595,6 +912,16 @@ $(document).on('change', '#sem_type, #attendanceDate', function () {
             e.preventDefault(); // stop normal page refresh
 
             var form        = $(this);
+=======
+            $(document).ready(function() {
+         
+            $('#saveForm').on('submit', function(e) 
+            {
+                     
+            e.preventDefault(); // stop normal page refresh
+
+            var form = $(this);
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             var formData = form.serialize();          
 
 
@@ -603,8 +930,12 @@ $(document).on('change', '#sem_type, #attendanceDate', function () {
             type: 'POST',
             data: formData,
             dataType: 'json',
+<<<<<<< HEAD
             beforeSend: function()
             {
+=======
+            beforeSend: function() {
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             $('.btn-info')
             .prop('disabled', true)
             .html('<i class="fa fa-spinner fa-spin"></i> Saving...');
@@ -631,6 +962,7 @@ $(document).on('change', '#sem_type, #attendanceDate', function () {
             }
             });
             });
+<<<<<<< HEAD
             });
 
 
@@ -644,6 +976,10 @@ $(document).on('change', '#sem_type, #attendanceDate', function () {
 
 
  </script>
+=======
+            });       
+            </script>
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
 
 

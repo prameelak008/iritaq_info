@@ -255,6 +255,13 @@
 
                         <!-- End Enter Student Marks------------------------------------------------------------>
 
+<<<<<<< HEAD
+=======
+
+
+
+
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                         <div id="teacherRemarkModal" class="modal fade" role="dialog">
                         <div class="modal-dialog modal-xl">
                         <!-- Modal content-->
@@ -295,9 +302,12 @@
 
 
                         <div class="row"> 
+<<<<<<< HEAD
 
                         <!--
                         
+=======
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                         <div class="col-sm-4">
                         <div class="form-group">
                         <label for="exampleInputEmail1"><?php echo $this->lang->line('programee_type'); ?></label><small class="req"> *</small>
@@ -369,7 +379,16 @@
                         <?php } ?>
                         </select>
                         </div>
+<<<<<<< HEAD
                         </div>                        
+=======
+                        </div>
+
+
+                        <input type="hidden" name="sub_sem_group_id" id="sub_sem_group_id" value="" class="form-control" >                     
+                        
+                       
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
                         <div class="col-sm-4">
                         <div class="form-group">
@@ -388,6 +407,7 @@
                         </select> 
                         </div>
                         </div>
+<<<<<<< HEAD
                     -->
                         
 
@@ -431,6 +451,18 @@
                 </form>
 
 
+=======
+                       
+
+                        <div class="col-sm-12">
+                        <div class="form-group">
+                        <button type="submit" name="search" value="search_filter" class="btn btn-primary pull-right btn-sm checkbox-toggle"><i class="fa fa-search"></i> <?php echo $this->lang->line('search'); ?></button>
+                        </div>
+                        </div>
+                        </div>                        
+                        </div>
+                        </form>
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
                         <div class="examheight100 relative">
                         <div id="examfade"></div>
@@ -468,9 +500,12 @@
 
 
                         <div class="row"> 
+<<<<<<< HEAD
 
 
                         <!--
+=======
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                         <div class="col-sm-2">
                         <div class="form-group">
                         <label for="exampleInputEmail1"><?php echo $this->lang->line('programee_type'); ?></label><small class="req"> *</small>
@@ -565,6 +600,7 @@
                         </div>
                         </div>
 
+<<<<<<< HEAD
 
                     ------>
 
@@ -606,6 +642,21 @@
                 </div>
                 </div>
                 </div>
+=======
+                        <div class="row">
+                        <div class="col-sm-12">
+                        <button type="submit" name="search" value="search_filter" class="btn btn-primary pull-right btn-sm checkbox-toggle"><i class="fa fa-search"></i> <?php echo $this->lang->line('search'); ?></button>
+                        </div>
+                        </div>
+                        </form>
+                        <div class="studentAllotForm">
+
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
                          <!--------------- End Assign Students-------------------------------------------------->
 
@@ -743,8 +794,12 @@
 
                         
 
+<<<<<<< HEAD
                         $(document).on('click', '#subjectModalButton', function (e) 
                         {
+=======
+                        $(document).on('click', '#subjectModalButton', function (e) {
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                         batch_subjects = "";
                         x = 1;
                         $('.subject-body').html('');
@@ -1018,12 +1073,18 @@
                         });
                         });
                         </script>
+<<<<<<< HEAD
 
 
                         <script>
                         $(document).on('click', '.add', function () 
                         {
                         
+=======
+                        <script>
+                        $(document).on('click', '.add', function () 
+                        {
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                         var html = '';
                         html += '<tr>';
                         html += '<td width="150"><select id="subject_' + x + '" name="subject_' + x + '" class="form-control  subjectval item_unit tddm200">' + batch_subjects + '</select></td>';
@@ -1058,9 +1119,12 @@
                         x++;
                         });
 
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                         $(document).on('click', '.subjectval', function () 
                         {
                         $(".subjectval").select2();
@@ -1135,7 +1199,10 @@
                         }
                         });
                         </script>
+<<<<<<< HEAD
 
+=======
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                         <script type="text/javascript">
                         $(document).on('submit', 'form#connectExamForm', function (e) {
 
@@ -1211,7 +1278,11 @@
 
 
                         $(document).on('click', '.examMarksSubject', function ()
+<<<<<<< HEAD
                         {                          
+=======
+                        {                           
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
                         var $this = $(this);
                         var recordid = $this.data('recordid');
@@ -1241,6 +1312,10 @@
                         });
                         });
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                         </script>
 
 
@@ -1256,7 +1331,11 @@
 
 
                         $('#subjectModal').on('shown.bs.modal', function (e) 
+<<<<<<< HEAD
                         {                        
+=======
+                        {
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
                         var subject_id          = $(e.relatedTarget).data('subject_id');
                         var subject_name        = $(e.relatedTarget).data('subject_name');
@@ -1271,9 +1350,12 @@
                         $('#session_id option[value="'+current_session+'"]').prop("selected", true);
                         })
 
+<<<<<<< HEAD
 
                         
 
+=======
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                         $('#subjectModal').on('hidden.bs.modal', function () {
                         $('.subjectmodal_header').html("");
                         $('.marksEntryForm').html("");
@@ -1488,7 +1570,11 @@
                         {                
 
                         if (res.status == 1) {
+<<<<<<< HEAD
                         $('.studentAllotForm').html(res.page);     
+=======
+                        $('.studentAllotForm').html(res.page);       
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
 
                         } else {
@@ -1499,6 +1585,11 @@
 
                         });
                         errorMsg(message);
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                         }
 
                         },
@@ -1706,6 +1797,7 @@
 
 <!-- SEMESTER STARTED--------------------->
             <script type="text/javascript">
+<<<<<<< HEAD
             // $(document).ready(function()
             // {
             // $('#program_type').change(function()
@@ -1729,10 +1821,36 @@
             // $('#programe').html('<option value=""><?php echo $this->lang->line("select"); ?></option>');
             // }
             // }); 
+=======
+            $(document).ready(function()
+            {
+            $('#program_type').change(function()
+            { 
+            var prog_type_id = $(this).val();
+            if(prog_type_id != ''){
+            $.ajax({
+            url: "<?php echo base_url('semester/Assignsubjects/getpgm_by_pgmtype'); ?>",
+            method: "POST",
+            data: { prog_type_id: prog_type_id },
+            dataType: "json",
+            success: function(data){
+            $('#programe').empty();
+            $('#programe').append('<option value=""><?php echo $this->lang->line("select"); ?></option>');
+            $.each(data, function(key, value){
+            $('#programe').append('<option value="'+ value.id +'">'+ value.p_name +'</option>');
+            });
+            }
+            });
+            } else {
+            $('#programe').html('<option value=""><?php echo $this->lang->line("select"); ?></option>');
+            }
+            }); 
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             
             
 
 
+<<<<<<< HEAD
             // $('#programe, #batch_group, #semester_semtype,#semester_term').change(function() 
             // {
             // var prog      = $('#programe').val();
@@ -1768,12 +1886,51 @@
             // }
             // });
             // });  
+=======
+            $('#programe, #batch_group, #semester_semtype,#semester_term').change(function() 
+            {
+            var prog      = $('#programe').val();
+            var bat       = $('#batch_group').val();
+            var sem       = $('#semester_semtype').val(); 
+            var sem_term  = $('#semester_term').val();
+
+            if( prog && bat && sem && sem_term) 
+                {
+            $.ajax({
+            url: '<?php echo site_url('semester_activities/teacher_subject_assignments/get_sem_group_id'); ?>',
+            type: 'POST',
+            data: { 
+            prog   : prog,
+            bat    : bat,
+            sem    : sem,
+            sem_term:sem_term,
+            },
+            success: function(response) 
+            {
+            var res = JSON.parse(response);  // Convert string to object 
+            console.log(res.sem_group_id);  
+            $('#sem_group_id').val(res.sem_group_id); 
+            $('#sem_group_id').trigger('change');
+            }
+            });
+            }
+            else {
+            // Clear sem_group_id when any required field is empty
+            $('#sem_group_id').val('');
+            $('#sem_group_id').trigger('change');  // Optional: To handle downstream logic if needed
+            console.log('sem_group_id cleared because prog, bat, or sem is empty');
+            }
+            });
+
+            });  
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
 
 
              
             $(document).ready(function()
             {
+<<<<<<< HEAD
             // $('#sub_program_type').change(function()
             // { 
             // var prog_type_id = $(this).val();          
@@ -1795,10 +1952,34 @@
             // $('#sub_programe').html('<option value=""><?php echo $this->lang->line("select"); ?></option>');
             // }
             // }); 
+=======
+            $('#sub_program_type').change(function()
+            { 
+            var prog_type_id = $(this).val();          
+            if(prog_type_id != ''){
+            $.ajax({
+            url: "<?php echo base_url('semester/Assignsubjects/getpgm_by_pgmtype'); ?>",
+            method: "POST",
+            data: { prog_type_id: prog_type_id },
+            dataType: "json",
+            success: function(data){
+            $('#sub_programe').empty();
+            $('#sub_programe').append('<option value=""><?php echo $this->lang->line("select"); ?></option>');
+            $.each(data, function(key, value){
+            $('#sub_programe').append('<option value="'+ value.id +'">'+ value.p_name +'</option>');
+            });
+            }
+            });
+            } else {
+            $('#sub_programe').html('<option value=""><?php echo $this->lang->line("select"); ?></option>');
+            }
+            }); 
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             
             
 
 
+<<<<<<< HEAD
             // $('#sub_programe, #sub_batch_group, #sub_semester_semtype,#sub_semester_term').change(function() 
             // {
             // var prog      = $('#sub_programe').val();
@@ -1835,6 +2016,46 @@
             // });
 
             });            
+=======
+            $('#sub_programe, #sub_batch_group, #sub_semester_semtype,#sub_semester_term').change(function() 
+            {
+            var prog      = $('#sub_programe').val();
+            var bat       = $('#sub_batch_group').val();
+            var sem       = $('#sub_semester_semtype').val(); 
+            var sem_term  = $('#sub_semester_term').val();
+
+            if( prog && bat && sem && sem_term) 
+                {
+            $.ajax({
+            url: '<?php echo site_url('semester_activities/teacher_subject_assignments/get_sem_group_id'); ?>',
+            type: 'POST',
+            data: { 
+            prog   : prog,
+            bat    : bat,
+            sem    : sem,
+            sem_term:sem_term,
+            },
+            success: function(response) 
+            {
+            var res = JSON.parse(response);  // Convert string to object 
+            console.log(res.sem_group_id);  
+            $('#sub_sem_group_id').val(res.sem_group_id); 
+            $('#sub_sem_group_id').trigger('change');
+            }
+            });
+            }
+            else {
+            // Clear sem_group_id when any required field is empty
+            $('#sub_sem_group_id').val('');
+            $('#sub_sem_group_id').trigger('change');  // Optional: To handle downstream logic if needed
+            console.log('sem_group_id cleared because prog, bat, or sem is empty');
+            }
+            });
+
+            });  
+            
+
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
             </script>
 
@@ -1843,6 +2064,23 @@
 
 
 
+<<<<<<< HEAD
 
+=======
+<!--1. all_records-list exam 
+2.view   _partialexamList-----------   assignStudent ()--modal
+
+ $(document).on('click', '.assignStudent', function () {
+                           
+                        var examid = $(this).data('examid');
+                        $('.exam_group_class_batch_exam_id').val(examid);
+                        $('#allotStudentModal').modal('show');
+                        });
+
+3
+ 
+
+-->
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
 

@@ -25,7 +25,11 @@
 
             .form-group select,
             .form-group input {
+<<<<<<< HEAD
             /* padding: 16px; */
+=======
+            padding: 16px;
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             border: 2px solid #e0e0e0;
             border-radius: 8px;
 
@@ -244,9 +248,13 @@
             <form id="form"  method="POST" action="<?php echo site_url('semester_activities/Semester_attendance/index'); ?>">
             <!-- Program Details -->
             <div class="program-details">
+<<<<<<< HEAD
 
 
             <!-- <div class="form-group">
+=======
+            <div class="form-group">
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             <label for="programType"><?php echo $this->lang->line('programee_type'); ?></label>
             <select name="program_type" id="program_type"  >
             <option value=""><?php echo $this->lang->line('type'); ?></option>
@@ -268,6 +276,7 @@
             <select name="programe" id="programe"  placeholder="<?php echo $this->lang->line('programee'); ?>">            
             </select>
             <span class="text-danger"><?php echo form_error('programe'); ?></span>
+<<<<<<< HEAD
             </div> -->
 
               <div class="form-group">           
@@ -290,6 +299,14 @@
 
 
             <!-- <div class="form-group">
+=======
+            </div>
+
+
+
+
+            <div class="form-group">
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             <label for="semesterType"><?php echo $this->lang->line('semester_type'); ?>  </label>
             <select name="semester_semtype" id="semester_semtype" >
             <option value="">Select Type</option>
@@ -345,7 +362,11 @@
             }
             ?>
             </select> 
+<<<<<<< HEAD
             </div>  -->
+=======
+            </div> 
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
 
 
@@ -357,15 +378,23 @@
             </div>
 
 
+<<<<<<< HEAD
             <!-- <input type="hidden" name="sem_group_id" class="sem_group_id" class="form-control"> -->
+=======
+            <input type="hidden" name="sem_group_id" class="sem_group_id" class="form-control">
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             <div class="col-md-12">
             <div class="box-footer">
             <button type="submit" class="btn btn-info pull-right"><i class="fa fa-search"></i>&nbsp;&nbsp;<?php echo $this->lang->line('search'); ?></button>
             </div>
             </div>
             </div>
+<<<<<<< HEAD
             </form> 
 
+=======
+            </form>           
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
 
             <form id="saveForm" method="POST" action="<?php echo site_url('semester_activities/Semester_attendance/save_attendence'); ?>">
@@ -375,7 +404,10 @@
             <strong><?php echo $this->lang->line('date'); ?>:</strong> <?php echo $shownDate; ?>              
             </div>
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             <?php if (isset($attendance_status_summary)): ?>
             <?php if ($attendance_status_summary == 'marked'): ?>
             <div class="alert alert-success text-center">
@@ -465,6 +497,7 @@
             <div style="overflow-x: auto;">
             <table  class="attendance-table">                   
             <thead>
+<<<<<<< HEAD
               
             <tr>
             <th><?php echo $this->lang->line('slno'); ?></th>
@@ -472,6 +505,14 @@
             <th><?php echo $this->lang->line('student'); ?></th>            
             <th><?php echo $this->lang->line('present').'&nbsp;'.$this->lang->line('absent'); ?></th>
             <th><?php echo $this->lang->line('note'); ?></</th>
+=======
+            <tr>
+            <th>Sl.No</th>
+            <th>Roll No</th>
+            <th>Student Name</th>            
+            <th>Present / Absent</th>
+            <th>Notes</th>
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             </tr>
             </thead>
             <tbody>
@@ -569,6 +610,7 @@
 
 
             <script>          
+<<<<<<< HEAD
             $(document).ready(function() 
             {            
             // var old_program_type  = "<?php echo set_value('program_type'); ?>";
@@ -647,6 +689,86 @@
             // });
             // }
             // }
+=======
+            $(document).ready(function() {
+            
+            var old_program_type  = "<?php echo set_value('program_type'); ?>";
+            var old_programe      = "<?php echo set_value('programe'); ?>";
+            var old_batch         = "<?php echo set_value('batch_group'); ?>";
+            var old_semtype       = "<?php echo set_value('semester_semtype'); ?>";
+            var old_semterm       = "<?php echo set_value('semester_term'); ?>";
+
+            //  Function to load programes dynamically
+            function loadProgrames(prog_type_id, selected_programe = '') {
+            if (prog_type_id != '') {
+            $.ajax({
+            url: "<?php echo base_url('semester/Assignsubjects/getpgm_by_pgmtype'); ?>",
+            method: "POST",
+            data: { prog_type_id: prog_type_id },
+            dataType: "json",
+            success: function(data) {
+            $('#programe').empty();
+            $('#programe').append('<option value=""><?php echo $this->lang->line("select"); ?></option>');
+            $.each(data, function(key, value) {
+            var selected = (value.id == selected_programe) ? 'selected' : '';
+            $('#programe').append('<option value="'+ value.id +'" '+selected+'>'+ value.p_name +'</option>');
+            });
+
+            //  Re-trigger the sem_group AJAX if all are selected
+            triggerSemGroupIfReady();
+            }
+            });
+            } else {
+            $('#programe').html('<option value=""><?php echo $this->lang->line("select"); ?></option>');
+            }
+            }
+
+            //  On page load: restore previously selected program type & program
+            if (old_program_type != '') {
+            $('#program_type').val(old_program_type);
+            loadProgrames(old_program_type, old_programe);
+            }
+
+            //  Restore other dropdowns’ selected values
+            if (old_batch) $('#batch_group').val(old_batch);
+            if (old_semtype) $('#semester_semtype').val(old_semtype);
+            if (old_semterm) $('#semester_term').val(old_semterm);
+
+            //  Reload programe dropdown when program_type changes
+            $('#program_type').change(function() {
+            var prog_type_id = $(this).val();
+            loadProgrames(prog_type_id);
+            });
+
+            //  When dependent dropdowns change, fetch sem_group_id
+            $('#programe, #batch_group, #semester_semtype ,#semester_term').change(function() { 
+            triggerSemGroupIfReady();
+            });
+
+            function triggerSemGroupIfReady() {
+            var prog      = $('#programe').val();
+            var bat       = $('#batch_group').val();
+            var sem       = $('#semester_semtype').val();  
+            var sem_term  = $('#semester_term').val();
+
+            if (prog && bat && sem && sem_term) {
+            $.ajax({
+            url  : '<?php echo site_url('semester_activities/teacher_subject_assignments/get_sem_group_id'); ?>',
+            type : 'POST',
+            data : { 
+            prog     : prog,
+            bat      : bat,
+            sem      : sem,
+            sem_term : sem_term 
+            },
+            success: function(response) {
+            var res = JSON.parse(response);
+            $('.sem_group_id').val(res.sem_group_id);
+            }
+            });
+            }
+            }
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
             function applyCommonLeaveState() {
               const anyChecked = $('.common-leave:checked').length > 0;

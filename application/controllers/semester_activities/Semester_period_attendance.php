@@ -22,7 +22,11 @@
 
 
             public function index()
+<<<<<<< HEAD
             {     
+=======
+            {          
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
             $data['title']                     =  'Add Attendance';
             $data['title_list']                =  'Attendance';
@@ -35,6 +39,7 @@
             // Program types and programs
 
 
+<<<<<<< HEAD
             // $data['program_types']              = $this->Semester_enrollment_model->get_program_types();
             // $data['programs']                   = $this->Semester_enrollment_model->get_programs();
             // // Semesters, batches, and terms
@@ -51,6 +56,21 @@
             $this->form_validation->set_rules('prog_id', $this->lang->line('programee'), 'trim|required|xss_clean');
             $this->form_validation->set_rules('sem_type', $this->lang->line('batch'), 'trim|required|xss_clean');
 
+=======
+            $data['program_types']              = $this->Semester_enrollment_model->get_program_types();
+            $data['programs']                   = $this->Semester_enrollment_model->get_programs();
+
+            // Semesters, batches, and terms
+            $data['semesters_batches']          = $this->Semester_enrollment_model->get_all_semesters_batches();
+            $data['subject_groups']             = $this->Assignsubjects_model->get_subjectgroups(); 
+
+
+
+            // Form validation
+            $this->form_validation->set_rules('program', 'Program', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('semester', 'Semester / Term / Batch', 'trim|required|xss_clean');
+      
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
             if ($this->form_validation->run() == false) 
             {   
@@ -60,6 +80,7 @@
             // $this->load->view('layout/footer');
             } 
             else
+<<<<<<< HEAD
             {
             // $program_id                     = $this->input->post('prog_id');
             $sem_group_id                   = $this->input->post('sem_type');                 
@@ -86,6 +107,30 @@
             // $term_id                        = $data['selected_term'];
             // $data['sem_groups']             = $this->Semesteractivities_model->get_sem_group($program,$batch_id,$semester_id,$term_id); 
             // $sem_groups                     = $data['sem_groups'];    
+=======
+            {                 
+            $program_id                     = $this->input->post('program'); 
+            $semester_value                 = $this->input->post('semester');  
+            $period                         = $this->input->post('period');
+        
+
+
+            // Split semester value into individual IDs: semester type, batch, term
+
+            list($semester_type_id, $batch_id, $semester_term_id) = explode('|', $semester_value);            
+            $data['selected_program']       = $program_id;
+            $data['selected_semester_type'] = $semester_type_id;
+            $data['selected_batch']         = $batch_id;
+            $data['selected_term']          = $semester_term_id;             
+
+            $data['period']                 = $period;
+            $program                        = $data['selected_program'];
+            $semester_id                    = $data['selected_semester_type'];
+            $batch_id                       = $data['selected_batch'];
+            $term_id                        = $data['selected_term'];
+            $data['sem_groups']             = $this->Semesteractivities_model->get_sem_group($program,$batch_id,$semester_id,$term_id); 
+            $sem_groups                     = $data['sem_groups'];    
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
 
             // $prg                    =  $this->input->post('programe'); 
@@ -93,6 +138,7 @@
             // $sem_term               =  $this->input->post('semester_term'); 
             // $bat                    =  $this->input->post('batch_group');
 
+<<<<<<< HEAD
             // $sem_group_id           =  $this->input->post('sem_group_id'); 
 
 
@@ -100,21 +146,36 @@
             $attendanceDate         =  $data['attendanceDate'] ;
             $data['sem_group_id']   =  $sem_group_id;        
             
+=======
+            $sem_group_id           =  $this->input->post('sem_group_id'); 
+            $data['attendanceDate'] =  $this->input->post('attendanceDate'); 
+            $attendanceDate         =  $data['attendanceDate'] ;
+            $data['sem_group_id']   =  $sem_group_id;
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             // // $data['students'] =  $this->Semesteractivities_model->get_students($sem_group_id); 
             $data['students']       = $this->Semesteractivities_model->get_stud_sub_with_attendance($sem_group_id, $attendanceDate);
             $attendanceRecords      = $data['students'];
             $hasMarked              = false;
+<<<<<<< HEAD
             $allHoliday             = true; 
 
             foreach ($attendanceRecords as $row) 
             {
             if (!empty($row['attend_id']))
             {
+=======
+            $allHoliday             = true;
+
+
+            foreach ($attendanceRecords as $row) {
+            if (!empty($row['id'])) {
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             $hasMarked = true;
             if (!in_array($row['attend_status'], [5, 6, 7])) {
             $allHoliday = false;
             }
             }
+<<<<<<< HEAD
             }            
 
             if ($hasMarked)
@@ -135,6 +196,28 @@
             public function getPeriodsBySemesterGroup()
             {
             $sem_group_id    = $this->input->post('sem_group_id');
+=======
+            }
+
+            if ($hasMarked) {
+            $data['attendance_status_summary'] = $allHoliday ? 'holiday' : 'marked';
+            } else {
+            $data['attendance_status_summary'] = 'not_marked';
+            }
+            }            
+
+            $this->load->view('layout/header', $data);
+            $this->load->view('semester_activities/semester_sub_atttendance/add_data', $data);                   
+            $this->load->view('layout/footer', $data);
+            }            
+            
+            
+
+            public function getPeriodsBySemesterGroup()
+            {
+            $sem_group_id = $this->input->post('sem_group_id');
+
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             $this->db->select('
             pt.periodic_table_id,
             pt.periodic_table_name,
@@ -146,6 +229,10 @@
             $this->db->where('st.tb_semester_group', $sem_group_id);
             $this->db->group_by('st.tb_period_id');
             $this->db->order_by('pt.periodic_table_count','ASC');
+<<<<<<< HEAD
+=======
+
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             echo json_encode($this->db->get()->result());
             }
 
@@ -154,16 +241,26 @@
 
             public function save_attendence()
             { 
+<<<<<<< HEAD
+=======
+
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             $this->output->set_content_type('application/json');
             $statusArr       = $this->input->post('status');
             $student_ids     = $this->input->post('student_id');
             $notesArr        = $this->input->post('notes');
             $commonLeave     = $this->input->post('leave');
             $attend_date     = $this->input->post('attendanceDate') ?: date('Y-m-d');
+<<<<<<< HEAD
             $attend_group_id = $this->input->post('at_sem_group_id');
             $period          = $this->input->post('period');
      
             // $period          = $this->input->post('period_list');
+=======
+            $at_sem_group_id = $this->input->post('at_sem_group_id');
+            $period          = $this->input->post('period');
+
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
             $saved           = 0;
             foreach ($student_ids as $sl => $student_id) {
@@ -175,6 +272,7 @@
 
 
             $data            = [
+<<<<<<< HEAD
             'attend_student_id'     => $student_id,
             'attend_group_id'       => $attend_group_id,
             'attend_date'           => $attend_date,
@@ -190,15 +288,40 @@
             ->where('attend_date', $attend_date)
             ->where('subject_timetable_id', $period)
             ->get('semester_period_attendance')
+=======
+            'student_session_id'  => $student_id,
+            'attend_group_id'     => $at_sem_group_id,
+            'attend_date'         => $attend_date,
+            'attend_CreatedDate'  => date('Y-m-d H:i:s'),
+            'attend_notes'        => $note,
+            'attendence_type_id'  => $status,
+            'subject_timetable_id'=> $period  
+            ];
+
+            $existing = $this->db
+            ->where('student_session_id', $student_id)
+            ->where('attend_group_id', $at_sem_group_id)
+            ->where('attend_date', $attend_date)
+            ->where('subject_timetable_id', $period)
+            ->get('sem_student_subject_attendances')
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             ->row(); 
 
             if ($existing) 
             {
+<<<<<<< HEAD
             $this->db->where('attend_id', $existing->attend_id)->update('semester_period_attendance', $data);
             } 
             else
             {
             $this->db->insert('semester_period_attendance', $data);
+=======
+            $this->db->where('id', $existing->id)->update('sem_student_subject_attendances', $data);
+            } 
+            else
+            {
+            $this->db->insert('sem_student_subject_attendances', $data);
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             }
 
             $saved++;
@@ -207,6 +330,7 @@
             
             $this->session->set_flashdata('msg', "$saved attendance records saved successfully");
             echo json_encode(['status' => true]);
+<<<<<<< HEAD
             }         
 
 
@@ -238,4 +362,8 @@
 
 
 
+=======
+            }
+
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             }

@@ -149,7 +149,11 @@
                 <?php */ ?>
 
 
+<<<<<<< HEAD
                 <!-- <div class="form-group">           
+=======
+                <div class="form-group">           
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                 <?= dropdownlist(
                 $programs,
                 set_value('program')
@@ -173,6 +177,7 @@
                 <option value="">-- Select Batch First --</option>
                 </select>
                 <span class="text-danger"><?= form_error('semester_term'); ?></span>
+<<<<<<< HEAD
                 </div>  -->
 
 
@@ -195,6 +200,12 @@
 
 
                 <!-- <input type="hidden" name="sem_group_id" id="sem_group_id" value="" > -->
+=======
+                </div> 
+
+
+                <input type="hidden" name="sem_group_id" id="sem_group_id" value="" >
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
 
 
@@ -348,9 +359,14 @@
                 </thead>
                 <tbody>
 
+<<<<<<< HEAD
 
 
                     <?php 
+=======
+                    <?php
+
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                     foreach($assign_teacher as $teach)
                     {
                     ?>
@@ -361,9 +377,18 @@
                     <td><?php echo $teach['st_name'] ; ?></td>
                     <td><?php echo $teach['batch_group_name'].'&nbsp;&nbsp;'.$teach['batch_group_year'] ; ?></td>
                     <td><?php echo $teach['sub_group'] ; ?></td>
+<<<<<<< HEAD
                     <td><?php  echo $teach['subjects'];?></td>
                     <td><?php  echo $teach['sem_paper_paper'];?></td>
 
+=======
+
+                    <td><?php  echo $teach['subjects'];?></td>
+                    <td><?php  echo $teach['sem_paper_paper'];?></td>
+
+
+
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                     <td>
                     <div class="material-switch switchcheck">
                     <input id="is_status_<?php echo $teach['assign_id']; ?>" name="is_status" type="checkbox" class="chk" value="1" <?php echo ($teach['assign_status'] == 1 ? 'checked' : ''); ?> onchange="updateStatus(<?php echo $teach['assign_id']; ?>, this.checked)">
@@ -376,9 +401,13 @@
                     <a data-placement="left" href="<?php echo site_url('semester_activities/teacher_subject_assignments/delete/' . $teach['assign_id']); ?>" onclick="return doconfirm();"  class="btn btn-default btn-xs"   data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>"><i class="fa fa-trash" style="color:#cb1515;"></i></a>
                     </td>
                     </tr>
+<<<<<<< HEAD
                     <?php }  ?>
 
 
+=======
+                    <?php } ?>
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                 </tbody>
                 </table><!-- /.table -->
                 </div><!-- /.mail-box-messages -->
@@ -402,8 +431,12 @@
                 xhr.open("POST", "<?php echo site_url('semester_activities/teacher_subject_assignments/update_status'); ?>", true);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                 xhr.onreadystatechange = function () {
+<<<<<<< HEAD
                 if (xhr.readyState == 4 && xhr.status == 200) 
                 {
+=======
+                if (xhr.readyState == 4 && xhr.status == 200) {
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                 console.log('Status updated successfully');
                 }
                 };
@@ -411,6 +444,7 @@
                 }
 
 
+<<<<<<< HEAD
 
 
             $(document).on('change', '#prog_id', function () 
@@ -464,6 +498,8 @@
 
 
 
+=======
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                 // $(document).ready(function()
                 // {
                 // $('#program_type').change(function()
@@ -547,7 +583,102 @@
                 });
                 }
                 });
+<<<<<<< HEAD
                 });               
+=======
+                });
+
+
+
+
+
+
+                $(document).ready(function() 
+                {
+                $('#program, #batchtype_id, #semester_term').change(function() 
+                {
+                var prog      = $('#program').val();
+                var bat       = $('#batchtype_id').val();
+                // var sem       = $('#semester_semtype').val(); 
+                var sem       =  1;
+                var sem_term  = $('#semester_term').val();                 
+
+                if( prog && bat && sem && sem_term) {
+                $.ajax({
+                url: '<?php echo site_url('semester_activities/teacher_subject_assignments/get_sem_group_id'); ?>',
+                type: 'POST',
+                data: { 
+                prog     : prog,
+                bat      : bat,
+                sem      : sem,
+                sem_term : sem_term,
+
+                },
+                success: function(response) 
+                {
+                var res = JSON.parse(response);  // Convert string to object
+                console.log(res.sem_group_id);   // Should log "42"
+                $('#sem_group_id').val(res.sem_group_id); 
+                }
+                });
+                }
+                });
+                });
+
+
+                // $(document).ready(function() 
+                // {
+                // $('#programe, #batch_group, #semester_semtype,#semester_term').change(function() 
+                // {
+                // var prog      = $('#programe').val();
+                // var bat       = $('#batch_group').val();
+                // var sem       = $('#semester_semtype').val(); 
+                // var sem_term  = $('#semester_term').val();                 
+
+                // if( prog && bat && sem && sem_term) {
+                // $.ajax({
+                // url: '<?php echo site_url('semester_activities/teacher_subject_assignments/get_sem_group_id'); ?>',
+                // type: 'POST',
+                // data: { 
+                // prog     : prog,
+                // bat      : bat,
+                // sem      : sem,
+                // sem_term : sem_term,
+
+                // },
+                // success: function(response) 
+                // {
+                // var res = JSON.parse(response);  // Convert string to object
+                // console.log(res.sem_group_id);   // Should log "42"
+                // $('#sem_group_id').val(res.sem_group_id); 
+                // }
+                // });
+                // }
+                // });
+                // });
+
+
+
+                $(document).ready(function() {
+                $('#teacher').change(function() 
+                {
+                var teacher_id = $(this).val();      
+                if(teacher_id != '') {
+                $.ajax({
+                url: '<?php echo base_url("semester_activities/teacher_subject_assignments/get_teacher_branch"); ?>',
+                method: 'POST',
+                data: { teacher_id: teacher_id },
+                dataType: 'json',
+                success: function(response) {                    
+                $('#branch_id').val(response.branch_id); // fill branch input
+                }
+                });
+                } else {
+                $('#branch_id').val('');
+                }
+                });
+                });
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
 
                 // Bulk delete

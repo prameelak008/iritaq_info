@@ -15,10 +15,13 @@
 <!-- ./wrapper -->
 
 
+<<<<<<< HEAD
 
 
 
 
+=======
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 <!-- jQuery -->
 <script src="<?php echo base_url(); ?>semester_documents/plugins/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
@@ -27,6 +30,7 @@
 
 
 
+<<<<<<< HEAD
             
             
             
@@ -81,6 +85,8 @@
                 });
 </script>
 
+=======
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 <script>
   $.widget.bridge('uibutton', $.ui.button)
 </script>

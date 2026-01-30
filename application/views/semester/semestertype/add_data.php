@@ -15,6 +15,163 @@
             display:none !important;
             }
             }
+            
+            /* Scoped styles for Batch Group Modal */
+            .btn-batch-group-plus {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            background-color: #28a745;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+            padding: 0;
+            line-height: 1;
+            transition: background-color 0.3s;
+            text-align: center;
+            vertical-align: middle;
+            position: relative;
+            }
+            
+            .btn-batch-group-plus .plus-symbol {
+            color: #ffffff !important;
+            font-size: 22px;
+            font-weight: bold;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            }
+            
+            .btn-batch-group-plus:hover {
+            background-color: #218838;
+            }
+            
+            .btn-batch-group-plus:hover .plus-symbol {
+            color: #ffffff !important;
+            }
+            
+            .btn-batch-group-plus:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.25);
+            }
+            
+            .btn-batch-group-plus:focus .plus-symbol {
+            color: #ffffff !important;
+            }
+            
+            .btn-batch-group-plus:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.25);
+            }
+            
+            #batchGroupModal .modal-dialog {
+            max-width: 900px;
+            }
+            
+            #batchGroupModal .modal-header {
+            background-color: #3c8dbc;
+            color: white;
+            border-bottom: none;
+            }
+            
+            #batchGroupModal .modal-header .close {
+            color: white;
+            opacity: 0.8;
+            }
+            
+            #batchGroupModal .modal-header .close:hover {
+            opacity: 1;
+            }
+            
+            #batchGroupModal .form-group label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            }
+            
+            #batchGroupModal .btn-save-batch-group {
+            background-color: #3c8dbc;
+            border-color: #3c8dbc;
+            color: white;
+            }
+            
+            #batchGroupModal .btn-save-batch-group:hover {
+            background-color: #357ca5;
+            border-color: #357ca5;
+            }
+            
+            #batchGroupModal .table-batch-groups {
+            margin-top: 20px;
+            }
+            
+            #batchGroupModal .table-batch-groups th {
+            background-color: #f4f4f4;
+            font-weight: 600;
+            }
+            
+            #batchGroupModal .status-switch-batch-group {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            }
+            
+            #batchGroupModal .status-switch-batch-group input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            }
+            
+            #batchGroupModal .status-switch-batch-group .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+            }
+            
+            #batchGroupModal .status-switch-batch-group .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+            }
+            
+            #batchGroupModal .status-switch-batch-group input:checked + .slider {
+            background-color: #28a745;
+            }
+            
+            #batchGroupModal .status-switch-batch-group input:checked + .slider:before {
+            transform: translateX(26px);
+            }
+            
+            #batchGroupModal .btn-edit-batch-group {
+            background-color: #3c8dbc;
+            border-color: #3c8dbc;
+            color: white;
+            padding: 3px 8px;
+            }
+            
+            #batchGroupModal .btn-delete-batch-group {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            color: white;
+            padding: 3px 8px;
+            }
             </style>
             
             
@@ -41,7 +198,9 @@
             <!-- Horizontal Form -->
             <div class="box box-primary">
             <div class="box-header with-border">
-            <h3 class="box-title"><?php echo $this->lang->line('add').'&nbsp;'.$this->lang->line('semester'); ?></h3>
+            <h3 class="box-title"><?php echo $this->lang->line('add').'&nbsp;'.$this->lang->line('semester'); ?>
+            <button type="button" id="batch-group-plus-btn" class="btn-batch-group-plus" data-toggle="modal" data-target="#batchGroupModal" title="Manage Batch Groups"><span class="plus-symbol">+</span></button>
+            </h3>
             </div><!-- /.box-header -->
             
             
@@ -190,6 +349,63 @@
             </section><!-- /.content -->
             </div><!-- /.content-wrapper -->
             
+            <!-- Batch Group Management Modal -->
+            <div class="modal fade" id="batchGroupModal" tabindex="-1" role="dialog" aria-labelledby="batchGroupModalLabel">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title" id="batchGroupModalLabel">Manage Batch Groups</h4>
+            </div>
+            <div class="modal-body">
+            <form id="batchGroupForm">
+            <div class="row">
+            <div class="col-md-6">
+            <div class="form-group">
+            <label for="batch_group_name">Name <small class="req">*</small></label>
+            <input type="text" class="form-control" id="batch_group_name" name="batch_group_name" placeholder="Enter Name" required>
+            </div>
+            </div>
+            <div class="col-md-6">
+            <div class="form-group">
+            <label for="batch_group_year">Year <small class="req">*</small></label>
+            <input type="text" class="form-control" id="batch_group_year" name="batch_group_year" placeholder="Enter Year" required>
+            </div>
+            </div>
+            </div>
+            <input type="hidden" id="batch_group_id" name="batch_group_id" value="">
+            <div class="form-group">
+            <button type="submit" class="btn btn-save-batch-group">Save</button>
+            <button type="button" class="btn btn-default" id="btn-reset-batch-group">Reset</button>
+            </div>
+            </form>
+            
+            <div class="table-responsive">
+            <table class="table table-bordered table-striped table-batch-groups">
+            <thead>
+            <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Year</th>
+            <th>Status</th>
+            <th>Action</th>
+            </tr>
+            </thead>
+            <tbody id="batchGroupTableBody">
+            </tbody>
+            </table>
+            </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            <!-- End Batch Group Management Modal -->
+            
             
             
             <script type="text/javascript">
@@ -248,3 +464,188 @@
           });
           });
           </script>
+          
+          <!-- Batch Group Modal JavaScript -->
+          <script type="text/javascript">
+          $(document).ready(function() {
+          var baseUrl = '<?php echo base_url(); ?>';
+          var editMode = false;
+          
+          // Load batch groups on modal open
+          $('#batchGroupModal').on('show.bs.modal', function() {
+          loadBatchGroups();
+          });
+          
+          // Reset form
+          $('#btn-reset-batch-group').on('click', function() {
+          resetBatchGroupForm();
+          });
+          
+          // Form submit
+          $('#batchGroupForm').on('submit', function(e) {
+          e.preventDefault();
+          saveBatchGroup();
+          });
+          
+          // Load batch groups
+          function loadBatchGroups() {
+          $.ajax({
+          url: baseUrl + 'semester/Batchtype/get_batch_groups',
+          type: 'GET',
+          dataType: 'json',
+          success: function(data) {
+          var tbody = $('#batchGroupTableBody');
+          tbody.empty();
+          
+          if (data && data.length > 0) {
+          $.each(data, function(index, item) {
+          var row = '<tr>' +
+          '<td>' + (index + 1) + '</td>' +
+          '<td>' + (item.batch_group_name || '') + '</td>' +
+          '<td>' + (item.batch_group_year || '') + '</td>' +
+          '<td>' +
+          '<label class="status-switch-batch-group">' +
+          '<input type="checkbox" class="toggle-status-batch-group" data-id="' + item.batch_group_id + '" ' +
+          (item.batch_group_status == 1 ? 'checked' : '') + '>' +
+          '<span class="slider"></span>' +
+          '</label>' +
+          '</td>' +
+          '<td>' +
+          '<button type="button" class="btn btn-edit-batch-group btn-sm" data-id="' + item.batch_group_id + 
+          '" data-name="' + (item.batch_group_name || '') + '" data-year="' + (item.batch_group_year || '') + '">' +
+          '<i class="fa fa-pencil"></i> Edit' +
+          '</button> ' +
+          '<button type="button" class="btn btn-delete-batch-group btn-sm" data-id="' + item.batch_group_id + '">' +
+          '<i class="fa fa-trash"></i> Delete' +
+          '</button>' +
+          '</td>' +
+          '</tr>';
+          tbody.append(row);
+          });
+          } else {
+          tbody.append('<tr><td colspan="5" class="text-center">No batch groups found</td></tr>');
+          }
+          },
+          error: function() {
+          $('#batchGroupTableBody').html('<tr><td colspan="5" class="text-center text-danger">Error loading data</td></tr>');
+          }
+          });
+          }
+          
+          // Save batch group
+          function saveBatchGroup() {
+
+          alert('sdsdssd')
+          exit();
+          var id = $('#batch_group_id').val();
+          var name = $('#batch_group_name').val().trim();
+          var year = $('#batch_group_year').val().trim();
+          
+          alert(id)
+          if (!name || !year) {
+          alert('Please fill in all required fields');
+          return;
+          }
+          
+          var url = baseUrl + 'semester/Batchtype/' + (editMode ? 'update_batch_group' : 'add_batch_group');
+          var data = {
+          batch_group_name: name,
+          batch_group_year: year
+          };
+          
+          if (editMode) {
+          data.batch_group_id = id;
+          }
+          
+          $.ajax({
+          url: url,
+          type: 'POST',
+          data: data,
+          dataType: 'json',
+          success: function(response) {
+          if (response.status === 'success') {
+          loadBatchGroups();
+          resetBatchGroupForm();
+          alert('Batch group saved successfully');
+          } else {
+          alert(response.message || 'Error saving batch group');
+          }
+          },
+          error: function() {
+          alert('Error saving batch group');
+          }
+          });
+          }
+          
+          // Reset form
+          function resetBatchGroupForm() {
+          $('#batchGroupForm')[0].reset();
+          $('#batch_group_id').val('');
+          editMode = false;
+          }
+          
+          // Edit batch group
+          $(document).on('click', '.btn-edit-batch-group', function() {
+          var id = $(this).data('id');
+          var name = $(this).data('name');
+          var year = $(this).data('year');
+          
+          $('#batch_group_id').val(id);
+          $('#batch_group_name').val(name);
+          $('#batch_group_year').val(year);
+          editMode = true;
+          });
+          
+          // Delete batch group
+          $(document).on('click', '.btn-delete-batch-group', function() {
+          if (!confirm('Are you sure you want to delete this batch group?')) {
+          return;
+          }
+          
+          var id = $(this).data('id');
+          
+          $.ajax({
+          url: baseUrl + 'semester/Batchtype/delete_batch_group',
+          type: 'POST',
+          data: { batch_group_id: id },
+          dataType: 'json',
+          success: function(response) {
+          if (response.status === 'success') {
+          loadBatchGroups();
+          alert('Batch group deleted successfully');
+          } else {
+          alert(response.message || 'Error deleting batch group');
+          }
+          },
+          error: function() {
+          alert('Error deleting batch group');
+          }
+          });
+          });
+          
+          // Toggle status
+          $(document).on('change', '.toggle-status-batch-group', function() {
+          var id = $(this).data('id');
+          var status = $(this).is(':checked') ? 1 : 0;
+          
+          $.ajax({
+          url: baseUrl + 'semester/Batchtype/toggle_batch_group_status',
+          type: 'POST',
+          data: {
+          batch_group_id: id,
+          status: status
+          },
+          dataType: 'json',
+          success: function(response) {
+          if (response.status !== 'success') {
+          alert('Error updating status');
+          }
+          },
+          error: function() {
+          alert('Error updating status');
+          }
+          });
+          });
+          });
+          </script>
+          <!-- End Batch Group Modal JavaScript -->

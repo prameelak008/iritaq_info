@@ -1,0 +1,2 @@
+Table semester_group:
+The column sem_group_semester is currently static and is defined directly in the table.

@@ -93,6 +93,7 @@
                     <div class="row">
                     <div class="col-md-3">
                     <div class="form-group">
+<<<<<<< HEAD
                     <label for="exampleInputEmail1"><?php echo $this->lang->line('programee_type'); ?></label><small class="req"> *</small>
                     <select name="program_type" id="program_type" class="form-control" >
                     <option value=""><?php echo $this->lang->line('select').'&nbsp;'.$this->lang->line('type'); ?></option>
@@ -118,6 +119,16 @@
                     <select name="programe" id="programe" class="form-control">
                      <option value=""><?php echo $this->lang->line('select').'&nbsp;'. $this->lang->line('programee'); ?></option>
                     </select>
+=======
+                    <label for="exampleInputEmail1"><?php echo $this->lang->line('programee'); ?></label><small class="req"> *</small>
+                    <select name="program_combined" id="program_combined" class="form-control" >
+                    <option value=""><?php echo $this->lang->line('select').'&nbsp;'.$this->lang->line('programee'); ?></option>
+                    </select>
+                    <!-- Hidden fields to preserve backend compatibility -->
+                    <input type="hidden" name="program_type" id="program_type" value="<?php echo set_value('program_type'); ?>" />
+                    <input type="hidden" name="programe" id="programe" value="<?php echo set_value('programe'); ?>" />
+                    <span class="text-danger"><?php echo form_error('program_type'); ?></span>
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                     </div>
                     </div>
 
@@ -125,6 +136,7 @@
                     <div class="form-group">
                     <label for="exampleInputEmail1"><?php echo $this->lang->line('batch'); ?></label><small class="req"> *</small>
 
+<<<<<<< HEAD
                     <select name="batch_group" id="batch_group" class="form-control" >
                     <option value="">Select Batch</option>
 
@@ -133,6 +145,16 @@
                     {
                     ?>
                     <option value="<?php echo  $batch['batch_group_id']; ?>"<?php if(set_value('batch_group')==$batch['batch_group_id']) { echo "selected=selected"; }        ?> ><?php echo  $batch['batch_group_name'].'&nbsp;&nbsp;'.$batch['batch_group_year']; ?> </option>
+=======
+                    <select name="semester_term" id="semester_term" class="form-control" >
+                    <option value="">Select Batch</option>
+
+                    <?php
+                    foreach($semester_term as $batch)
+                    {
+                    ?>
+                    <option value="<?php echo  $batch['semester_term_id']; ?>"<?php if(set_value('semester_term')==$batch['semester_term_id']) { echo "selected=selected"; }        ?> ><?php echo  $batch['semester_term_stm_id'].'&nbsp;&nbsp;'.$batch['semester_term_stm_code']; ?> </option>
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                     <?php 
                     }
                     ?>

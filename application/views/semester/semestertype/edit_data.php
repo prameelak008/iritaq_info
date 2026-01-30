@@ -57,13 +57,19 @@ $language_name = $language["short_code"];
                                 ?>
                                 <?php echo $this->customlib->getCSRF(); ?>
                                 <div class="form-group">
+<<<<<<< HEAD
                                 <label for="exampleInputEmail1"><?php echo $this->lang->line('semester_id'); ?><small class="req"> *</small></label>
                                 <input id="semester_id" name="semester_id" placeholder="<?php echo $this->lang->line('semester_id'); ?>" type="text" class="form-control" readonly  value="<?php echo $sem['st_id']; ?>" />
+=======
+                                <label for="exampleInputEmail1">Semester ID<small class="req"> *</small></label>
+                                <input id="semester_id" name="semester_id" placeholder="Semester ID" type="text" class="form-control" readonly  value="<?php echo $sem['stm_id']; ?>" />
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                                 <span class="text-danger"><?php echo form_error('semester_id'); ?></span>
                                 </div>
                                 
                                 
                                 <div class="form-group">
+<<<<<<< HEAD
                                 <label for="exampleInputEmail1"><?php echo $this->lang->line('semester_code'); ?><small class="req"> *</small></label>
                                 <input id="semester_code" name="semester_code" placeholder="<?php echo $this->lang->line('semester_code'); ?>" type="text" class="form-control"  value="<?php echo $sem['st_code']; ?>" />
                                 <span class="text-danger"><?php echo form_error('semester_code'); ?></span>
@@ -78,6 +84,13 @@ $language_name = $language["short_code"];
                                 <span class="text-danger"><?php echo form_error('semester_name'); ?></span>
                                 </div>
                                 
+=======
+                                <label for="exampleInputEmail1">Semester Code<small class="req"> *</small></label>
+                                <input id="semester_code" name="semester_code" placeholder="Semester Code" type="text" class="form-control"  value="<?php echo $sem['stm_code']; ?>" />
+                                <span class="text-danger"><?php echo form_error('semester_code'); ?></span>
+                                </div>
+                                
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                             </div><!-- /.box-body -->
 
                             <div class="box-footer">
@@ -110,9 +123,14 @@ $language_name = $language["short_code"];
                                 <thead>
                                 <tr>
                                 <th><?php echo $this->lang->line('slno'); ?></th>                                    
+<<<<<<< HEAD
                                 <th><?php echo $this->lang->line('semester_id'); ?></th>
                                 <th><?php echo $this->lang->line('semester_code'); ?></th>
                                 <th><?php echo $this->lang->line('semester_name'); ?></th> 
+=======
+                                <th>Semester ID</th>
+                                <th>Semester Code</th>
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                                 <th><?php echo $this->lang->line('status'); ?></th>                                
                                 <th class="text-right noExport"><?php echo $this->lang->line('action'); ?></th>
                                 </tr>
@@ -126,6 +144,7 @@ $language_name = $language["short_code"];
                                 ?>
                                 <tr>
                                 <td><?php  echo $slno; ?></td>
+<<<<<<< HEAD
                                 <td><?php  echo $semester['st_id']; ?></td>
                                 <td><?php  echo $semester['st_code']; ?></td>
                                 <td><?php  echo $semester['st_name']; ?></td>
@@ -133,12 +152,25 @@ $language_name = $language["short_code"];
                                 <div class="material-switch switchcheck">
                                 <input id="is_status_<?php echo $semester['st_id']; ?>" name="is_status" type="checkbox" class="chk" value="1" <?php echo ($semester['st_status'] == 1 ? 'checked' : ''); ?> onchange="updateStatus(<?php echo $semester['st_id']; ?>, this.checked)">
                                 <label for="is_status_<?php echo $semester['st_id']; ?>" class="label-success"></label>
+=======
+                                <td><?php  echo $semester['stm_id']; ?></td>
+                                <td><?php  echo $semester['stm_code']; ?></td>
+                                <td>
+                                <div class="material-switch switchcheck">
+                                <input id="is_status_<?php echo $semester['stm_id']; ?>" name="is_status" type="checkbox" class="chk" value="1" <?php echo ($semester['stm_status'] == 1 ? 'checked' : ''); ?> onchange="updateStatus(<?php echo $semester['stm_id']; ?>, this.checked)">
+                                <label for="is_status_<?php echo $semester['stm_id']; ?>" class="label-success"></label>
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                                 </div>
                                 </td>                                
                                 
                                 <td text-align="right">
+<<<<<<< HEAD
                                 <a data-placement="left" href="<?php echo site_url('semester/semestertype/edit/' . $semester['st_id']); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>"><i class="fa fa-pencil"></i></a>
                                 <a data-placement="left" href="<?php echo site_url('semester/semestertype/delete/' . $semester['st_id']); ?>" onclick="return doconfirm();"   class="btn btn-default btn-xs"   data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>"><i class="fa fa-trash trashstyle" ></i></a>
+=======
+                                <a data-placement="left" href="<?php echo site_url('semester/semestertype/edit/' . $semester['stm_id']); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>"><i class="fa fa-pencil"></i></a>
+                                <a data-placement="left" href="<?php echo site_url('semester/semestertype/delete/' . $semester['stm_id']); ?>" onclick="return doconfirm();"   class="btn btn-default btn-xs"   data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>"><i class="fa fa-trash trashstyle" ></i></a>
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                                 </td>
                                 
                                 
@@ -168,7 +200,11 @@ $language_name = $language["short_code"];
         function updateStatus(semesterId, status) 
         {
         var xhr = new XMLHttpRequest();
+<<<<<<< HEAD
         xhr.open("POST", "<?php echo site_url('semester/semester/update_status'); ?>", true);
+=======
+        xhr.open("POST", "<?php echo site_url('semester/semestertype/update_status'); ?>", true);
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 200) {

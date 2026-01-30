@@ -49,10 +49,13 @@
       <div class="box-body">
       <?php echo $this->customlib->getCSRF(); ?>
 
+<<<<<<< HEAD
 
       
 <?php
 /*
+=======
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
       <div class="form-group">           
       <?= dropdownlist(
       $programs,
@@ -73,6 +76,7 @@
       </select>
       <span class="text-danger"><?= form_error('batchtype_id'); ?></span>
       </div> 
+<<<<<<< HEAD
       */
       ?>
 
@@ -123,6 +127,26 @@
 
             <!-- <input type="hidden" name="sem_group_id" id="sem_group_id" class="form-control" > -->
 
+=======
+
+
+
+      <div class="form-group">
+      <label>Semester Term <small class="req">*</small></label>
+      <select id="semester_term" name="semester_term" class="form-control" >
+      <!-- <option value="">-- Select Batch First --</option> -->
+
+      <?php if (!empty($edit_teaching_staff['stm_id'])): ?>
+      <option value="<?php echo set_value('semester_term', $edit_teaching_staff['stm_id']); ?>" selected>
+      <?php echo $edit_teaching_staff['stm_name']; ?>
+      </option>
+      <?php endif; ?>
+      </select>
+      <span class="text-danger"><?= form_error('semester_term'); ?></span>
+      </div> 
+
+      <input type="hidden" name="sem_group_id" id="sem_group_id" class="form-control" >
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
 
 
@@ -149,9 +173,17 @@
       </div>
 
 
+<<<<<<< HEAD
       <div class="form-group">
       <label for="exampleInputEmail1"><?php echo $this->lang->line('subject'); ?><small class="req"> *</small></label>
       <select name="subjects" id="subjects"  class="form-control"> 
+=======
+
+      <div class="form-group">
+      <label for="exampleInputEmail1"><?php echo $this->lang->line('subject'); ?><small class="req"> *</small></label>
+      <select name="subjects" id="subjects"  class="form-control"> 
+
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
       <option value="<?php  echo $edit_teaching_staff['subject_id']; ?>"><?php  echo $edit_teaching_staff['subject_name']; ?></option>
       </select>
       <span class="text-danger"><?php echo form_error('subjects'); ?></span>
@@ -166,8 +198,11 @@
       <select id="paper" name="paper[]"  multiple class="form-control">
       <option value="">Select Paper</option>
       <!-- Options will be populated dynamically via JS -->
+<<<<<<< HEAD
 
        <option value="<?php  echo $edit_teaching_staff['assign_paper']; ?>"><?php  echo $edit_teaching_staff['sem_paper_paper']; ?></option>
+=======
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
       </select>
       <span class="text-danger"><?php echo form_error('paper[]'); ?></span>
       </div>
@@ -360,6 +395,7 @@
       });
 
 
+<<<<<<< HEAD
       
 
 
@@ -414,6 +450,8 @@
             });
 
 
+=======
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
       // $(document).ready(function() {
       // $('#subjects').change(function() {
       // var subject_id = $(this).val();

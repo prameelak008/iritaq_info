@@ -7,6 +7,12 @@
 
                     class Assignsubjects extends Admin_Controller
                     {
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                     public function __construct()
                     {
                     parent::__construct();
@@ -17,10 +23,18 @@
                     $this->config->load('app-config');
                     $this->load->library("datatables");
                     $this->current_session = $this->setting_model->getCurrentSession();
+<<<<<<< HEAD
                     } 
 
                     
 
+=======
+                    }
+                    
+
+
+
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                     public function index()
                     { 
                         
@@ -38,6 +52,13 @@
                     $data['faculty_type_list']          =   $this->Faculty_model->getfaculty_type();
                     $data['get_assigned_subjects']      =   $this->Assignsubjects_model->get();              
 
+<<<<<<< HEAD
+=======
+                    $this->form_validation->set_rules('prog_id', $this->lang->line('programee'), 'trim|required|xss_clean');
+                    $this->form_validation->set_rules('sem_type', $this->lang->line('batch'), 'trim|required|xss_clean');
+
+
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
                     // $this->form_validation->set_rules('program_type', $this->lang->line('program_type'), 'trim|required|xss_clean');
                     // $this->form_validation->set_rules('program', $this->lang->line('programee'), 'trim|required|xss_clean');
@@ -95,7 +116,6 @@
                     }
 
                     // ---------- 3. FETCH EXISTING SUBJECTS ----------
-
                     $this->db->select('sem_assign_subjects_id');
                     $this->db->where('sem_assign_group_id', $sem_group_id);
                     $existing           = $this->db->get('semester_assign_subjects')->result_array();
@@ -189,7 +209,6 @@
                     echo json_encode(['status' => 'not_found']);
                     }
                     }
-
 
 
 

@@ -7,11 +7,15 @@
             class User extends MY_Controller
             {
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             public function __construct()
             {
             parent::__construct();
             // $this->current_session = $this->setting_model->getCurrentSession();
+<<<<<<< HEAD
             $this->sch_setting_detail = $this->setting_model->getSetting();  
             }
 
@@ -19,6 +23,21 @@
 
             public function index()
             { 
+=======
+            $this->sch_setting_detail = $this->setting_model->getSetting();
+
+            
+              
+            } 
+            
+            
+
+
+
+            public function index()
+            { 
+
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             if (!$this->session->has_userdata('sem_student')) 
             {
             redirect('semester_auth/login'); 
@@ -100,8 +119,11 @@
             }
 
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 /*
 
             public function dashboard()

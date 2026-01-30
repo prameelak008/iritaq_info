@@ -191,9 +191,11 @@
             <button type="submit" class="btn btn-info pull-right"><i class="fa fa-save"></i>&nbsp;<?php echo $this->lang->line('save'); ?></button>
             </div>
             </form>
-            </div>
 
-            
+
+
+
+            </div>
 
             </div><!--/.col (right) -->
             <!-- left column -->
@@ -224,9 +226,9 @@
             <tr>
             <th><input type="checkbox" id="select_all"></th>
             <th><?php echo $this->lang->line('batch_id'); ?></th>
-            <th><?php echo $this->lang->line('programee').'&nbsp;'.$this->lang->line('type'); ?></th>
-            <th><?php echo $this->lang->line('programee'); ?> </th>
-            <th><?php echo $this->lang->line('batch_name'); ?>            </th>
+            <th><?php echo $this->lang->line('programee').'&nbsp;'.$this->lang->line('type'); ?>/<?php echo $this->lang->line('programee'); ?></th>
+            <th><?php echo $this->lang->line('batch_name'); ?>
+            </th>
             <th><?php echo $this->lang->line('batch_code'); ?> </th>         
 
 
@@ -244,8 +246,7 @@
             <tr> 
             <td><input type="checkbox" class="batch_checkbox" value="<?php echo $batch['b_id']; ?>"></td>                          
             <td><?php  echo $batch['b_bid']; ?></td>
-            <td><?php  echo $batch['prog_type_name']; ?></td>
-            <td><?php  echo $batch['p_name']; ?></td>          
+            <td><?php echo trim(($batch['prog_type_name'] ? $batch['prog_type_name'].' - ' : '').$batch['p_name']); ?></td>          
 
             <td><?php  echo $batch['batch_group_name'] .'&nbsp;&nbsp;'.$batch['batch_group_year']; ?></td>
 
@@ -542,8 +543,6 @@
             };
             var url = id ? "<?php echo site_url('semester/batchtype/update_batch_group'); ?>"
             : "<?php echo site_url('semester/batchtype/add_batch_group'); ?>";
-
-
             $.ajax({
             url: url,
             method: 'POST',

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <div class="row pb10">
+=======
+                <div class="row pb10">
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                 <div class="col-lg-2 col-md-3 col-sm-12">   
                 <p class="examinfo"><span><?php echo $this->lang->line('exam')?></span><?php echo $examgroupDetail->exam; ?></p>
                 </div> 
@@ -42,7 +46,10 @@
                 <td><?php echo $exam_subject_value->min_marks; ?></td>                                                
                 <td><?php echo $exam_subject_value->max_cmarks; ?></td>
                 <td><?php echo $exam_subject_value->min_cmarks; ?></td>
+<<<<<<< HEAD
                 
+=======
+>>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                 <td class="col-sm-1 text-right">                                             
                 <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#subjectModal" data-subject_name="<?php echo $exam_subject_value->subject_name; ?>" data-subject_id="<?php echo $exam_subject_value->id; ?>" data-teachersubject_id="<?php echo $exam_subject_value->subject_id; ?>" ><i class="fa fa-newspaper-o" aria-hidden="true"></i></button>
                 </td>
