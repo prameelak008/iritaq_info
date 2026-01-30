@@ -27,7 +27,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
   
 
-$config['base_url'] = 'https://192.168.1.51/app_iritaq_info'; /*'https://school.onlineoffice.live/';*/
+$config['base_url'] = 'https://localhost/iritaq_info'; /*'https://school.onlineoffice.live/';*/
 
 
 
