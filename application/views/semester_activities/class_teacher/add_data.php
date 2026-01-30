@@ -1,0 +1,682 @@
+                   
+                    <link rel="stylesheet" href="<?php echo base_url(); ?>backend/dist/css/sem_theme.css">
+                   
+                    <?php
+                    $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
+                    $language = $this->customlib->getLanguage();
+                    $language_name = $language["short_code"];
+                    ?>
+
+                    <style type="text/css">
+                    @media print {
+                    .no-print {
+                    visibility: hidden !important;
+                    display:none !important;
+                    }
+                    }
+                    </style>
+
+
+                    <!-- Content Wrapper. Contains page content -->
+                    <div class="content-wrapper">
+
+                    <section class="content-header">
+                    <h1>
+                    <i class="fa fa-usd"></i> <?php echo $this->lang->line('class_teacher'); ?></h1>
+                    </section>
+
+                    <!-- Main content -->
+                    <section class="content">                    
+                    <div class="col-md-12">
+                    <?php
+                    $this->load->view('layout/topbar_activities'); ?>
+                    </div>
+
+                   
+                    &nbsp;
+                        
+                    <div class="row">
+                    <?php
+                    // if ($this->rbac->hasPrivilege('faculty', 'can_add')) {
+                    ?>
+                    <div class="col-md-4">
+                    <!-- Horizontal Form -->
+                    <div class="box box-primary">
+                    <div class="box-header with-border">
+                    <h3 class="box-title titlefix"> <?php echo $this->lang->line('assign').''.'&nbsp;&nbsp;'.$this->lang->line('class_teacher'); ?></h3>
+                    </div><!-- /.box-header -->
+
+                    <form id="form1" action="<?php echo site_url('semester_activities/Semester_classteacher/') ?>"  id="employeeform" name="employeeform" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+
+                    <div class="box-body">
+                    <?php
+                    /* if ($this->session->flashdata('msg')) {?>
+                    <?php echo $this->session->flashdata('msg') ?>
+                    <?php }
+                    */
+                    ?>
+                    <?php
+                    // if (isset($error_message)) {
+                    // echo "<div class='alert alert-danger'>" . $error_message . "</div>";
+                    // }
+                    ?>
+
+                    <?php echo $this->customlib->getCSRF();   ?> 
+
+                    <input type="hidden" name="sem_group_id" class="sem_group_id form-control" id="sem_group_id"  autocomplete= "off" class="form-control">
+
+
+
+                    <?php /* ?>
+
+                    <div class="form-group">
+                    <label for="exampleInputEmail1"><?php echo $this->lang->line('programee_type'); ?><small class="req"> *</small></label>
+                    <select name="program_type" id="program_type" class="form-control" >
+                    <option value=""><?php echo $this->lang->line('type'); ?></option>
+                    <?php
+                    foreach($Programmetype_list as $prog_type)
+                    {
+                    ?>
+                    <option value="<?php echo  $prog_type['prog_type_id']; ?>"<?php if(set_value('program_type')==$prog_type['prog_type_id']) { echo "selected=selected"; }        ?> ><?php echo  $prog_type['prog_type_name']; ?> </option>
+                    <?php 
+                    }
+                    ?>
+                    </select>
+                    <span class="text-danger"><?php echo form_error('program_type'); ?></span>
+                    <input type="hidden" name="sem_group_id" class="sem_group_id form-control" id="sem_group_id"  autocomplete= "off" class="form-control">
+                    </div>
+
+
+
+
+                    <div class="form-group">
+                    <label for="exampleInputEmail1"><?php echo $this->lang->line('programee'); ?><small class="req"> *</small></label>
+                    <select name="programe" id="programe" class="form-control">
+                    <option></option>
+                    </select>
+                    <span class="text-danger"><?php echo form_error('programe'); ?></span>
+                    </div>
+
+
+                    <div class="form-group">
+                    <label for="exampleInputEmail1">Batch Group<small class="req"> *</small></label> 
+                    <select name="batch_group" id="batch_group" class="form-control" >
+                    <option value="">Select Batch</option>
+
+                    <?php
+                    foreach($batch_group as $batch)
+                    {
+                    ?>
+                    <option value="<?php echo  $batch['batch_group_id']; ?>"<?php if(set_value('batch_group')==$batch['batch_group_id']) { echo "selected=selected"; }        ?> ><?php echo  $batch['batch_group_name'].'&nbsp;&nbsp;'.$batch['batch_group_year']; ?> </option>
+                    <?php 
+                    }
+                    ?>
+                    </select>       
+                    <span class="text-danger"><?php echo form_error('batch_group'); ?></span>
+                    </div>
+
+                    <div class="form-group">
+                    <label for="exampleInputEmail1"><?php echo $this->lang->line('semester'); ?><small class="req"> *</small></label>
+                    <select name="semester_semtype" id="semester_semtype" class="form-control" >
+                    <option value=""><?php echo $this->lang->line('semester_type'); ?></option>
+                    <?php
+                    foreach($semestertype_list as $sem_type)
+                    {
+                    ?>
+                    <option value="<?php  echo $sem_type['st_id'];  ?>"
+
+                    <?php
+                    if(set_value('semester_type')==$sem_type['st_id'])
+                    {
+                    echo "selected=selected";
+                    }
+                    ?>
+                    ><?php  echo $sem_type['st_name'];  ?></option>
+                    <?php } ?>
+                    </select>
+                    <span class="text-danger"><?php echo form_error('semester_semtype'); ?></span>
+                    </div>
+
+
+
+                    <div class="form-group">
+                    <label for="exampleInputEmail1">Semester Term<small class="req"> *</small></label>
+                    <select name="semester_term" id="semester_term" class="form-control" >
+                    <option value="">Select Semester</option>
+
+                    <?php
+                    foreach($semester_term as $term)
+                    {
+                    ?>
+                    <option value="<?php echo  $term['stm_id']; ?>"<?php if(set_value('semester_term')==$term['stm_id']) { echo "selected=selected"; }        ?> ><?php echo  $term['stm_name']; ?> </option>
+                    <?php 
+                    }
+                    ?>
+                    </select> 
+                     <span class="text-danger"><?php echo form_error('semester_term'); ?></span>
+                    </div>
+
+                    <?php */ ?>
+
+
+                    <!-- <div class="form-group">           
+                    <?= dropdownlist(
+                    $programs,
+                    set_value('program')
+                    ); ?>
+                    <span class="text-danger"><?= form_error('program'); ?></span>
+                    </div> 
+
+
+                    <div class="form-group">
+                    <label><?php echo $this->lang->line('batch'); ?> <small class="req">*</small></label>
+                    <select id="batchtype_id" name="batchtype_id" class="form-control">
+                    <option value="">-- Select Batch --</option>
+                    </select>
+                    <span class="text-danger"><?= form_error('batchtype_id'); ?></span>
+                    </div> 
+
+
+                    <div class="form-group">
+                    <label>Semester Term <small class="req">*</small></label>
+                    <select id="semester_term" name="semester_term" class="form-control" >
+                    <option value="">-- Select Batch First --</option>
+                    </select>
+                     <span class="text-danger"><?= form_error('semester_term'); ?></span>
+                    </div>  -->
+
+
+
+                <div class="form-group">           
+                <?= dropdownlist_program(
+                $programs,
+                set_value('prog_id')
+                ); ?>
+                <span class="text-danger"><?= form_error('prog_id'); ?></span>
+                </div>
+                
+                
+                
+
+                <div class="form-group">
+                <label><?php echo $this->lang->line('batch'); ?> <small class="req">*</small></label>
+                <select id="sem_type" name="sem_type" class="form-control">
+                <option value="">-- Select Batch & Semester --</option>
+                </select>
+                </div>
+
+
+
+                    <div class="form-group">
+                    <label for="exampleInputEmail1"><?php echo $this->lang->line('description'); ?></label>            
+                    <textarea rows="3" cols="3" class="form-control" name="description" id="description"></textarea>
+                    <span class="text-danger"><?php echo form_error('description'); ?></span>
+                    </div>
+
+
+                    <div class="form-group">
+                    <label for="exampleInputEmail1">Teacher Name</label>  
+                    <br> 
+                    <br> 
+
+                    <input type="hidden" name="branch_id" id="branch_id" class="form-control" >
+
+
+                    <?php foreach($teaching_staff as $staff): ?>
+                    <div class="form-check">
+                    <input 
+                    type="checkbox" 
+                    name="teacher[]" 
+                    id="teacher_<?php echo $staff['staff_id']; ?>" 
+                    value="<?php echo $staff['staff_id']; ?>" 
+                    class="form-check-input"
+                    >
+                    <label for="teacher_<?php echo $staff['staff_id']; ?>" class="form-check-label">
+                    &nbsp;<?php echo $staff['name']; ?>
+                    </label>
+                    </div>
+                    <?php endforeach; ?>
+                    </div>
+                    <!-- <span class="text-danger"><?php echo form_error('teacher'); ?></span> -->
+
+                    </div><!-- /.box-body -->
+
+                    <div class="box-footer">
+                    <button type="submit" class="btn btn-info pull-right"><?php echo $this->lang->line('save'); ?></button>
+                    </div>
+                    </form>
+                    </div>
+
+
+
+                    </div><!--/.col (right) -->
+                    <!-- left column -->
+                    <?php //} ?>
+
+                    <div class="col-md-<?php
+                    if ($this->rbac->hasPrivilege('class_teacher', 'can_add')) {
+                    echo "8";
+                    } else {
+                    echo "12";
+                    }
+                    ?>">
+                    <!-- general form elements -->
+                    <div class="box box-primary">
+                    <div class="box-header ptbnull">
+                    <h3 class="box-title titlefix"> <?php echo $this->lang->line('assign').''.'&nbsp;&nbsp;'.$this->lang->line('class_teacher'); ?></h3>
+                    <div class="box-tools pull-right">
+                    </div><!-- /.box-tools -->
+                    </div><!-- /.box-header -->
+                    <div class="box-body">
+
+                    <div class="table-responsive mailbox-messages">
+
+                    <button type="button" id="delete_selected" class="btn btn-danger pull-right"><?php echo $this->lang->line('delete'); ?>&nbsp;<i class="fa fa-trash"></i></button>
+                    <br>
+                    <br>
+                    <table class="table table-striped table-bordered table-hover example">
+                    <thead>
+                    <tr>
+
+                    <th><input type="checkbox" id="select_all"></th>
+
+                    <th><?php echo $this->lang->line('programme'); ?>
+                    </th>
+                    <th><?php echo $this->lang->line('semester'); ?>
+                    </th>
+                    <th><?php echo $this->lang->line('batch'); ?>
+                    </th>
+                    <th><?php echo $this->lang->line('teacher'); ?>
+                    </th> 
+                    <th><?php echo $this->lang->line('status'); ?>
+                    </th>
+
+                    <th class="text-right noExport"><?php echo $this->lang->line('action'); ?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php 
+
+
+                    foreach($get_classteacher as $cl_teach)
+                    {
+                    ?>
+                    <tr>
+                    <td><input type="checkbox" class="allcheckbox" value="<?php echo $cl_teach['semcl_id']; ?>"></td>
+                    <td><?php echo $cl_teach['p_name'] ; ?></td>
+                    <td><?php echo $cl_teach['st_name'] ; ?></td>
+                    <td><?php echo $cl_teach['batch_group_name'].'&nbsp;&nbsp;'.$cl_teach['batch_group_year'] ; ?></td>            
+                    <td><?php echo $cl_teach['teacher_names'] ; ?></td>
+                    <td>
+                    <div class="material-switch switchcheck">
+                    <input id="is_status_<?php echo $cl_teach['semcl_id']; ?>" name="is_status" type="checkbox" class="chk" value="1" <?php echo ($cl_teach['semcl_sem_status'] == 1 ? 'checked' : ''); ?> onchange="updateStatus(<?php echo $cl_teach['semcl_id']; ?>, this.checked)">
+                    <label for="is_status_<?php echo $cl_teach['semcl_id']; ?>" class="label-success"></label>
+                    </div>
+                    </td>
+
+                    <td text-align="right">
+                    <!-- <a data-placement="left" href="<?php echo site_url('semester_activities/semester_classteacher/edit/' . $cl_teach['semcl_id']); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>"><i class="fa fa-pencil"></i></a> -->
+                    <a data-placement="left" href="<?php echo site_url('semester_activities/semester_classteacher/delete/' . $cl_teach['semcl_id']); ?>" onclick="return doconfirm();"  class="btn btn-default btn-xs"   data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>"><i class="fa fa-trash" style="color:#cb1515;"></i></a>
+                    </td>
+
+
+                    </tr>
+                    <?php } ?>
+                    </tbody>
+                    </table><!-- /.table -->
+                    </div><!-- /.mail-box-messages -->
+                    </div><!-- /.box-body -->
+                    </div>
+                    </div><!--/.col (left) -->
+                    <!-- right column -->
+                    </div>
+
+                    </section><!-- /.content -->
+                    </div><!-- /.content-wrapper -->
+                    </div>
+                    </div>
+
+
+
+
+
+                    <script>
+
+                    function updateStatus(id, status) 
+                    {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "<?php echo site_url('semester_activities/semester_classteacher/update_status'); ?>", true);
+                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                    xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                    console.log('Status updated successfully');
+                    }
+                    };
+                    xhr.send("id=" + id + "&status=" + (status ? 1 : 0));
+                    }
+
+
+                    // $(document).ready(function()
+                    // {
+                    // $('#program_type').change(function()
+                    // { 
+                    // var prog_type_id = $(this).val();
+                    // if(prog_type_id != '')
+                    // {
+                    // $.ajax({
+                    // url: "<?php echo base_url('semester/Assignsubjects/getpgm_by_pgmtype'); ?>",
+                    // method: "POST",
+                    // data: { prog_type_id: prog_type_id },
+                    // dataType: "json",
+                    // success: function(data){
+                    // $('#programe').empty();
+                    // $('#programe').append('<option value=""><?php echo $this->lang->line("select"); ?></option>');
+                    // $.each(data, function(key, value){
+                    // $('#programe').append('<option value="'+ value.id +'">'+ value.p_name +'</option>');
+                    // });
+                    // }
+                    // });
+                    // } else {
+                    // $('#programe').html('<option value=""><?php echo $this->lang->line("select"); ?></option>');
+                    // }
+                    // });
+                    // });          
+
+
+
+
+
+                    $(document).ready(function() 
+                    { 
+                    // $('#programe, #batch_group, #semester_semtype,#semester_term').change(function() 
+                    // {
+
+                    // $('#program, #batchtype_id, #semester_term').change(function() 
+                    // {
+                    // var prog       = $('#program').val();
+                    // var bat        = $('#batchtype_id').val();
+                    // // var sem       = $('#semester_semtype').val();
+                    //  var sem       = 1; 
+                    // var sem_term   = $('#semester_term').val();
+
+                    // if( prog && bat &&  sem_term) {
+                    // $.ajax({
+                    // url: '<?php echo site_url('semester_activities/teacher_subject_assignments/get_sem_group_id'); ?>',
+                    // type: 'POST',
+                    // data: { 
+                    // prog   : prog,
+                    // bat    : bat,
+                    // sem    : sem,
+                    // sem_term:sem_term,
+                    // },
+                    // success: function(response) 
+                    // {                     
+                    // var res = JSON.parse(response);  
+                    // $('#sem_group_id').val(res.sem_group_id); 
+                    // $('#sem_group_id').trigger('change');
+                    // }
+                    // });
+                    // }
+                    // else {
+                    // // Clear sem_group_id when any required field is empty
+                    // $('#sem_group_id').val('');
+                    // $('#sem_group_id').trigger('change');  // Optional: To handle downstream logic if needed
+                    // console.log('sem_group_id cleared because prog, bat, or sem is empty');
+                    // }
+                    // });
+
+
+
+
+
+                    $('#sem_group_id').change(function() 
+                    {                 
+                    // var semgroup=$(this).val();
+
+                    var semgroup = $('#sem_group_id').val();                       
+
+                    if(semgroup != '') {
+                    $.ajax({
+                    url: '<?php echo base_url("semester_activities/semester_classteacher/get_checked_teachers"); ?>',
+                    method: 'POST',
+                    data: { semgroup: semgroup },
+                    dataType: 'json',
+                    success: function(response) {                    
+
+                    console.log(response);
+
+                    $('input[name="teacher[]"]').prop('checked', false);
+                    // Extract the array of selected teacher IDs from the response
+                    var selectedTeacherIds = response.map(function(item) {
+                    return item.semcl_det_teacher;
+                    });
+
+                    // Loop through the selectedTeacherIds and check the corresponding checkboxes
+
+                    selectedTeacherIds.forEach(function(teacherId) {
+                    $('#teacher_' + teacherId).prop('checked', true);
+                    });
+                    }
+                    });
+                    } else {
+                    // $('#teachers_id').val('');
+                    $('input[name="teacher[]"]').prop('checked', false);
+                    }
+                    });
+                    });
+
+
+
+                    $(document).ready(function() {
+                    $('#teacher').change(function() 
+                    {
+                    var teacher_id = $(this).val();      
+                    if(teacher_id != '') {
+                    $.ajax({
+                    url: '<?php echo base_url("semester_activities/teacher_subject_assignments/get_teacher_branch"); ?>',
+                    method: 'POST',
+                    data: { teacher_id: teacher_id },
+                    dataType: 'json',
+                    success: function(response) {                    
+                    $('#branch_id').val(response.branch_id); // fill branch input
+                    }
+                    });
+                    } else {
+                    $('#branch_id').val('');
+                    }
+                    });
+                    });
+
+
+                    // Bulk delete
+                    $("#delete_selected").on("click", function () {
+                    var ids = [];
+                    $(".allcheckbox:checked").each(function () {
+                    ids.push($(this).val());
+                    });
+
+                    if (ids.length === 0) {
+                    alert("Please select at least one batch to delete.");
+                    return;
+                    }
+
+                    if (confirm("Are you sure you want to delete selected list?")) {
+                    $.ajax({
+                    url: "<?= base_url('semester_activities/Teacher_subject_assignments/bulkDelete') ?>",
+                    type: "POST",
+                    data: {ids: ids},
+                    success: function (response) {
+                    location.reload(); // refresh after delete
+                    }
+                    });
+                    }
+                    });
+
+
+
+
+                    // $(document).ready(function ()
+                    // {
+                    // function checkExistingTeachers() 
+                    // {
+                    // var program     = $('#programe').val();
+                    // var batch       = $('#batch_group').val();
+                    // var semester    = $('#semester_semtype').val();     
+
+                    // if (program && batch && semester) 
+                    // {
+                    // $.ajax({
+                    // url: "<?php echo site_url('semester/semester_classteacher/getAssigned_classteacher'); ?>",
+                    // type: "POST",
+                    // dataType: "json",
+                    // data: {
+                    // programe: program,
+                    // batch_type: batch,
+                    // semester_type: semester,
+                    // // <?php echo $this->security->get_csrf_token_name(); ?>: "<?php echo $this->security->get_csrf_hash(); ?>"
+                    // },
+                    // success: function (response) {
+                    // // Uncheck all first
+                    // $("input[name='teacher[]']").prop('checked', false);
+
+                    // if (response.status === 'exists') 
+                    // {
+                    // // Loop through existing group IDs and check them
+                    // response.subject_groups.forEach(function (semcl_det_id) {
+                    // $("input[name='teacher[]'][value='" + semcl_det_id  + "']").prop('checked', true);
+                    // });
+                    // }
+                    // },
+                    // error: function () {
+                    // console.error("Error checking subject group assignment.");
+                    // }
+                    // });
+                    // }
+                    // }
+
+                    // // Trigger check on change
+                    // $('#programe, #batch_group, #semester_type').on('change', function ()
+                    // {
+                    // checkExistingTeachers();
+                    // });
+                    // });
+
+
+
+                    //  var prog       = $('#program').val();
+                    // var bat        = $('#batchtype_id').val();
+                    // // var sem       = $('#semester_semtype').val();
+                    //  var sem       = 1; 
+                    // var sem_term   = $('#semester_term').val();
+
+                    // $(document).ready(function() {
+                    // function checkExistingTeachers() {
+                    // var program  = $('#program').val();
+                    // var batch    = $('#batchtype_id').val();
+                    // // var semester = $('#semester_semtype').val();
+                    // var semester =1;                      
+
+                    // var sem_group_id = $('#sem_group_id').val();
+                    
+                    //  var semterm  = $('#semester_term').val(); 
+
+                    // if (program && batch && semester) {
+                    // $.ajax({
+                    // url: "<?php echo site_url('semester/semester_classteacher/getAssigned_classteacher'); ?>",
+                    // type: "POST",
+                    // dataType: "json",
+                    // data: {
+                    // sem_group_id: sem_group_id,
+                    // // batch_type: batch,
+                    // // semester_type: semester,
+                    // // CSRF if needed
+
+                    // <?php echo $this->security->get_csrf_token_name(); ?>: "<?php echo $this->security->get_csrf_hash(); ?>"
+                    // },
+                    // success: function(response) {                 
+
+                    // $("input[name='teacher[]']").prop('checked', false);
+
+                    // if (response.status === 'exists') {
+                    // response.subject_groups.forEach(function(semcl_det_id) {
+                    // $("input[name='teacher[]'][value='" + semcl_det_id + "']").prop('checked', true);
+                    // });
+                    // }
+                    // },
+                    // error: function() {
+                    // console.error("Error checking subject group assignment.");
+                    // }
+                    // });
+                    // }
+                    // }
+                    // // Trigger on change
+                    // $('#programe, #batch_group, #semester_semtype,#semester_term').on('change', checkExistingTeachers);
+                    // });
+
+
+
+
+            $(document).on('change', '#prog_id', function () 
+            {
+            const program_id  = $(this).val();
+            const $select     = $('#sem_type');
+
+            if (!program_id) {
+            $select.html('<option value="">-- Select Batch & Semester --</option>');
+            return;
+            }
+
+            $select.prop('disabled', true)
+            .html('<option>Loading...</option>');
+
+            $.post(
+            "<?= site_url('semester/assignsubjects/get_semester_batch_by_program'); ?>",
+            { program_id: program_id },
+            function (data) {            
+
+            let html = '<option value="">-- Select Batch & Semester --</option>';
+            let currentMode = '';
+
+            if (data.length > 0) {
+            data.forEach(row => {
+
+            if (row.b_mode_name !== currentMode) {
+            if (currentMode !== '') html += '</optgroup>';
+            currentMode = row.b_mode_name;
+            html += `<optgroup label="${currentMode}">`;
+            }
+
+            // html += `
+            // <option value="${row.bchsem_id}">
+            // ${row.semester_name} -  ${row.batch_group_name}- ${row.batch_group_year}
+            // </option>
+            // `;
+
+            html += `
+            <option 
+            value="${row.bchsem_id}" 
+            data-semterm="${row.semterm_id}">
+            ${row.semester_name} - ${row.batch_group_name} - ${row.batch_group_year}
+            </option>
+            `;
+
+            });
+            html += '</optgroup>';
+            } else {
+            html += '<option value="">No data found</option>';
+            }
+
+            $select.html(html).prop('disabled', false);
+            },
+            'json'
+            );
+            });
+
+            </script>
+
+
+
+
+
+
+
