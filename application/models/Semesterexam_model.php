@@ -586,11 +586,10 @@
             $this->db->select('*,semester_subject_groups.id as sem_sub_group_id,subjects.id as subjectid');
             $this->db->from('semester_assign_subjects');
             $this->db->join('semester_subject_groups','semester_subject_groups.id=semester_assign_subjects.sem_assign_subjects_id');
-
             $this->db->join('semester_subject_group_subjects','semester_subject_group_subjects.subject_group_id =semester_subject_groups.id');
-
             $this->db->join('subjects','subjects.id =semester_subject_group_subjects.subject_id');
             $this->db->where(array('semester_assign_subjects.sem_assign_group_id'=> $sem_group_id));
+            // $this->db->group_by('subjects.id');
             $query    = $this->db->get();
             $result   = $query->result_array();
             return $result;  
@@ -617,6 +616,7 @@
             );
 
             $this->db->where('semester_assign_subjects.sem_assign_group_id', $sem_group_id);
+            $this->db->group_by('subjects.id');
             $query = $this->db->get();
             return $query->result_array();
             }

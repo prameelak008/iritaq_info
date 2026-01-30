@@ -894,8 +894,8 @@
                 //Get semester batch type...................
 
 
-               $(document).on('change', '#prog_id', function () 
-               {
+    $(document).on('change', '#prog_id', function () 
+    {
 
     const program_id = $('#prog_id').val();
     const $select = $('#sem_type');

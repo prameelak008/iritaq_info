@@ -43,9 +43,11 @@
             $data['semestertype_list']     =   $this->Semestertype_model->getdata();
             // $data['batchlist']           = $this->Batch_model->batchlist();
             $data['batch_group']           =   $this->Batchtype_model->get_batchgroup(); 
-            $data['semester_term']         =   $this->Set_duration_model->get_semester_term();         
+            $data['semester_term']         =   $this->Set_duration_model->get_semester_term(); 
+            
+            $sem_group_id                  =   $this->input->post('sem_type');
 
-            $sem_group_id                  =   $this->input->post('sem_group_id'); 
+            // $sem_group_id                  =   $this->input->post('sem_group_id'); 
             $get_exam_subjects             =   $this->Semesterexam_model->get_exam_subjects($sem_group_id);
             $data['exam_subjects']         =   $get_exam_subjects;
 
@@ -236,7 +238,9 @@
             $gt_sem_group = $this->input->post('gt_sem_group');
             $gt_sem_title = $this->input->post('gt_sem_title');
             $fees_charge  = $this->input->post('fees_charge'); // array
-            $subject_id   = $this->input->post('subject_id');  // array
+            $subject_id   = $this->input->post('subject_id');  // array         
+            
+
 
             if (!empty($fees_charge) && !empty($subject_id)) {
             // Loop using index to match subject_id with fee
@@ -251,7 +255,8 @@
             $this->db->where('inst_sem_subject_id', $sub_id);
             $query = $this->db->get('sem_subject_charge');
 
-            if ($query->num_rows() > 0) {
+            if ($query->num_rows() > 0) {              
+                
             // Update Existing Record
             $this->db->where('inst_sem_group', $gt_sem_group);
             $this->db->where('inst_sem_title', $gt_sem_title);
@@ -260,6 +265,8 @@
             'inst_fees_charge' => $fee
             ]);
             } else {
+
+             
             // Insert New Record
             $data = [
             'inst_sem_group'       => $gt_sem_group,
@@ -267,7 +274,9 @@
             'inst_sem_subject_id'  => $sub_id,
             'inst_fees_charge'     => $fee
             ];
-            $this->db->insert('sem_subject_charge', $data);
+            $this->db->insert('sem_subject_charge', $data);          
+
+
             }
             }
             }
@@ -305,7 +314,6 @@
 
             public function get_byfeechrge()
             {
-
             $fee_exam_type       = $this->input->post('fee_exam_type');        
 
             $this->db->where([
