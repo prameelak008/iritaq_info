@@ -41,7 +41,8 @@
         background: linear-gradient(135deg, #6b7275 0%, #6b7275 100%);
         }
 
-        .timetable-section {
+        .timetable-section 
+        {
         display: <?php echo $show_timetable ? 'block' : 'none'; ?>;
         }
 

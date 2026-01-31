@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="<?php echo base_url(); ?>backend/dist/css/sem_theme.css"> 
+            <link rel="stylesheet" href="<?php echo base_url(); ?>backend/dist/css/sem_theme.css"> 
             <link rel="stylesheet" href="<?php echo base_url(); ?>backend/dist/css/sem_style.css"> 
 
             <script>
@@ -65,6 +65,7 @@
                                     </button>
 
                                     <button class="tab-button" onclick="switchTab(3)">
+                                        <span class="tab-icon">📝</span>
                                         <span><?php echo $this->lang->line('details'); ?></span>
                                     </button>
                                     
@@ -535,22 +536,18 @@
                                             </div>
 
                                             <div class="form-row"> 
-
-
                                                 <div class="form-group">           
                                                     <?= dropdownlist_program($programs, set_value('prog_id')); ?>
                                                     <span class="text-danger"><?= form_error('prog_id'); ?></span>
                                                 </div>
 
-
                                                 <div class="form-group">
                                                     <label><?php echo $this->lang->line('batch'); ?> <small class="req">*</small></label>
-                                                    <select id="sem_type" name="sem_type" class="form-control">
+                                                    <select id="sem_type_attempt" name="sem_type" class="form-control">
                                                         <option value="">-- Select Batch & Semester --</option>
                                                     </select>
                                                     <span class="text-danger"><?= form_error('sem_type'); ?></span>
                                                 </div>
-
 
                                                 <div class="form-group">
                                                     <label>Exam Group <span class="required">*</span></label>
@@ -562,7 +559,6 @@
                                                     </select>
                                                     <span class="text-danger"><?php echo form_error('exam_group_id_attempt'); ?></span>
                                                 </div>
-                                                
 
                                                 <div class="form-group">
                                                     <label><?php echo $this->lang->line('exam'); ?> <span class="required">*</span></label>
@@ -892,6 +888,31 @@
                 // Scroll to top smoothly
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
+
+            const examFeesInput = document.getElementById('exam_fees');
+            const processingChargeInput = document.getElementById('processing_charge');
+            const fineAmountInput = document.getElementById('fine_amount');
+            const displayExamFees = document.getElementById('display_exam_fees');
+            const displayProcessing = document.getElementById('display_processing');
+            const displayFine = document.getElementById('display_fine');
+            const displayTotal = document.getElementById('display_total');
+
+            // Update when Exam Fees changes
+            examFeesInput.addEventListener('input', function() {
+                const value = parseFloat(examFeesInput.value) || 0;
+                displayExamFees.textContent = `₹ ${value.toFixed(2)}`;
+                const processing = parseFloat(processingChargeInput.value) || 0;
+                const fine = parseFloat(fineAmountInput.value) || 0;
+                displayTotal.textContent = `₹ ${(value + processing + fine).toFixed(2)}`;
+            });
+
+            // Update when Processing Charge changes
+            processingChargeInput.addEventListener('input', function() {
+                const value = parseFloat(examFeesInput.value) || 0;
+                const processing = parseFloat(processingChargeInput.value) || 0;
+                displayProcessing.textContent = `₹ ${processing.toFixed(2)}`;
+                const fine = parseFloat(fineAmountInput.value) || 0;
+                displayTotal.textContent = `₹ ${(value + processing + fine).toFixed(2)}`;
             });
 
             // Update when Fine changes
