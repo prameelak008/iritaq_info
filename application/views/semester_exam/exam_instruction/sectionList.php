@@ -34,7 +34,7 @@
             <div class="content-wrapper"> 
                 <section class="content-header">
                     <h1>
-                        <i class="fa fa-usd"></i> <?php echo $this->lang->line('fee_charge'); ?>
+                        <i class="fa fa-usd"></i> <?php echo $this->lang->line('fee_charge'); ?>xxxxxxxxxx
                     </h1>
                 </section>          
 
