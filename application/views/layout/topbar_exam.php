@@ -1,11 +1,6 @@
 
-            <style>  
-                        
-                     
             
-            </style>
-             <link rel="stylesheet" href="<?php echo base_url(); ?>backend/dist/css/topbar_style.css">
-        
+            <link rel="stylesheet" href="<?php echo base_url(); ?>backend/dist/css/topbar_style.css">        
             <div class="row">
             <div class="col-md-12">
             <div class="box box-primary border0 mb0 margesection">
@@ -36,6 +31,12 @@
             </a>
             </li>
 
+             <li class=" <?php echo ($this->uri->segment(2) == 'exam_attempt') ? 'active' : ''; ?>">
+            <a href="<?php echo base_url(); ?>semester_exam/exam_attempt">
+            <i class="fa fa-hourglass"></i>
+            <span><?php echo $this->lang->line('exam').'&nbsp;'. $this->lang->line('attempt'); ?></span>
+            </a>
+            </li>
 
             <li class=" <?php echo ($this->uri->segment(2) == 'examresult') ? 'active' : ''; ?>">
             <a href="<?php echo base_url(); ?>semester_exam/examresult/admitcard">
@@ -45,13 +46,16 @@
             </li>
 
 
-
             <li class=" <?php echo ($this->uri->segment(2) == 'online_examination_instruction') ? 'active' : ''; ?>">
             <a href="<?php echo base_url(); ?>semester_exam/examresult/marksheet">
             <i class="fa fa-certificate"></i>
             <span><?php echo $this->lang->line('print') . " " . $this->lang->line('marksheet'); ?></span>
             </a>
             </li>
+
+
+
+           
 
 
             <li class=" <?php echo ($this->uri->segment(2) == 'online_examination_instruction') ? 'active' : ''; ?>">

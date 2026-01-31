@@ -980,7 +980,7 @@ $lang['are_you_sure_you_want_to_submit_this_exam'] = "Are you sure, you want to 
 $lang['assign'] = "Assign";
 $lang['attachment'] = "Attachment";
 $lang['attempt'] = "Attempt";
-$lang['attempt'] = "Attempt";
+
 $lang['attempted'] = "Attempted";
 $lang['attendence'] = "Attendance";
 $lang['attendence_type_id'] = "Attendance Type Id";
