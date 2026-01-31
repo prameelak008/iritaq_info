@@ -46,11 +46,8 @@
             <div class="box-header with-border">
 
 
-<<<<<<< HEAD
 
 
-=======
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             <h3 class="box-title"><?php echo $this->lang->line('subject').'&nbsp;&nbsp;'.$this->lang->line('substitute'); ?></h3>
             </div><!-- /.box-header -->
 
@@ -75,7 +72,6 @@
 
 
 
-<<<<<<< HEAD
                 <div class="form-group">           
                 <?= dropdownlist_program(
                 $programs,              // Array of programs from DB
@@ -99,9 +95,6 @@
 
 
             <!-- <div class="form-group">
-=======
-            <div class="form-group">
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             <label for="program"><?php echo $this->lang->line('programee_type'); ?></label>
             <select name="program_type" id="program_type" class="form-control" >
             <option value=""><?php echo $this->lang->line('type'); ?></option>
@@ -147,11 +140,7 @@
             ><?php  echo $sem_type['st_name'];  ?></option>
             <?php } ?>
             </select>
-<<<<<<< HEAD
        
-=======
-            <!-- <span class="text-danger"><?php echo form_error('semester_semtype'); ?></span> -->
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             </div>
             
 
@@ -187,15 +176,8 @@
             }
             ?>
             </select> 
-<<<<<<< HEAD
           
             </div> -->
-=======
-            <!-- <span class="text-danger"><?php echo form_error('batch_group'); ?></span> -->
-            </div>
-
-
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
 
 
@@ -221,20 +203,16 @@
             <!-- <span class="text-danger"><?php echo form_error('subject_groups'); ?></span> -->
             </div>
 
-<<<<<<< HEAD
               <div class="form-group">
                 <label for="exampleInputEmail1"><?php echo $this->lang->line('subject'); ?><small class="req"> *</small></label>
                 <select name="subjects" id="subjects"  class="form-control">                 
                 </select>
                 <span class="text-danger"><?php echo form_error('subjects'); ?></span>
                 </div>
-=======
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
 
 
 
-<<<<<<< HEAD
                 <div class="form-group">
                 <label for="paper">Paper<small class="req"> *</small></label>
                 <select id="paper" name="paper"   class="form-control">
@@ -247,9 +225,6 @@
 
 
             <!-- <div class="form-group">
-=======
-            <div class="form-group">
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             <label for="batch"><?php echo $this->lang->line('subject'); ?></label>
             <select name="subject" id="subject" class="form-control" >
             <option value=""><?php echo $this->lang->line('paper'); ?></option>                  
@@ -259,7 +234,6 @@
             </option>
             <?php endforeach; ?>
             </select>
-<<<<<<< HEAD
             <span class="text-danger"><?php echo form_error('paper'); ?></span>
             </div>  -->
 
@@ -281,13 +255,6 @@
 
         </div>
 
-=======
-            <!-- <span class="text-danger"><?php echo form_error('paper'); ?></span> -->
-            </div> 
-
-
-
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             <div class="form-group">
             <label for="batch"><?php echo $this->lang->line('substituted').'&nbsp;&nbsp;'. $this->lang->line('paper'); ?></label>
             <select class="form-control " name="substitute_subjectpaper" id="substitute_subjectpaper">
@@ -297,13 +264,8 @@
             </option>
             <?php endforeach; ?>
             </select>
-<<<<<<< HEAD
             
             </div> -->
-=======
-            <!-- <span class="text-danger"><?php echo form_error('substitute_subjectpaper'); ?></span> -->
-            </div>
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
 
             <div class="form-group">
@@ -341,10 +303,6 @@
             <span class="text-danger"><?php echo form_error('remarks'); ?></span>
             </div> 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             <div class="box-footer">
             <button type="submit" class="btn btn-info pull-right"><?php echo $this->lang->line('save'); ?></button>
             </div>
@@ -412,28 +370,20 @@
             <tbody>               
 
             <?php
-<<<<<<< HEAD
 
 
  
-=======
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             foreach($get_subjectlist as $subjectlist)
             {
             ?>
             <tr>
             <td><input type="checkbox" class="allcheckbox" value="<?php echo $subjectlist['substitute_id']; ?>"></td>
-<<<<<<< HEAD
             <td><?php echo $subjectlist['staff_name']; ?></td>
-=======
-            <td></td>
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
             <td><?php echo $subjectlist['prog_type_name']; ?></td>
             <td><?php echo $subjectlist['p_name']; ?></td>
             <td><?php echo $subjectlist['st_name']; ?></td>
             <td><?php echo $subjectlist['batch_group_name']; ?></td>
-<<<<<<< HEAD
             <td><?php echo $subjectlist['semester_subject_groups']; ?></td>
             <td><?php echo $subjectlist['subject_name']; ?></td>
             <td><?php echo $subjectlist['paper_name']; ?></td>
@@ -441,15 +391,6 @@
             <td>
             <div class="material-switch switchcheck">
             <input id="is_status_<?php echo $subjectlist['substitute_id']; ?>" name="is_status" type="checkbox" class="chk" value="1" <?php echo ($subjectlist['substitute_status'] == 1 ? 'checked' : ''); ?> onchange="updateStatus(<?php echo $subjectlist['substitute_id']; ?>, this.checked)">
-=======
-            <td></td>
-            <td></td>
-            <td></td>
-
-            <td>
-            <div class="material-switch switchcheck">
-            <input id="is_status_<?php echo $subjectlist['substitute_id']; ?>" name="is_status" type="checkbox" class="chk" value="1" <?php echo ($subjectlist['substitute_substitute_status'] == 1 ? 'checked' : ''); ?> onchange="updateStatus(<?php echo $subjectlist['substitute_id']; ?>, this.checked)">
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             <label for="is_status_<?php echo $subjectlist['substitute_id']; ?>" class="label-success"></label>
             </div>
             </td>
@@ -484,7 +425,6 @@
 
 
             <script>
-<<<<<<< HEAD
         //     $(document).ready(function()
         //     {
         //     $('#program_type').change(function()
@@ -526,35 +466,6 @@
                 xhr.send("id=" + id + "&status=" + (status ? 1 : 0));
                 }
 
-=======
-            $(document).ready(function()
-            {
-            $('#program_type').change(function()
-            { 
-            var prog_type_id = $(this).val();
-            if(prog_type_id != ''){
-            $.ajax({
-            url: "<?php echo base_url('semester/Assignsubjects/getpgm_by_pgmtype'); ?>",
-            method: "POST",
-            data: { prog_type_id: prog_type_id },
-            dataType: "json",
-            success: function(data){
-            $('#programe').empty();
-            $('#programe').append('<option value=""><?php echo $this->lang->line("select"); ?></option>');
-            $.each(data, function(key, value){
-            $('#programe').append('<option value="'+ value.id +'">'+ value.p_name +'</option>');
-            });
-            }
-            });
-            } else {
-            $('#programe').html('<option value=""><?php echo $this->lang->line("select"); ?></option>');
-            }
-            });
-            });  
-
-
-
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
             $(document).ready(function() {
             $('#subject_groups').change(function() 
@@ -637,7 +548,6 @@
             });
             }
             });
-<<<<<<< HEAD
 
 
 
@@ -699,7 +609,5 @@
                 });
                 }); 
 
-=======
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             </script>
 

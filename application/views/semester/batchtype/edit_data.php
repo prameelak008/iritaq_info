@@ -191,12 +191,8 @@
             <tr>
             <th><input type="checkbox" id="select_all"></th>
             <th><?php echo $this->lang->line('batch_id'); ?></th>
-<<<<<<< HEAD
             <th><?php echo $this->lang->line('programee').'&nbsp;'.$this->lang->line('type'); ?></th>
               <th><?php echo $this->lang->line('programee'); ?> </th>
-=======
-            <th><?php echo $this->lang->line('programee').'&nbsp;'.$this->lang->line('type'); ?>/<?php echo $this->lang->line('programee'); ?> </th>
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
               <th><?php echo $this->lang->line('batch_name'); ?>
             </th>
             <th><?php echo $this->lang->line('batch_code'); ?> </th>         
@@ -217,12 +213,8 @@
             <td><input type="checkbox" class="batch_checkbox" value="<?php echo $batch['b_id']; ?>"></td>                          
             <td><?php  echo $batch['b_bid']; ?></td>
 
-<<<<<<< HEAD
             <td><?php  echo $batch['prog_type_name']; ?></td>
             <td><?php  echo $batch['p_name']; ?></td>
-=======
-            <td><?php echo trim(($batch['prog_type_name'] ? $batch['prog_type_name'].' - ' : '').$batch['p_name']); ?></td>
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
            
 
 

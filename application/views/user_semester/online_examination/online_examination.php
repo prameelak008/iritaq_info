@@ -695,11 +695,7 @@
 
 
 
-<<<<<<< HEAD
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-=======
-  <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                 <script type="text/javascript">
                 $(document).ready(function () 
                 {            
@@ -710,12 +706,9 @@
 
                 $(document).on('change', '#exam_group_id', function (e) {
                 var exam_group_id = $(this).val();
-<<<<<<< HEAD
 
 
                 alert(exam_group_id)
-=======
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                 // alert('Exam group changed to: ' + exam_group_id); 
                 $('#exam_id').html("");
                 getExamByExamgroup(exam_group_id, 0);
@@ -1011,10 +1004,6 @@
             $('#amount').on('change', change_scheme_code);
             }            
             });
-<<<<<<< HEAD
-
-=======
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             </script>
 
                     

@@ -210,12 +210,8 @@
             <tr>
             <th><input type="checkbox" id="select_all"></th>
             <th><?php echo $this->lang->line('slno'); ?></th>
-<<<<<<< HEAD
             <th><?php echo $this->lang->line('type'); ?> </th>
             <th><?php echo $this->lang->line('programee'); ?> </th>
-=======
-            <th><?php echo $this->lang->line('type'); ?>/<?php echo $this->lang->line('programee'); ?> </th>
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
             <th><?php echo $this->lang->line('semester'); ?> </th>
             <th><?php echo $this->lang->line('batch'); ?> </th>
@@ -235,12 +231,8 @@
             <tr>
             <td><input type="checkbox" class="allcheckbox" value="<?php echo $subjects['sem_assign_id']; ?>"></td>
             <td><?php  echo $slno; ?></td>
-<<<<<<< HEAD
             <td><?php  echo $subjects['prog_type_name']; ?></td>
             <td><?php  echo $subjects['p_name']; ?></td>
-=======
-            <td><?php echo trim(($subjects['prog_type_name'] ? $subjects['prog_type_name'].' - ' : '').$subjects['p_name']); ?></td>
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             <td><?php  echo $subjects['st_name']; ?></td>
             <td><?php  echo $subjects['batch_group_name']; ?></td> 
             <td><?php  echo $subjects['group_names']; ?></td>           

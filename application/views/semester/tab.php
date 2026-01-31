@@ -182,7 +182,6 @@
                   
                   
                   <div class="form-group">
-<<<<<<< HEAD
                   <label for="exampleInputEmail1"><?php echo $this->lang->line('programee_type'); ?><small class="req"> *</small></label>
                   <select name="program_type" id="program_type" class="form-control" >
                   <option value=""><?php echo $this->lang->line('programmetype'); ?></option>
@@ -204,30 +203,6 @@
                   <select name="programe" id="programe" class="form-control">
                   </select>
                   <span class="text-danger"><?php echo form_error('programe'); ?></span>
-=======
-                  <label for="programe"><?php echo $this->lang->line('programee'); ?><small class="req"> *</small></label>
-                  <input type="hidden" name="program_type" id="program_type" value="<?php echo set_value('program_type'); ?>"/>
-                  <select name="programe" id="programe" class="form-control">
-                  <option value=""><?php echo $this->lang->line('select'); ?></option>
-                  <?php if (!empty($program_groups)): ?>
-                  <?php foreach ($program_groups as $group): ?>
-                  <optgroup label="<?php echo $group['prog_type_name']; ?>" data-prog-type="<?php echo $group['prog_type_id']; ?>">
-                  <?php if (!empty($group['programs'])): ?>
-                  <?php foreach ($group['programs'] as $program): ?>
-                  <option value="<?php echo $program['id']; ?>" data-prog-type="<?php echo $group['prog_type_id']; ?>" <?php echo set_select('programe', $program['id']); ?>>
-                  <?php echo $program['p_name']; ?>
-                  </option>
-                  <?php endforeach; ?>
-                  <?php else: ?>
-                  <option value="" disabled>-</option>
-                  <?php endif; ?>
-                  </optgroup>
-                  <?php endforeach; ?>
-                  <?php endif; ?>
-                  </select>
-                  <span class="text-danger"><?php echo form_error('programe'); ?></span>
-                  <span class="text-danger"><?php echo form_error('program_type'); ?></span>
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                   </div>
 
 
@@ -300,16 +275,10 @@
                   <thead>
                   <tr>
                   <th><?php echo $this->lang->line('slno'); ?></th>
-<<<<<<< HEAD
                   <th><?php echo $this->lang->line('programee_type'); ?></th>
                   <th><?php echo $this->lang->line('programee_id'); ?></th>
                   <th><?php echo $this->lang->line('programee_code'); ?></th>
                   <th><?php echo $this->lang->line('programee_name'); ?></th>
-=======
-                  <th><?php echo $this->lang->line('programee_type').' & '.$this->lang->line('programee_name'); ?></th>
-                  <th><?php echo $this->lang->line('programee_id'); ?></th>
-                  <th><?php echo $this->lang->line('programee_code'); ?></th>
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                   <th><?php echo $this->lang->line('date_from'); ?> </th>
                   <th><?php echo $this->lang->line('date_to'); ?> </th>
                   <th><?php echo $this->lang->line('no_of_semester'); ?> </th>
@@ -327,16 +296,10 @@
                   ?>
                   <tr>
                   <td><?php  echo $slno; ?></td>
-<<<<<<< HEAD
                   <td><?php  echo $duration['prog_type_name']; ?></td>  
                   <td><?php  echo $duration['p_id']; ?></td>
                   <td><?php  echo $duration['p_code']; ?></td>
                   <td><?php  echo $duration['p_name']; ?></td>
-=======
-                  <td><?php  echo $duration['prog_type_name'].' – '.$duration['p_name']; ?></td>  
-                  <td><?php  echo $duration['p_id']; ?></td>
-                  <td><?php  echo $duration['p_code']; ?></td>
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                   <td><?php  echo $duration['date_from']; ?></td>
                   <td><?php  echo $duration['date_to']; ?></td>         
                   <td><?php  echo $duration['no_of_semester']; ?></td>
@@ -1210,7 +1173,6 @@
 
                   $('#program_id').val(data.duration_id);
 
-<<<<<<< HEAD
                   $('#program_type').empty();
                   $('#program_type').append('<option value="' + data.prog_type_id + '">' + data.prog_type_name + '</option>');
 
@@ -1222,25 +1184,6 @@
 
                   $('#programe').empty();
                   $('#programe').append('<option value="' + data.id + '">' + data.p_name + '</option>'); 
-=======
-                  var programId = data.Program_id || data.id;
-                  var programTypeId = data.prog_type_id || '';
-                  var programName = data.p_name || '';
-
-                  if (programId) {
-                  var $programSelect = $('#programe');
-
-                  if ($programSelect.find('option[value="' + programId + '"]').length === 0) {
-                  $programSelect.append('<option value="' + programId + '" data-prog-type="' + programTypeId + '">' + programName + '</option>');
-                  }
-
-                  $programSelect.val(programId).trigger('change');
-                  $('#program_type').val(programTypeId);
-                  } else {
-                  $('#programe').val('').trigger('change');
-                  $('#program_type').val('');
-                  }
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
 
                   $('#date_from').val(data.date_from);
@@ -1446,7 +1389,6 @@
 
                   $(document).ready(function()
                   {
-<<<<<<< HEAD
                   $('#program_type').change(function()
                   {                 
                   var prog_type_id = $(this).val();
@@ -1470,20 +1412,6 @@
                   $('#programe').html('<option value=""><?php echo $this->lang->line("select"); ?></option>');
                   }
                   });
-=======
-                  function syncProgramTypeField()
-                  {
-                  var selectedType = $('#programe option:selected').data('prog-type') || '';
-                  $('#program_type').val(selectedType);
-                  }
-
-                  $('#programe').on('change', function()
-                  {
-                  syncProgramTypeField();
-                  });
-
-                  syncProgramTypeField();
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                   });
 
 
@@ -2058,11 +1986,6 @@ $('#form2, #form3, #form4').on('submit', function() {
 
                     // Reset the program_id to ensure it's treated as a new entry
                     $('#program_id').val('');
-<<<<<<< HEAD
-=======
-                    $('#programe').val('').trigger('change');
-                    $('#program_type').val('');
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
                     // Switch to the first tab
                     $('a[href="#tab_1"]').tab('show');

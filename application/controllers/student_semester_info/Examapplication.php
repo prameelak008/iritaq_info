@@ -17,12 +17,7 @@
 
 
             public function onlineExamination()
-<<<<<<< HEAD
             {                
-=======
-            {
-                
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             // $data['parameters']             = file_get_contents(APPPATH . 'views/user_semester/payment_store/parameters.json'); 
             
             
@@ -31,22 +26,12 @@
             $this->session->set_userdata('top_menu', 'Examinations');
             $this->session->set_userdata('sub_menu', 'Examinations/applyonlineExamination'); 
 
-<<<<<<< HEAD
             $data['parameters']             = $this->payment_parameters->getArray();
             $data['sem']                    = $this->sem_student;
             $sem_group_id                   = $this->sem_group_id;
             $student_id                     = $this->student_id; 
             $firstname                      = $this->firstname; 
             $data['sess_firstname']         = $firstname;       
-=======
-            $data['parameters']     = $this->payment_parameters->getArray();
-            $data['sem']            = $this->sem_student;
-            $sem_group_id           = $this->sem_group_id;
-            $student_id             = $this->student_id; 
-            $firstname              = $this->firstname; 
-            $data['sess_firstname'] = $firstname; 
-       
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
             // $sem                            =    $this->session->userdata('sem_student'); 
 

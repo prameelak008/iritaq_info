@@ -13,16 +13,8 @@
             }
 
 
-<<<<<<< HEAD
             public function index()
             {            
-=======
-
-
-
-            public function index()
-            {             
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
             $this->session->set_userdata('top_menu', 'Examinations');
             $this->session->set_userdata('sub_menu', 'examSchedule/index');

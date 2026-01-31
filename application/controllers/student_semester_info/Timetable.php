@@ -14,11 +14,7 @@
             
 
 
-<<<<<<< HEAD
 /*
-=======
-
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
             public function index001()
             {            
@@ -50,10 +46,7 @@
            
             $this->load->view('layout/semester/footer', $data);         
             }
-<<<<<<< HEAD
             */
-=======
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
 
 
@@ -61,17 +54,12 @@
 
             public function index()
             {
-<<<<<<< HEAD
               // echo $this->session->has_userdata('sem_student');
          
             $sem = $this->session->userdata('sem_student');
             $sem_group_id = (int)$sem['sem_group_id'];
         
 
-=======
-            $sem = $this->session->userdata('sem_student');
-            $sem_group_id = (int)$sem['sem_group_id'];
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
             // Get days from customlib
             $days = $this->customlib->getDaysnameWithoutLang();
@@ -94,15 +82,7 @@
 
             $this->load->view('layout/semester/header', $data);
             $this->load->view('user_semester/user/timetableList', $data);
-<<<<<<< HEAD
             $this->load->view('layout/semester/datatables', $data);  
             $this->load->view('layout/semester/footer', $data);
             }
             }
-=======
-              $this->load->view('layout/semester/datatables', $data);  
-            $this->load->view('layout/semester/footer', $data);
-            }
-            }
-
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956

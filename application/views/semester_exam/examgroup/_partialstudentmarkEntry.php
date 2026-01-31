@@ -36,11 +36,7 @@
         <div class="row">
 
             <div class="col-md-12">
-<<<<<<< HEAD
                 <input type="hidden" name="exam_group_class_batch_exam_subject_id" value="<?php echo $exam_group_class_batch_exam_subject_id; ?>">
-=======
-                <input type="text" name="exam_group_class_batch_exam_subject_id" value="<?php echo $exam_group_class_batch_exam_subject_id; ?>">
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                 <div class="table-responsive">
 
                     <table class="table table-striped">

@@ -34,11 +34,7 @@
 
 
 
-<<<<<<< HEAD
                 public function index001()
-=======
-                public function index()
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                 {                   
                 $sem                        = $this->session->userdata('sem_student');  
                 $sem_group_id               = $sem['sem_group_id'];
@@ -46,13 +42,8 @@
                 $data['firstname']          = $sem['firstname'];
 
                 // Initialize date variables
-<<<<<<< HEAD
                 $fromdate                   = '';
                 $todate                     = '';
-=======
-                $fromdate = '';
-                $todate = '';
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
                 // Form validation
                 $this->form_validation->set_rules('fromdate', 'From Date', 'trim|required|xss_clean');
@@ -69,7 +60,6 @@
                 // $this->load->view('layout/semester/footer', $data); 
                 } else {
                 // Validation passed - filter by dates
-<<<<<<< HEAD
                 $fromdate                           = $this->input->post('fromdate');
                 $todate                             = $this->input->post('todate');
 
@@ -79,23 +69,11 @@
                 // Pass dates to view for repopulating form
                 $data['fromdate']                   = $fromdate;
                 $data['todate']                     = $todate;
-=======
-                $fromdate = $this->input->post('fromdate');
-                $todate = $this->input->post('todate');
-
-                $data['get_datewise_attendence'] = $this->semesterauth_model->get_datewise($student_id, $sem_group_id, $fromdate, $todate);
-                }
-
-                // Pass dates to view for repopulating form
-                $data['fromdate'] = $fromdate;
-                $data['todate'] = $todate;
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
                 $this->load->view('layout/semester/header', $data);
                 $this->load->view('user_semester/user/date_wise_attendance', $data);
                 $this->load->view('layout/semester/datatables', $data);
                 $this->load->view('layout/semester/footer', $data); 
-<<<<<<< HEAD
                 } 
 
 
@@ -143,9 +121,6 @@
 
                 
                 
-=======
-                }  
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
                 public function add_leave()
                 {

@@ -106,48 +106,6 @@
                     
 
 
-<<<<<<< HEAD
-=======
-                    $program_rows = $this->db
-                    ->select('pr.id as program_id, pr.p_name, pt.prog_type_id, pt.prog_type_name')
-                    ->from('programee pr')
-                    ->join('programme_type pt', 'pt.prog_type_id = pr.p_type', 'left')
-                    ->where('pr.p_status', 1)
-                    ->order_by('pt.prog_type_name ASC, pr.p_name ASC')
-                    ->get()
-                    ->result_array();
-
-                    $grouped_programs = array();
-
-                    foreach ($data['Programmetype_list'] as $type_row) {
-                    $grouped_programs[$type_row['prog_type_id']] = array(
-                    'prog_type_id'   => $type_row['prog_type_id'],
-                    'prog_type_name' => $type_row['prog_type_name'],
-                    'programs'       => array()
-                    );
-                    }
-
-                    foreach ($program_rows as $row) {
-                    $type_id = $row['prog_type_id'];
-
-                    if (!isset($grouped_programs[$type_id])) {
-                    $grouped_programs[$type_id] = array(
-                    'prog_type_id'   => $type_id,
-                    'prog_type_name' => $row['prog_type_name'],
-                    'programs'       => array()
-                    );
-                    }
-
-                    $grouped_programs[$type_id]['programs'][] = array(
-                    'id'     => $row['program_id'],
-                    'p_name' => $row['p_name']
-                    );
-                    }
-
-                    $data['program_groups'] = array_values($grouped_programs);
-
-
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                     $this->load->view('layout/header', $data);
                     $this->load->view('semester/tab', $data);                
                     $this->load->view('layout/footer', $data);

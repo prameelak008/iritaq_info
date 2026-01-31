@@ -19,11 +19,7 @@
             $this->load->library('form_validation');
             $this->load->library('mailsmsconf');
             $this->blood_group        = $this->config->item('bloodgroup');
-            }       
-
-
-
-
+            } 
 
 
             public function forward_to_enrol()
@@ -67,6 +63,8 @@
             $this->load->view('semester_enrollment/forwardenroll', $data);
             $this->load->view('layout/footer');
             }
+
+            
 
 
 

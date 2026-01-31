@@ -1,4 +1,3 @@
-<<<<<<< HEAD
            
           <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -18,9 +17,6 @@
 
            
             <div class="row pb10">
-=======
-           <div class="row pb10">
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
 
             <div class="col-lg-2 col-md-3 col-sm-12">   
             <p class="examinfo"><span><?php echo $this->lang->line('exam'); ?></span><?php echo $examgroupDetail->exam; ?></p>
@@ -51,21 +47,12 @@
             <span class="text-danger"><?php echo form_error('file'); ?></span></div>
             </div>
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             <div class="col-auto">
             <input type="submit" class="btn btn-primary mb-3" name="importSubmit" value="Import">
             </div>
             </form>
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             </div>    
             <div class="divider2"></div>
             <div class="row">
@@ -74,19 +61,10 @@
             </div>
             </div>
 
-<<<<<<< HEAD
             
 
             <form action="<?php echo site_url('semester_exam/examgroup/addexamsubject') ?>" method="POST" class="ssaddSubject ptt10 autoscroll">
             <input type="text" name="exam_group_class_batch_exam_id" value="<?php echo $exam_id; ?>">
-=======
-
-
-            
-
-            <form action="<?php echo site_url('semester_exam/examgroup/addexamsubject') ?>" method="POST" class="ssaddSubject ptt10 autoscroll">
-            <input type="hidden" name="exam_group_class_batch_exam_id" value="<?php echo $exam_id; ?>">
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             <div class="">
             <table class="table table-bordered" id="item_table">
             <thead>
@@ -108,16 +86,10 @@
             <?php
             }
             ?>
-<<<<<<< HEAD
             </tr>
             </thead>
 
 
-=======
-
-            </tr>
-            </thead>
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             <?php         
 
             if (!empty($exam_subjects)) 
@@ -139,13 +111,7 @@
             <?php 
             $sub_code=($subject_value['code'] != "") ? " (".$subject_value['code'].")":"";
             echo $subject_value['name'].$sub_code; ?>
-<<<<<<< HEAD
             </option>
-=======
-
-            </option>
-
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             <?php
             }
             }
@@ -180,11 +146,8 @@
             </span>
             </div>
             </td>
-<<<<<<< HEAD
 
 
-=======
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             <td>
             <input class="form-control credit_hours tddm150" name="credit_hours_<?php echo $count; ?>" type="text" value="<?php echo $exam_subject_value->credit_hours; ?>"/>
             </td>
@@ -233,10 +196,6 @@
             <?php
             }
             ?>
-<<<<<<< HEAD
-=======
-
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
             </div>  
             </div>
             </form>
@@ -248,8 +207,5 @@
             $("select").select2();
             });
             </script>
-<<<<<<< HEAD
 
        
-=======
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956

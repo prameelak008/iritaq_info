@@ -42,11 +42,8 @@
                     </a>
                     </li>
 
-<<<<<<< HEAD
                     
 
-=======
->>>>>>> d118f7f6c5e54fefb367b87818d22f76b35a5956
                     <li class="col-lg-3 col-md-3 col-sm-6 <?php echo ($this->uri->segment(2) == 'Promote') ? 'active' : ''; ?>">
                     <a href="<?php echo base_url(); ?>semester_enrollment/Promote/">
                     <i class="fa fa-level-up"></i> <?php echo $this->lang->line('promote_students'); ?>
