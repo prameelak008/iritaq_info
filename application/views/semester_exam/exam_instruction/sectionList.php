@@ -31,12 +31,16 @@
             });
             </script>
 
+
+
             <div class="content-wrapper"> 
                 <section class="content-header">
                     <h1>
                         <i class="fa fa-usd"></i> <?php echo $this->lang->line('fee_charge'); ?>
                     </h1>
-                </section>          
+                </section>  
+                
+                
 
                 <!-- Main content -->
                 <section class="content">
@@ -44,6 +48,8 @@
                         <?php $this->load->view('layout/topbar_exam'); ?>
                     </div>
                     &nbsp;
+
+                    
 
                     <div class="row">
                         <div class="">

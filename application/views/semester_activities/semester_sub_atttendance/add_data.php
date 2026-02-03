@@ -628,19 +628,8 @@ $(document).on('change', '#sem_type, #attendanceDate', function () {
             }
             });
             });
-            });
-
-
-
-
-
-
-           
-
-
-
-
- </script>
+            });  
+        </script>
 
 
 

@@ -581,19 +581,7 @@
 
 
 
-            public function get_exam_subjects001($sem_group_id)
-            {                
-            $this->db->select('*,semester_subject_groups.id as sem_sub_group_id,subjects.id as subjectid');
-            $this->db->from('semester_assign_subjects');
-            $this->db->join('semester_subject_groups','semester_subject_groups.id=semester_assign_subjects.sem_assign_subjects_id');
-            $this->db->join('semester_subject_group_subjects','semester_subject_group_subjects.subject_group_id =semester_subject_groups.id');
-            $this->db->join('subjects','subjects.id =semester_subject_group_subjects.subject_id');
-            $this->db->where(array('semester_assign_subjects.sem_assign_group_id'=> $sem_group_id));
-            // $this->db->group_by('subjects.id');
-            $query    = $this->db->get();
-            $result   = $query->result_array();
-            return $result;  
-            } 
+          
 
 
             public function get_exam_subjects($sem_group_id)
@@ -733,5 +721,40 @@
                 // getStudentsAdmitCardByExamAndStudentID($students_array, $exam_id, $semgroup_id)
                 return $this->getStudentsAdmitCardByExamAndStudentID($students_array, (int)$exam_id, (int)$exam_group_id);
             }
+
+
+            ////////....................Exam Attempt
+
+
+                public function get_attempt_subjects($sem_type_id)
+                {
+                $this->db->select('*');
+                $this->db->from('semester_assign_subjects'); 
+                $this->db->join('semester_subject_groups', 'semester_subject_groups.id = semester_assign_subjects.sem_assign_subjects_id');
+                $this->db->join('semester_subject_group_subjects', 'semester_subject_group_subjects.subject_group_id = semester_subject_groups.id');
+                $this->db->join('subjects', 'subjects.id = semester_subject_group_subjects.subject_id');
+                $this->db->where('semester_assign_subjects.sem_assign_group_id', $sem_type_id);
+                $this->db->group_by('subjects.id');
+                $query    = $this->db->get();
+                return $query->result_array();
+                }
+
+
+
+
+                //////Exam Attempt- Student-Wise 
+
+                
+
+                public function get_attempt_students($sem_type_id)
+                {
+                $this->db->select('*');
+                $this->db->from('semester_students'); 
+                $this->db->join('semester_student_session', 'semester_student_session.student_id = semester_students.id');                
+                $this->db->where('semester_student_session.sem_group_id', $sem_type_id);                
+                $query    = $this->db->get();
+                return $query->result_array();
+                }
+
 
             }

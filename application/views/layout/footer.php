@@ -893,7 +893,7 @@
 
                 //Get semester batch type...................
 
-
+/*
     $(document).on('change', '#prog_id', function () 
     {
 
@@ -950,11 +950,66 @@
     });
 });
 
+*/
+
+
+
+
+$(document).on('change', '#prog_id, .prog_id', function () 
+{
+    const program_id  = $(this).val(); // 👈 Use $(this) instead of $('#prog_id')
+    const $select     = $('#sem_type, .sem_type');
+    
+    if (!program_id) {
+        $select.html('<option value="">-- Select Batch & Semester --</option>');
+        return;
+    }
+
+    $select.prop('disabled', true)
+           .html('<option value="">Loading...</option>');
+
+    $.ajax({
+        url: "<?= site_url('semester/assignsubjects/get_semester_batch_by_program'); ?>",
+        type: "POST",
+        dataType: "json",
+        data: { program_id: program_id },
+        success: function (data) {
+
+            let html = '<option value="">-- Select Batch & Semester --</option>';
+            let currentMode = '';
+
+            if (data.length > 0) {
+                data.forEach(row => {
+
+                    if (row.b_mode_name !== currentMode) {
+                        if (currentMode !== '') html += '</optgroup>';
+                        currentMode = row.b_mode_name;
+                        html += `<optgroup label="${currentMode}">`;
+                    }
+
+                    html += `
+                        <option value="${row.bchsem_id}">
+                            ${row.semester_name} - ${row.batch_group_name} - ${row.batch_group_year}
+                        </option>
+                    `;
+                });
+
+                html += '</optgroup>';
+            }
+
+            $select.html(html).prop('disabled', false);
+        }
+    });
+});
+
 
 $(document).ready(function () {
-    if ($('#prog_id').val()) {
-        $('#prog_id').trigger('change');
-    }
+    // Trigger change on ALL prog_id elements
+    $('#prog_id, .prog_id').each(function() {
+        if ($(this).val()) {
+            $(this).trigger('change');
+        }
+    });
 });
 
   
