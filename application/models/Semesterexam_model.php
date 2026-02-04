@@ -742,8 +742,7 @@
 
 
 
-                //////Exam Attempt- Student-Wise 
-
+                //////................................................Exam Attempt- Student-Wise
                 
 
                 public function get_attempt_students($sem_type_id)
@@ -757,4 +756,15 @@
                 }
 
 
-            }
+
+
+               public function get_attempt_limits($sem_type_id)
+{
+    $this->db->select('c_limit_id, c_sem_type_id, c_exam_type, c_max_attempts, c_valid_years, c_is_unlimited');
+    $this->db->where('c_sem_type_id', $sem_type_id);
+    $this->db->where('c_status', 1);
+    $query = $this->db->get('common_attempt_limits'); // ✅ Added table name
+    
+    return $query->result_array();
+}
+                }

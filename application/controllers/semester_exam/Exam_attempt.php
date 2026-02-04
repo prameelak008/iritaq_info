@@ -23,94 +23,158 @@
         }
 
 
+            // public function index()
+            // {
+            // $this->current_session = $this->setting_model->getCurrentSession();
+            // $this->session->set_userdata('top_menu', 'semester_exam');
+            // $data['examOptions'] = $this->exam_options; 
+            // $data['title'] = 'Instruction';
+            // $data['programs'] = $this->Semester_enrollment_model->get_program_list();
+            // $data['exam_subjects'] = [];
+
+            // if ($this->input->post()) 
+            // {
+            // $this->form_validation->set_rules('prog_id', $this->lang->line('programme'), 'trim|required'); 
+            // $this->form_validation->set_rules('sem_type', $this->lang->line('batch'), 'trim|required'); 
+
+            // if ($this->form_validation->run() == false) 
+            // {
+            // $sem_group_id = $this->input->post('sem_type');
+            // if ($sem_group_id) {
+            // $data['exam_subjects'] = $this->Semesterexam_model->get_exam_subjects($sem_group_id);
+            // }
+            // } 
+            // else
+
+            // { 
+            // $sem_type_id = $this->input->post('sem_type');
+            // $limits = $this->input->post('limits');
+            // $unlimited = $this->input->post('unlimited'); 
+            // $valid_year = $this->input->post('valid_year');
+
+            // if (!empty($limits)) 
+            // {
+            // foreach ($limits as $exam_type_id => $max_attempts)
+            // {
+            // $is_unlimited = (!empty($unlimited) && isset($unlimited[$exam_type_id])) ? 1 : 0;
+
+            // $insertData = [
+            // 'c_sem_type_id'   => $sem_type_id,
+            // 'c_exam_type'     => $exam_type_id,  // This is now 1, 2, 3, or 4
+            // 'c_max_attempts'  => $is_unlimited ? NULL : (int)$max_attempts,
+            // 'c_is_unlimited'  => $is_unlimited,
+            // 'c_valid_years'   => isset($valid_year[$exam_type_id]) ? (int)$valid_year[$exam_type_id] : 1,
+            // 'c_created_by'    => $this->session->userdata('user_id') ?? 1,
+            // 'c_created_at'    => date('Y-m-d H:i:s'),
+            // 'c_status'        => 1
+            // ];
+
+            // $this->db->insert('common_attempt_limits', $insertData);
+            // }
+
+            // $this->session->set_flashdata(
+            // 'msg',
+            // '<div class="alert alert-success">Attempt limits saved successfully</div>'
+            // );
+            // }
+
+            // redirect('semester_exam/exam_attempt');
+            // }
+            // }
+
+            // $this->load->view('layout/header', $data);
+            // $this->load->view('semester_exam/exam_instruction/exam_attempt', $data);
+            // $this->load->view('layout/footer', $data);         
+            // }
 
 
-        public function index()
-        {
-        $this->current_session = $this->setting_model->getCurrentSession();
-        $this->session->set_userdata('top_menu', 'semester_exam');
-        $data['examOptions']           =  $this->exam_options; 
-        $data['title']                 =  'Instruction';
-        $sem_group_id                  =   $this->input->post('sem_type');   
-        $get_exam_subjects             =   $this->Semesterexam_model->get_exam_subjects($sem_group_id);
-        $data['exam_subjects']         =   $get_exam_subjects;     
 
+            public function index()
+{
+    $this->current_session = $this->setting_model->getCurrentSession();
+    $this->session->set_userdata('top_menu', 'semester_exam');
+    $data['examOptions'] = $this->exam_options; 
+    $data['title'] = 'Instruction';
+    $data['programs'] = $this->Semester_enrollment_model->get_program_list();
+    $data['exam_subjects'] = [];
+
+    if ($this->input->post()) 
+    {
         $this->form_validation->set_rules('prog_id', $this->lang->line('programme'), 'trim|required'); 
         $this->form_validation->set_rules('sem_type', $this->lang->line('batch'), 'trim|required'); 
 
-        $data['programs']              =   $this->Semester_enrollment_model->get_program_list();    
-
         if ($this->form_validation->run() == false) 
-        {            
-
+        {
+            $sem_group_id = $this->input->post('sem_type');
+            if ($sem_group_id) {
+                $data['exam_subjects'] = $this->Semesterexam_model->get_exam_subjects($sem_group_id);
+            }
         } 
         else
-        {           
+        { 
+            $sem_type_id = $this->input->post('sem_type');
+            $limits = $this->input->post('limits');
+            $unlimited = $this->input->post('unlimited'); 
+            $valid_year = $this->input->post('valid_year');
 
-        $sem_type_id                    = $this->input->post('sem_type');
-        $attempts                       = $this->input->post('attempts');   // array
-        $unlimited                      = $this->input->post('unlimited');  // array OR NULL (only checked boxes)
+            if (!empty($limits)) 
+            {
+                foreach ($limits as $exam_type_id => $max_attempts)
+                {
+                    $is_unlimited = (!empty($unlimited) && isset($unlimited[$exam_type_id])) ? 1 : 0;
 
-        echo "<h3>Processed Data:</h3>";
-        echo "Sem Type ID: " . $sem_type_id . "<br>";
-        echo "Attempts: <pre>" . print_r($attempts, true) . "</pre>";
-        echo "Unlimited (checked only): <pre>" . print_r($unlimited, true) . "</pre>";
+                    // Check if record already exists
+                    $this->db->where('c_sem_type_id', $sem_type_id);
+                    $this->db->where('c_exam_type', $exam_type_id);
+                    $existing = $this->db->get('common_attempt_limits')->row();
 
-        if (!empty($attempts)) 
-        {
-        foreach ($attempts as $exam_type_id => $max_attempts) 
-        {
+                    $data_to_save = [
+                        'c_sem_type_id'   => $sem_type_id,
+                        'c_exam_type'     => $exam_type_id,
+                        'c_max_attempts'  => $is_unlimited ? NULL : (int)$max_attempts,
+                        'c_is_unlimited'  => $is_unlimited,
+                        'c_valid_years'   => isset($valid_year[$exam_type_id]) ? (int)$valid_year[$exam_type_id] : 1,
+                        'c_status'        => 1
+                    ];
 
-        // This is CORRECT: unchecked boxes won't be in $unlimited array
-        $is_unlimited = (!empty($unlimited) && isset($unlimited[$exam_type_id])) ? 1 : 0;
+                    if ($existing) {
+                        // Record exists - UPDATE
+                        $data_to_save['c_updated_by'] = $this->session->userdata('user_id') ?? 1;
+                        $data_to_save['c_updated_at'] = date('Y-m-d H:i:s');
+                        
+                        $this->db->where('c_limit_id', $existing->c_limit_id);
+                        $this->db->update('common_attempt_limits', $data_to_save);
+                    } else {
+                        // Record doesn't exist - INSERT
+                        $data_to_save['c_created_by'] = $this->session->userdata('user_id') ?? 1;
+                        $data_to_save['c_created_at'] = date('Y-m-d H:i:s');
+                        
+                        $this->db->insert('common_attempt_limits', $data_to_save);
+                    }
+                }
 
-        echo "Exam Type ID: $exam_type_id, Is Unlimited: $is_unlimited<br>";
+                $this->session->set_flashdata(
+                    'msg',
+                    '<div class="alert alert-success">Attempt limits saved successfully</div>'
+                );
+            }
 
-        $insertData = [
-        'c_sem_type_id'   => $sem_type_id,
-        'c_exam_type'     => $exam_type_id,
-        'c_max_attempts'  => $is_unlimited ? NULL : (int)$max_attempts,
-        'c_is_unlimited'  => $is_unlimited,
-        'c_created_by'    =>1, // Use session user ID
-        'c_created_at'    => date('Y-m-d H:i:s'),
-        'c_status'        => 1
-        ];
-
-        echo "Inserting: <pre>" . print_r($insertData, true) . "</pre>";
-
-        $this->db->insert('common_attempt_limits', $insertData);
-
-        if ($this->db->affected_rows() > 0) {
-        echo " Insert successful for exam_type_id: $exam_type_id<br>";
-        } else {
-        echo " Insert failed for exam_type_id: $exam_type_id<br>";
-        echo "Last Query: " . $this->db->last_query() . "<br>";
+            redirect('semester_exam/exam_attempt');
         }
-        }
+    }
 
-        $this->session->set_flashdata(
-        'msg',
-        '<div class="alert alert-success">Attempt limits saved successfully</div>'
-        );
-        } else {
-        echo " No attempts data found<br>";
-        }
+    $this->load->view('layout/header', $data);
+    $this->load->view('semester_exam/exam_instruction/exam_attempt', $data);
+    $this->load->view('layout/footer', $data);         
+}
 
-        // Redirect after processing
-        redirect('semester_exam/exam_attempt');
-        }          
-        $this->load->view('layout/header', $data);
-        $this->load->view('semester_exam/exam_instruction/exam_attempt', $data);
-        $this->load->view('layout/footer', $data);         
-        }
       
-        public function getexam_subjects()
-        {
-        $sem_type_id         =    $this->input->post('sem_type');;
-        $attempt_subjects    =    $this->Semesterexam_model->get_attempt_subjects($sem_type_id);  
-        echo  json_encode($attempt_subjects);
-        }        
-        
+            public function getexam_subjects()
+            {
+            $sem_type_id         =    $this->input->post('sem_type');;
+            $attempt_subjects    =    $this->Semesterexam_model->get_attempt_subjects($sem_type_id);  
+            echo  json_encode($attempt_subjects);
+            } 
 
 
         public function add_subject_attempt()
@@ -189,14 +253,213 @@
         //................................Student-Wise Attempts
 
         public function getexam_students()
-        {
-            
+        {            
         $sem_type_id         =    $this->input->post('sem_type');;
         $attempt_students    =    $this->Semesterexam_model->get_attempt_students($sem_type_id);  
         echo  json_encode($attempt_students);
         }
-        
-        
+
+
+        public function get_attempt_subjects_ajax() 
+        {
+        $sem_type_id = $this->input->post('sem_type');
+        $subjects    = $this->Semesterexam_model->get_attempt_subjects($sem_type_id);
+        echo json_encode($subjects);
         }
+
+
+
+
+        public function save_student_attempt() 
+        {            
+        // 1. Collect Input
+        $student_id   = $this->input->post('student_id');
+        $subject_id   = $this->input->post('subject_id');
+        $exam_type    = $this->input->post('exam_type');
+        $sem_group_id = $this->input->post('sem_group_id');
+        $attempts     = $this->input->post('attempt_count');
+        $desc         = $this->input->post('description');
+
+        // 2. Prepare Data Array
+        $data = array(
+            'student_id'    => $student_id,
+            // 'subject_id'    => $subject_id,
+            // 'exam_type'     => $exam_type,
+            // 'sem_group_id'  => $sem_group_id,
+            // 'attempts_used' => $attempts,
+            // 'description'   => $desc, // assuming you have this column or a log table
+            // 'updated_at'    => date('Y-m-d H:i:s')
+        );
+
+        // 3. Check if Record Exists
+        $this->db->where([
+            'student_id'      => $student_id,
+            // 'subject_id'   => $subject_id,
+            // 'exam_type'    => $exam_type,
+            // 'sem_group_id' => $sem_group_id
+        ]);
+
+
+        $query = $this->db->get('student_exam_attempts');
+
+        if ($query->num_rows() > 0) {
+            // UPDATE
+            $this->db->where('id', $query->row()->id);
+            $status = $this->db->update('student_exam_attempts', $data);
+        } else {
+            // INSERT
+            $data['created_at'] = date('Y-m-d H:i:s');
+            $status = $this->db->insert('student_exam_attempts', $data);
+        }
+
+        // 4. Return JSON response for AJAX
+        if ($status) {
+            echo json_encode(['status' => 'success', 'message' => 'Record updated successfully']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Failed to save record']);
+        }
+        }
+
+
+      public function get_existing_limits()
+{
+    $sem_type_id = $this->input->post('sem_type_id'); // ✅ Changed from 'sem_type' to 'sem_type_id'
+    
+    if (empty($sem_type_id)) {
+        echo json_encode([
+            'success' => false,
+            'data' => null,
+            'message' => 'No semester type selected'
+        ]);
+        return;
+    }
+    
+    $limits = $this->Semesterexam_model->get_attempt_limits($sem_type_id);
+    
+    // ✅ Return proper JSON format with success flag
+    if (!empty($limits)) {
+        echo json_encode([
+            'success' => true,
+            'data' => $limits,
+            'message' => 'Limits loaded successfully'
+        ]);
+    } else {
+        echo json_encode([
+            'success' => false,
+            'data' => null,
+            'message' => 'No limits found'
+        ]);
+    }
+}
+
+
+
+
+        /////....................................................Student-Wise Attempts
+
+
+
+//         public function get_student_subject_attempts() {
+//     $student_id = $this->input->post('student_id');
+//     $sem_type = $this->input->post('sem_type');
+    
+//     // Logic to join your subjects table with your exam_attempts table
+//     // filtering by the specific student and semester
+//     $data = $this->ExamModel->getStudentSubjectsWithAttempts($student_id, $sem_type);
+    
+//     echo json_encode($data);
+// }
+
+
+
+
+
+//         public function student_attempts()
+// {
+//     $this->current_session = $this->setting_model->getCurrentSession();
+//     $this->session->set_userdata('top_menu', 'semester_exam');
+
+//     $data['title']    = 'Student Wise Attempts';
+//     $data['programs'] = $this->Semester_enrollment_model->get_program_list();
+
+//     /* sem_type from POST (form submit) or GET (redirect after save) */
+//     $sem_type_id = $this->input->post('sem_type');
+//     if (empty($sem_type_id)) {
+//         $sem_type_id = $this->input->get('sem_type');
+//     }
+//     $data['sem_type_id'] = $sem_type_id;
+
+//     /* student list – only if batch is selected */
+//     $data['students'] = [];
+//     if (!empty($sem_type_id))
+//     {
+//         $data['students'] = $this->Semesterexam_model->get_attempt_students($sem_type_id);
+//     }
+
+//     $this->load->view('layout/header', $data);
+//     $this->load->view('semester_exam/exam_instruction/exam_attempt_students', $data);
+//     $this->load->view('layout/footer', $data);
+// }
+
+
+// public function get_student_subjects_data()
+// {
+//     $student_id = $this->input->post('student_id');
+//     $sem_type   = $this->input->post('sem_type');
+
+//     if (empty($student_id) || empty($sem_type)) {
+//         echo json_encode([]);
+//         return;
+//     }
+
+//     /* ── subjects enrolled by this student in this batch ── */
+//     $this->db->select([
+//         'student_subjects.subject_id',
+//         'subjects.subject_name',
+//         'subjects.subject_code'
+//     ]);
+//     $this->db->from('student_subjects');
+//     $this->db->join('subjects', 'subjects.id = student_subjects.subject_id');
+//     $this->db->where('student_subjects.student_id',   $student_id);
+//     $this->db->where('student_subjects.sem_group_id', $sem_type);
+//     $this->db->order_by('subjects.subject_name ASC');
+
+//     $subjects = $this->db->get()->result_array();
+
+//     if (empty($subjects)) {
+//         echo json_encode([]);
+//         return;
+//     }
+
+//     /* ── attempt rows for this student in this batch ── */
+//     $subjectIds = array_column($subjects, 'subject_id');
+
+//     $this->db->select('id, subject_id, exam_type, attempts_used, max_attempts');
+//     $this->db->from('student_exam_attempts');
+//     $this->db->where('student_id',   $student_id);
+//     $this->db->where('sem_group_id', $sem_type);
+//     $this->db->where_in('subject_id', $subjectIds);
+
+//     $attempts = $this->db->get()->result_array();
+
+//     /* ── build map: subject_id → { exam_type → row } ── */
+//     $attemptMap = [];
+//     foreach ($attempts as $a) {
+//         $attemptMap[$a['subject_id']][$a['exam_type']] = $a;
+//     }
+
+//     /* ── merge into subjects ── */
+//     foreach ($subjects as &$subj) {
+//         $subj['attempts'] = isset($attemptMap[$subj['subject_id']])
+//                             ? $attemptMap[$subj['subject_id']]
+//                             : [];
+//     }
+//     unset($subj);
+
+//     echo json_encode($subjects);
+// }
+
+        
+}
 
 

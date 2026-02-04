@@ -2026,27 +2026,26 @@ $lang['batch_name']          = 'Batch Name';
 $lang['batch_type']          = 'Batch Type';
 $lang['batch_group']         = 'Batch Group';
 
-$lang['batch']                 = 'Batch';
+$lang['batch']                   = 'Batch';
+$lang['batch_semester']          = 'Batch Semester';
+$lang['semester_no']             = 'No Of Semester';
 
-$lang['batch_semester']        = 'Batch Semester';
-$lang['semester_no']           = 'No Of Semester';
+$lang['programee_category']      = 'Program Category';
+$lang['no_of_semester']          = 'No Of Semester';
+$lang['no_of_months']            = 'No Of Months';
+$lang['no_of_days']              = 'No Of Days';
 
-$lang['programee_category']    = 'Program Category';
-$lang['no_of_semester']        = 'No Of Semester';
-$lang['no_of_months']          = 'No Of Months';
-$lang['no_of_days']            = 'No Of Days';
+$lang['working']                 = 'Working';
+$lang['learning']                = 'Learning';
+$lang['holidays']                = 'Holidays';
+$lang['capacity']                = 'Capacity';
 
-$lang['working']               = 'Working';
-$lang['learning']              = 'Learning';
-$lang['holidays']              = 'Holidays';
-$lang['capacity']              = 'Capacity';
-
-$lang['assignprogramme']       = 'Assign Program';
-$lang['programme']             = 'Program';
-$lang['classroom']             = 'Class Room';
-$lang['capacity']              = 'Capacity';
-$lang['building_block']        = 'Building Block';
-$lang['floor']                 = 'Floor';
+$lang['assignprogramme']         = 'Assign Program';
+$lang['programme']               = 'Program';
+$lang['classroom']               = 'Class Room';
+$lang['capacity']                = 'Capacity';
+$lang['building_block']          = 'Building Block';
+$lang['floor']                   = 'Floor';
 
 
 $lang['programmetype']           = 'Program Type';
@@ -2116,9 +2115,7 @@ $lang['exam_management']    =    'Exam Management';
 
 $lang['transfer_certificate'] =  'Transfer Certificate';
 
-
-
-$lang['student_nexus']       =  'Student Nexus';
+$lang['student_nexus']        =  'Student Nexus';
 
 
 
