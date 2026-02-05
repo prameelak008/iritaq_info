@@ -260,6 +260,7 @@
                   echo "12";
                   }
                   ?>">
+
                   <!-- general form elements -->
                   <div class="box box-primary">
                   <div class="box-header ptbnull">
@@ -275,10 +276,9 @@
                   <thead>
                   <tr>
                   <th><?php echo $this->lang->line('slno'); ?></th>
-                  <th><?php echo $this->lang->line('programee_type'); ?></th>
+                  <th><?php echo $this->lang->line('programee_type').'/'. $this->lang->line('programee_name'); ?></th>
                   <th><?php echo $this->lang->line('programee_id'); ?></th>
-                  <th><?php echo $this->lang->line('programee_code'); ?></th>
-                  <th><?php echo $this->lang->line('programee_name'); ?></th>
+                  <th><?php echo $this->lang->line('programee_code'); ?></th>             
                   <th><?php echo $this->lang->line('date_from'); ?> </th>
                   <th><?php echo $this->lang->line('date_to'); ?> </th>
                   <th><?php echo $this->lang->line('no_of_semester'); ?> </th>
@@ -296,10 +296,9 @@
                   ?>
                   <tr>
                   <td><?php  echo $slno; ?></td>
-                  <td><?php  echo $duration['prog_type_name']; ?></td>  
+                  <td><?php  echo $duration['prog_type_name'].'/'.$duration['p_name']; ?></td>  
                   <td><?php  echo $duration['p_id']; ?></td>
-                  <td><?php  echo $duration['p_code']; ?></td>
-                  <td><?php  echo $duration['p_name']; ?></td>
+                  <td><?php  echo $duration['p_code']; ?></td>               
                   <td><?php  echo $duration['date_from']; ?></td>
                   <td><?php  echo $duration['date_to']; ?></td>         
                   <td><?php  echo $duration['no_of_semester']; ?></td>
@@ -312,7 +311,7 @@
                   </div>
                   </td>
 
-                  <td text-align="right"> 
+                  <td text-align="right">
 
                   <a data-placement="left"   class="btn btn-default btn-xs edit-btn" data-id="<?php echo $duration['duration_id']; ?>" data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                   <i class="fa fa-pencil">
